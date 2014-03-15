@@ -55,7 +55,7 @@ public:
     ofVec2f dancerPos;
     
     bool hideGUI = false;
-    bool hideMonitor = true;
+    bool hideMonitor = false;
     
     float aspect = 1.0;
     

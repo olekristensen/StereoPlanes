@@ -19,9 +19,9 @@ void Trae::setup() {
     coldlight.setDiffuseColor(ofColor::white);
     coldlight.setPosition(1, -0.5, -1);
     
-    trae.set(0.05,0.5);
+    trae.set(0.033,0.5);
     trae.setPosition(0,0.75,0);
-    trae.setResolutionRadius(20);
+    trae.setResolutionRadius(10);
     trae.make(5);
 }
 
@@ -75,7 +75,7 @@ void Trae::draw(int _surfaceId) {
 
 void Trae::update() {
     if (regrow) {
-        trae.make(3);
+        trae.make(7);
         regrow = false;
     }
 }
@@ -83,10 +83,7 @@ void Trae::update() {
 
 void Trae::setGui(ofxUICanvas * gui, float width){
     ContentScene::setGui(gui, width);
-    
     gui->addButton("Regrow", &regrow);
-    
-    
 }
 
 void Trae::receiveOsc(ofxOscMessage * m, string rest) {

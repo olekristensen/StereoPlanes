@@ -42,13 +42,13 @@ void testApp::setup()
     trae = new Trae();
     contentScenes.push_back(trae);
     
-    testScene = new TestScene();
+/*    testScene = new TestScene();
     contentScenes.push_back(testScene);
     
     voronoiWall = new VoronoiWall();
     contentScenes.push_back(voronoiWall);
     
-/*    boxFloor = new BoxFloor();
+    boxFloor = new BoxFloor();
     contentScenes.push_back(boxFloor);
 
     attractorControl = new AttractorControl();
@@ -251,15 +251,12 @@ void testApp::keyPressed(int key)
         hideGUI = !hideGUI;
     } else if (key == 'm') {
         hideMonitor = !hideMonitor;
-        
 	} else if (key == 'w'){
         gui->loadSettings("GUI/wallsetting.xml");
-        
     } else if(key == 'q'){
         gui->loadSettings("GUI/floorsetting.xml");
     } else if (key == 'W'){
         gui->saveSettings("GUI/wallsetting.xml");
-        
     }
     else if(key == 'Q'){
         gui->saveSettings("GUI/floorsetting.xml");

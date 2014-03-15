@@ -15,15 +15,13 @@ class Branch : public ofCylinderPrimitive {
     
     void addBranch(){
         Branch * b = new Branch();
-        //b->setParent(*this);
-        b->setGlobalPosition(this->getGlobalPosition());
+        b->setParent(*this);
+        b->set(this->getRadius()*.75,this->getHeight()*ofRandom(0.35,1.1));
         b->setResolutionRadius(this->getResolutionRadius());
-        b->move(ofRandom(-0.3, 0.3),ofRandom(0.25,-.5),ofRandom(-0.3, 0.3));
-        b->set(this->getRadius()*.85,this->getGlobalPosition().distance(b->getGlobalPosition()));
-        b->lookAt(*this);
-        b->tilt(90);
+        b->boom(-this->getHeight()*.5);
+        b->rotate(ofRandom(-45,45), ofVec3f(1,0,0));
+        b->rotate(ofRandom(-180,180), ofVec3f(0,1,0));
         b->boom(-b->getHeight()*.5);
-//        b->move(0,-this->getHeight()*.5,0);
         branches.push_back(b);
     }
 public:
@@ -49,11 +47,11 @@ public:
     void draw(){
         ofColor c = ofGetStyle().color;
         this->ofCylinderPrimitive::draw();
-        ofPushMatrix();
-        this->transformGL();
-        ofDrawAxis(getHeight()*.5);
-        ofPopMatrix();
-        ofSetColor(c.r, c.g, c.b, c.a*0.85);
+        //ofPushMatrix();
+        //this->transformGL();
+        //ofDrawAxis(getHeight()*.5);
+        //ofPopMatrix();
+//        ofSetColor(c.r, c.g, c.b, c.a*0.85);
         ofPushStyle();
         for (std::vector<Branch*>::iterator it = branches.begin() ; it != branches.end(); ++it) {
             Branch *b = *(it);
