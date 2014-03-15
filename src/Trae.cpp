@@ -74,11 +74,17 @@ void Trae::draw(int _surfaceId) {
 }
 
 void Trae::update() {
+    if (regrow) {
+        trae.make(3);
+        regrow = false;
+    }
 }
 
 
 void Trae::setGui(ofxUICanvas * gui, float width){
     ContentScene::setGui(gui, width);
+    
+    gui->addButton("Regrow", &regrow);
     
     
 }

@@ -15,17 +15,26 @@ class Branch : public ofCylinderPrimitive {
     
     void addBranch(){
         Branch * b = new Branch();
-        b->set( this->getRadius()*0.85, this->getHeight()*ofRandom(0.5,1.3) );
+        //b->setParent(*this);
+        b->setGlobalPosition(this->getGlobalPosition());
         b->setResolutionRadius(this->getResolutionRadius());
-        b->move(0,-this->getHeight(),0);
-        b->setOrientation(ofVec3f(ofRandom(-45,45),ofRandom(-45,45),ofRandom(-45,45)));
-        b->setParent(*this);
+        b->move(ofRandom(-0.3, 0.3),ofRandom(0.25,-.5),ofRandom(-0.3, 0.3));
+        b->set(this->getRadius()*.85,this->getGlobalPosition().distance(b->getGlobalPosition()));
+        b->lookAt(*this);
+        b->tilt(90);
+        b->boom(-b->getHeight()*.5);
+//        b->move(0,-this->getHeight()*.5,0);
         branches.push_back(b);
     }
 public:
 
     void make(int steps){
         if(steps > 1){
+            for (std::vector<Branch*>::iterator it = branches.begin() ; it != branches.end(); ++it) {
+                Branch *b = *(it);
+                delete b;
+            }
+            branches.clear();
             int numberBranches = ofRandom(2,5);
             for(int i = 0; i < numberBranches; i++){
                 addBranch();
@@ -38,11 +47,19 @@ public:
     }
     
     void draw(){
+        ofColor c = ofGetStyle().color;
         this->ofCylinderPrimitive::draw();
+        ofPushMatrix();
+        this->transformGL();
+        ofDrawAxis(getHeight()*.5);
+        ofPopMatrix();
+        ofSetColor(c.r, c.g, c.b, c.a*0.85);
+        ofPushStyle();
         for (std::vector<Branch*>::iterator it = branches.begin() ; it != branches.end(); ++it) {
             Branch *b = *(it);
             b->draw();
         }
+        ofPopStyle();
     }
 
     
@@ -62,6 +79,7 @@ public:
     ofLight warmlight;
     ofLight coldlight;
     
+    bool regrow;
     Branch trae;
     
 };
