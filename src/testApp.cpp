@@ -9,6 +9,8 @@ vector<ofVec3f> points;
 //--------------------------------------------------------------
 void testApp::setup()
 {
+    int resX = 2560;
+    int resY = 720;
     
     ofSetLogLevel(OF_LOG_ERROR);
     
@@ -21,18 +23,13 @@ void testApp::setup()
     //rightOutputServer.setName("Right");
     sbsOutputServer.setName("Side By Side");
     
-    fbo.allocate(2048, 768);
+    fbo.allocate(resX, resY);
     
     settings.load("stereoplanes.xml");
     
-    floor = new StereoPlane("floor");
-    floor->setup(512, 768, &settings);
-    floor->pos = ofVec2f(0,0);
-    planes.push_back(floor);
-        
     wall = new StereoPlane("wall");
-    wall->setup(512, 768, &settings);
-    wall->pos = ofVec2f(1024,0);
+    wall->setup(resX/2, resY, &settings);
+    wall->pos = ofVec2f(0,0);
     planes.push_back(wall);
     
     activePlaneIndex = 0;
@@ -40,8 +37,10 @@ void testApp::setup()
     
     oscReceiver.setup(9001);
     
-    camPosFloor = ofVec3f(0, 0, -1);
     camPosWall = ofVec3f(0, 0, -1);
+    
+    trae = new Trae();
+    contentScenes.push_back(trae);
     
     testScene = new TestScene();
     contentScenes.push_back(testScene);
@@ -49,7 +48,7 @@ void testApp::setup()
     voronoiWall = new VoronoiWall();
     contentScenes.push_back(voronoiWall);
     
-    boxFloor = new BoxFloor();
+/*    boxFloor = new BoxFloor();
     contentScenes.push_back(boxFloor);
 
     attractorControl = new AttractorControl();
@@ -60,7 +59,7 @@ void testApp::setup()
     
     voro3d = new Voro3D();
     contentScenes.push_back(voro3d);
-    
+*/
     for(int i=0; i<contentScenes.size(); i++) {
         contentScenes[i]->setupScene(i);
     }
@@ -81,17 +80,15 @@ void testApp::setup()
     gui->setWidgetFontSize(OFX_UI_FONT_SMALL);
     gui->setColorBack(ofColor(10, 10, 10,220));
     
-    gui->addLabel("Stereo", OFX_UI_FONT_LARGE);
+    gui->addLabel("trae", OFX_UI_FONT_LARGE);
     
     gui->addSlider("Eye seperation", 0, 7, &eyeSeperation);
     
-    gui->addSlider("Floor X",  -2, 2, &camPosFloor.x);
-    gui->addSlider("Floor Y",  -2, 2, &camPosFloor.y);
-    gui->addSlider("Floor Z",  -2, -0.25, &camPosFloor.z);
-    
     gui->addSlider("Wall X",  -2, 2, &camPosWall.x);
-    gui->addSlider("Wall Y",  -2, 2, &camPosWall.y);
-    gui->addSlider("Wall Z",  -2, -0.25, &camPosWall.z);
+    gui->addSlider("Wall Y",  -1, 1, &camPosWall.y);
+    gui->addSlider("Wall Z",  -4, -0.25, &camPosWall.z);
+
+    gui->addSlider("Aspect",  0.0, 2.0, &aspect);
     
     gui->addSlider("Dancer X",  -1, 1, &dancerPos.x);
     gui->addSlider("Dancer Y",  -1, 1, &dancerPos.y);
@@ -116,9 +113,7 @@ void testApp::setup()
 void testApp::update()
 {
     
-    
-    gui->setVisible(hideGUI);
-    
+    gui->setVisible(!hideGUI);
     
     while(oscReceiver.hasWaitingMessages()){
 		// get the next message
@@ -131,16 +126,7 @@ void testApp::update()
         
         //cout<<m.getAddress()<<endl;
         
-		if(m.getAddress() == "/Floor/Camera/x"){
-            camPosFloor.x = m.getArgAsFloat(0);
-            
-		} else if(m.getAddress() == "/Floor/Camera/y"){
-            camPosFloor.y = m.getArgAsFloat(0);
-            
-		} else if(m.getAddress() == "/Floor/Cameraz/x"){
-                camPosFloor.z = m.getArgAsFloat(0);
-            
-        } else if(m.getAddress() == "/Wall/Camera/x"){
+		if(m.getAddress() == "/Wall/Camera/x"){
                 camPosWall.x = m.getArgAsFloat(0);
             
         } else if(m.getAddress() == "/Wall/Camera/y"){
@@ -166,8 +152,7 @@ void testApp::update()
         }
     }
     
-    planes[0]->cam.setPosition(camPosFloor);
-    planes[1]->cam.setPosition(camPosWall);
+    wall->cam.setPosition(camPosWall);
     
     for(int i=0; i<planes.size(); i++) {
         planes[i]->cam.setPhysicalEyeSeparation(eyeSeperation);
@@ -202,11 +187,17 @@ void testApp::draw()
     // draw scenes to surfaces, they are kept in the cameras fbo
     for(int i=0;i < planes.size(); i++) {
         planes[i]->beginLeft();
+        glPushMatrix();
+        glScaled(aspect*planes[i]->height*1.0/planes[i]->width, 1.0, 1.0);
         drawScenes(i);
+        glPopMatrix();
         planes[i]->endLeft();
         
         planes[i]->beginRight();
+        glPushMatrix();
+        glScaled(aspect*planes[i]->height*1.0/planes[i]->width, 1.0, 1.0);
         drawScenes(i);
+        glPopMatrix();
         planes[i]->endRight();
     }
     

@@ -1,16 +1,17 @@
 //
-//  TestScene.cpp
-//  StereoPlanes
+//  Trae.cpp
+//  Trae
 //
-//  Created by Johan Bichel Lindegaard on 21/01/14.
+//  Created by Ole Kristensen on 15/03/14.
 //
 //
 
-#include "TestScene.h"
+#include "Trae.h"
 
-void TestScene::setup() {
-    name = "Test Scene";
-    oscAddress = "/testscene";
+void Trae::setup() {
+    
+    name = "Trae Scene";
+    oscAddress = "/trae";
     warmlight.setPointLight();
     warmlight.setDiffuseColor(ofColor::wheat);
     warmlight.setPosition(-1, 0.5, -1);
@@ -18,11 +19,10 @@ void TestScene::setup() {
     coldlight.setDiffuseColor(ofColor::white);
     coldlight.setPosition(1, -0.5, -1);
     
-    
 }
 
 
-void TestScene::draw(int _surfaceId) {
+void Trae::draw(int _surfaceId) {
     
     ofBackground (0);
     ofSetSmoothLighting(true);
@@ -41,30 +41,39 @@ void TestScene::draw(int _surfaceId) {
         //ofDrawGrid(1);
         
         ofPushMatrix();
-        ofRotateX(ofGetElapsedTimef()*10);
-        ofDrawBox(0.5);
+        glTranslatef(0.,0.1,1.);
+        ofRotateY(ofGetElapsedTimef()*10);
+        glTranslatef(0.,0,.5);
+        ofDrawBox(0.5,1.8,0.5);
+        ofPopMatrix();
+        ofPushMatrix();
+        glTranslatef(0.,0,1.);
+        ofRotateX(-90);
+        glTranslatef(0,0,1);
+        ofEllipse(0,0,.5,.5);
+        
         ofPopMatrix();
         
         warmlight.disable();
         coldlight.disable();
-    
+        
     }
     
 }
 
-void TestScene::update() {
+void Trae::update() {
 }
 
 
-void TestScene::setGui(ofxUICanvas * gui, float width){
+void Trae::setGui(ofxUICanvas * gui, float width){
     ContentScene::setGui(gui, width);
-
+    
 }
 
-void TestScene::receiveOsc(ofxOscMessage * m, string rest) {
+void Trae::receiveOsc(ofxOscMessage * m, string rest) {
 }
 
-void TestScene::guiEvent(ofxUIEventArgs &e)
+void Trae::guiEvent(ofxUIEventArgs &e)
 {
     
     string name = e.getName();

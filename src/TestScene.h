@@ -21,6 +21,7 @@ public:
     void guiEvent(ofxUIEventArgs &e);
     void receiveOsc(ofxOscMessage * m, string rest);
     
-    ofLight light;
+    ofLight warmlight;
+    ofLight coldlight;
     
 };

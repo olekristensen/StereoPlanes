@@ -103,6 +103,7 @@
 		04A6C9271882166800B17C45 /* ofxCvHaarFinder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04A6C91A1882166800B17C45 /* ofxCvHaarFinder.cpp */; };
 		04A6C9281882166800B17C45 /* ofxCvImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04A6C91C1882166800B17C45 /* ofxCvImage.cpp */; };
 		04A6C9291882166800B17C45 /* ofxCvShortImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04A6C91F1882166800B17C45 /* ofxCvShortImage.cpp */; };
+		7A6DC1C218D494540054D5B6 /* Trae.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7A6DC1C018D494540054D5B6 /* Trae.cpp */; };
 		7AF1C6BD1885DE7000B38D3B /* ofxBulletJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7AF1C6881885D44800B38D3B /* ofxBulletJoint.cpp */; };
 		7AF1C6BE1885DE7000B38D3B /* ofxBulletWorldRigid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7AF1C68E1885D44800B38D3B /* ofxBulletWorldRigid.cpp */; };
 		7AF1C6BF1885DE7000B38D3B /* GLDebugDrawer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7AF1C6911885D44800B38D3B /* GLDebugDrawer.cpp */; };
@@ -503,6 +504,8 @@
 		04A6C91F1882166800B17C45 /* ofxCvShortImage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxCvShortImage.cpp; sourceTree = "<group>"; };
 		04A6C9201882166800B17C45 /* ofxCvShortImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxCvShortImage.h; sourceTree = "<group>"; };
 		04A6C9211882166800B17C45 /* ofxOpenCv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxOpenCv.h; sourceTree = "<group>"; };
+		7A6DC1C018D494540054D5B6 /* Trae.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Trae.cpp; sourceTree = "<group>"; };
+		7A6DC1C118D494540054D5B6 /* Trae.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Trae.h; sourceTree = "<group>"; };
 		7AF1C3BD18859C8200B38D3B /* stereoplanes.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = stereoplanes.xml; path = bin/data/stereoplanes.xml; sourceTree = "<group>"; };
 		7AF1C3BF1885D44600B38D3B /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		7AF1C66C1885D44800B38D3B /* ofxaddons_thumbnail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ofxaddons_thumbnail.png; sourceTree = "<group>"; };
@@ -1724,6 +1727,8 @@
 				AB6B557518905A3B00E70C54 /* AttractorParticle.cpp */,
 				AB6B557618905A3B00E70C54 /* AttractorParticle.h */,
 				042E838B1891BD8600007697 /* VoroUtils.h */,
+				7A6DC1C018D494540054D5B6 /* Trae.cpp */,
+				7A6DC1C118D494540054D5B6 /* Trae.h */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -1843,6 +1848,7 @@
 				7AF1C6C31885DE7000B38D3B /* ofxBulletCone.cpp in Sources */,
 				7AF1C6C41885DE7000B38D3B /* ofxBulletConvexShape.cpp in Sources */,
 				7AF1C6C51885DE7000B38D3B /* ofxBulletCustomShape.cpp in Sources */,
+				7A6DC1C218D494540054D5B6 /* Trae.cpp in Sources */,
 				0420B5BB188F8E4F0086D388 /* ofxUIValuePlotter.cpp in Sources */,
 				7AF1C6C61885DE7000B38D3B /* ofxBulletCylinder.cpp in Sources */,
 				7AF1C6C71885DE7000B38D3B /* ofxBulletSphere.cpp in Sources */,

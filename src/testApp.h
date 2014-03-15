@@ -15,6 +15,7 @@
 #include "TestScene.h"
 #include "ofxUI.h"
 #include "AttractorControl.h"
+#include "Trae.h"
 
 
 class testApp : public ofBaseApp
@@ -48,20 +49,20 @@ public:
 //    ofxOscSender oscSender;
     
     ofVec3f camPosWall;
-    ofVec3f camPosFloor;
     float eyeSeperation;
     
     float dancerEllipseSize;
     ofVec2f dancerPos;
     
     bool hideGUI = false;
-    bool hideMonitor = false;
+    bool hideMonitor = true;
+    
+    float aspect = 1.0;
     
     ofxUIScrollableCanvas *gui;
     void guiEvent(ofxUIEventArgs &e);
     
     ofFbo fbo;
-    StereoPlane * floor;
     StereoPlane * wall;
     StereoPlane * activePlane;
     int activePlaneIndex;
@@ -72,14 +73,6 @@ public:
     
     float dancerHeight;
     
-    /*VoronoiWall * voronoiWall;
-    VoronoiWall * voronoiPlaza;
-    CeilingPlane * ceilingPlane;
-    Ribbon * ribbon;
-    BoxFloor * boxFloor;
-    CommonPerspectiveTest * cmpTest;
-    */
-    
     void drawScenes(int _surfaceId=0);
     
     // Scenes
@@ -89,10 +82,8 @@ public:
     AttractorControl * attractorControl;
     WireMesh * wireMesh;
     Voro3D * voro3d;
+    Trae * trae;
     
     vector<ContentScene*> contentScenes;
-    
-    
-    //Lines * lines;
     
 };
