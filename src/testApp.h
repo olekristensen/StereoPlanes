@@ -6,15 +6,8 @@
 #include "ofxXmlSettings.h"
 #include "ofxOscReceiver.h"
 #include "StereoPlane.h"
-#include "VoronoiWall.h"
-#include "BoxFloor.h"
-#include "WireMesh.h"
-#include "Lines.h"
-#include "Voro3D.h"
 #include "ContentScene.h"
-#include "TestScene.h"
 #include "ofxUI.h"
-#include "AttractorControl.h"
 #include "Trae.h"
 
 
@@ -55,7 +48,7 @@ public:
     ofVec2f dancerPos;
     
     bool hideGUI = false;
-    bool hideMonitor = false;
+    bool hideMonitor = true;
     
     float aspect = 1.0;
     
@@ -76,12 +69,6 @@ public:
     void drawScenes(int _surfaceId=0);
     
     // Scenes
-    TestScene * testScene;
-    VoronoiWall * voronoiWall;
-    BoxFloor * boxFloor;
-    AttractorControl * attractorControl;
-    WireMesh * wireMesh;
-    Voro3D * voro3d;
     Trae * trae;
     
     vector<ContentScene*> contentScenes;

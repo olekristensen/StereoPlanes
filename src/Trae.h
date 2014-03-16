@@ -16,10 +16,11 @@ class Branch : public ofCylinderPrimitive {
     void addBranch(){
         Branch * b = new Branch();
         b->setParent(*this);
-        b->set(this->getRadius()*.75,this->getHeight()*ofRandom(0.35,1.1));
+        b->set(this->getRadius()*.65,this->getHeight()*ofRandom(0.5,0.85));
         b->setResolutionRadius(this->getResolutionRadius());
+        b->setResolutionHeight(this->getResolutionHeight());
         b->boom(-this->getHeight()*.5);
-        b->rotate(ofRandom(-45,45), ofVec3f(1,0,0));
+        b->rotate(ofRandom(-75,75), ofVec3f(1,0,0));
         b->rotate(ofRandom(-180,180), ofVec3f(0,1,0));
         b->boom(-b->getHeight()*.5);
         branches.push_back(b);
@@ -33,7 +34,7 @@ public:
                 delete b;
             }
             branches.clear();
-            int numberBranches = ofRandom(2,5);
+            int numberBranches = ofRandom(2,4);
             for(int i = 0; i < numberBranches; i++){
                 addBranch();
             }
@@ -47,10 +48,6 @@ public:
     void draw(){
         ofColor c = ofGetStyle().color;
         this->ofCylinderPrimitive::draw();
-        //ofPushMatrix();
-        //this->transformGL();
-        //ofDrawAxis(getHeight()*.5);
-        //ofPopMatrix();
 //        ofSetColor(c.r, c.g, c.b, c.a*0.85);
         ofPushStyle();
         for (std::vector<Branch*>::iterator it = branches.begin() ; it != branches.end(); ++it) {
@@ -69,6 +66,7 @@ public:
     void draw(int _surfaceId);
     void update();
     void setup();
+    void makeTrees();
     
     void setGui(ofxUICanvas * gui, float width);
     void guiEvent(ofxUIEventArgs &e);
@@ -78,6 +76,7 @@ public:
     ofLight coldlight;
     
     bool regrow;
-    Branch trae;
+    bool hasRegrown;
+    vector<Branch*> trees;
     
 };

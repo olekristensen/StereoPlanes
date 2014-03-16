@@ -59,13 +59,13 @@ public:
     
     void drawScene(int _surfaceId=0) {
         if(enabled) {
-            glPushMatrix();ofPushMatrix();ofPushStyle();
+            glPushMatrix();ofPushStyle();ofPushMatrix();
             draw(_surfaceId);
-            ofPopStyle();ofPopMatrix();glPopMatrix();
+            ofPopMatrix();ofPopStyle();glPopMatrix();
             
-            glPushMatrix();ofPushMatrix();ofPushStyle();
-            debugDraw(_surfaceId);
-            ofPopStyle();ofPopMatrix();glPopMatrix();
+//            ofPushMatrix();ofPushStyle();
+//            debugDraw(_surfaceId);
+//            ofPopStyle();ofPopMatrix();
         }
     }
     

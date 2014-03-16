@@ -13,73 +13,86 @@ void Trae::setup() {
     name = "Trae Scene";
     oscAddress = "/trae";
     warmlight.setPointLight();
-    warmlight.setDiffuseColor(ofColor::wheat);
-    warmlight.setPosition(-1, 0.5, -1);
+    warmlight.setDiffuseColor(ofColor::orange);
+    warmlight.setPosition(0, 0.5, 0);
+    warmlight.setAmbientColor(ofColor::black);
+    ofSetGlobalAmbientColor(ofColor::black);
     coldlight.setPointLight();
-    coldlight.setDiffuseColor(ofColor::white);
-    coldlight.setPosition(1, -0.5, -1);
+    coldlight.setDiffuseColor(ofColor(33,33,33));
+    coldlight.setPosition(0, -2, -2);
     
-    trae.set(0.033,0.5);
-    trae.setPosition(0,0.75,0);
-    trae.setResolutionRadius(10);
-    trae.make(5);
+    makeTrees();
 }
 
 
 void Trae::draw(int _surfaceId) {
     
-    ofBackground (0);
-    ofSetSmoothLighting(true);
-    
     // A scene can draw to multiple surfaces
     if(_surfaceId == 0) {
         
+        ofPushMatrix();
+
+        ofSetSmoothLighting(true);
+        
+        ofTranslate(ofPoint(0.,0,1.0));
+
         warmlight.enable();
-        coldlight.enable();
+        //coldlight.enable();
         
-/*        // ofSetColor(0,255,0,250);
-        // FIXME: there is an alpha problem here, the box can't be seen through the rect if drawn
-        // ofRect(-1, -1, 2, 2);
+        ofColor fire = ofColor::orange;
         
-        ofSetColor(255,255,255);
-        //ofDrawGrid(1);
-        
-        ofPushMatrix();
-        glTranslatef(0.,0.1,1.);
-        ofRotateY(ofGetElapsedTimef()*10);
-        glTranslatef(0.,0,.5);
-        ofDrawBox(0.5,1.8,0.5);
-        ofPopMatrix();
-        ofPushMatrix();
-        glTranslatef(0.,0,1.);
-        ofRotateX(-90);
-        glTranslatef(0,0,1);
-        ofEllipse(0,0,.5,.5);
-        
-        ofPopMatrix();
-*/
-        ofSetColor(255,255,255);
-        ofPushMatrix();
-        glTranslatef(0.,0,.5);
+        warmlight.setDiffuseColor(fire.lerp(ofColor(64,24,0), ofNoise(ofGetElapsedTimef())));
 
         ofRotateY(ofGetElapsedTimef()*10);
-        trae.draw();
 
-        ofPopMatrix();
+        //ofDrawGrid();
+        
+        ofSetColor(255,255,255);
+        
+        for (std::vector<Branch*>::iterator it = trees.begin() ; it != trees.end(); ++it) {
+            Branch *b = *(it);
+            b->draw();
+        }
+
         warmlight.disable();
         coldlight.disable();
+        
+        ofPopMatrix();
         
     }
     
 }
 
 void Trae::update() {
-    if (regrow) {
-        trae.make(7);
-        regrow = false;
+    if (regrow & !hasRegrown) {
+        makeTrees();
+        hasRegrown = true;
+    }
+    if (!regrow){
+        hasRegrown = false;
     }
 }
 
+void Trae::makeTrees(){
+    
+    for (std::vector<Branch*>::iterator it = trees.begin() ; it != trees.end(); ++it) {
+        Branch *b = *(it);
+        delete b;
+    }
+    trees.clear();
+    
+    for (int i = 0; i < 3; i++) {
+        Branch * b = new Branch();
+        float bWidth = ofRandom(0.03,0.075);
+        float bHeight = ofRandom(0.5,0.75);
+        b->set(bWidth,bHeight);
+        b->setPosition(ofRandom(-.5,.5),1-(bHeight*.5),ofRandom(-.5,.5));
+        b->setResolutionRadius(4);
+        b->setResolutionHeight(1);
+        b->make(8);
+        trees.push_back(b);
+    }
+}
 
 void Trae::setGui(ofxUICanvas * gui, float width){
     ContentScene::setGui(gui, width);

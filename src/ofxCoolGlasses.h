@@ -19,6 +19,14 @@ public:
 		leftFbo.allocate(w, h, GL_RGBA);
 		rightFbo.allocate(w, h, GL_RGBA);
         
+        leftFbo.begin();
+        ofClear(0,0,0,0);
+        leftFbo.end();
+        
+        rightFbo.begin();
+        ofClear(0,0,0,0);
+        rightFbo.end();
+        
         left.setScale(1, 1, 1);
         left.setNearClip(0.1);
         
@@ -74,8 +82,7 @@ public:
 	void beginLeft()
 	{
         leftFbo.begin();
-		ofFloatColor c = ofGetCurrentRenderer()->getBgColor();
-		ofClear(c);
+        ofClear(0,0,0,0);
         left.begin();
 	}
 
@@ -88,8 +95,7 @@ public:
 	void beginRight()
 	{
         rightFbo.begin();
-		ofFloatColor c = ofGetCurrentRenderer()->getBgColor();
-		ofClear(c);
+        ofClear(0,0,0,0);
         right.begin();
     }
 

@@ -13,10 +13,11 @@ void testApp::setup()
     int resY = 720;
     
     ofSetLogLevel(OF_LOG_ERROR);
-    
+    ofDisableArbTex();
+
     ofSetFrameRate(30);
-    ofSetVerticalSync(true);
-    ofSetBackgroundAuto(true);
+//    ofSetVerticalSync(true);
+//    ofSetBackgroundAuto(true);
     ofBackground(0);
     
     //leftOutputServer.setName("Left");
@@ -24,6 +25,10 @@ void testApp::setup()
     sbsOutputServer.setName("Side By Side");
     
     fbo.allocate(resX, resY);
+    
+    fbo.begin();
+    ofClear(0,0,0,0);
+    fbo.end();
     
     settings.load("stereoplanes.xml");
     
@@ -42,24 +47,6 @@ void testApp::setup()
     trae = new Trae();
     contentScenes.push_back(trae);
     
-/*    testScene = new TestScene();
-    contentScenes.push_back(testScene);
-    
-    voronoiWall = new VoronoiWall();
-    contentScenes.push_back(voronoiWall);
-    
-    boxFloor = new BoxFloor();
-    contentScenes.push_back(boxFloor);
-
-    attractorControl = new AttractorControl();
-    contentScenes.push_back(attractorControl);
-    
-    wireMesh = new WireMesh();
-    contentScenes.push_back(wireMesh);
-    
-    voro3d = new Voro3D();
-    contentScenes.push_back(voro3d);
-*/
     for(int i=0; i<contentScenes.size(); i++) {
         contentScenes[i]->setupScene(i);
     }
@@ -68,12 +55,11 @@ void testApp::setup()
     // gui.setup(parameters);
     
     float xInit = OFX_UI_GLOBAL_WIDGET_SPACING;
-    float width = 255-xInit;
+    float width = 300-xInit;
     hideGUI = false;
     
-    gui = new ofxUIScrollableCanvas(20, 0, width+xInit, ofGetHeight());
+    gui = new ofxUIScrollableCanvas(0, 0, width+xInit, ofGetHeight());
     
-    gui->setScrollAreaToScreenHeight();
     gui->setScrollableDirections(false, true);
     
     gui->setFont("GUI/Arial.ttf");
@@ -101,7 +87,7 @@ void testApp::setup()
     gui->autoSizeToFitWidgets();
     ofAddListener(gui->newGUIEvent,this,&testApp::guiEvent);
     
-    gui->setDrawBack(true);
+    gui->setDrawBack(false);
     gui->setScrollAreaToScreenHeight();
     
     gui->loadSettings("GUI/guiSettings.xml");
@@ -112,9 +98,6 @@ void testApp::setup()
 //--------------------------------------------------------------
 void testApp::update()
 {
-    
-    gui->setVisible(!hideGUI);
-    
     while(oscReceiver.hasWaitingMessages()){
 		// get the next message
 		ofxOscMessage m;
@@ -163,8 +146,10 @@ void testApp::update()
         contentScenes[s]->update();
     }
     
+    gui->setVisible(!hideGUI);
     
     ofSetWindowTitle(ofToString(ofGetFrameRate()));
+    
 }
 
 
@@ -177,30 +162,33 @@ void testApp::drawScenes(int _surfaceId) {
 //--------------------------------------------------------------
 void testApp::draw()
 {
-    
-    ofSetColor(0);
+    ofSetColor(255);
+    ofBackgroundGradient(ofColor::darkGrey, ofColor::gray);
+    //drawScenes(0);
     
     ofEnableLighting();
     ofEnableDepthTest();
-    ofSetColor(255);
     
     // draw scenes to surfaces, they are kept in the cameras fbo
+
     for(int i=0;i < planes.size(); i++) {
         planes[i]->beginLeft();
+        ofClear(ofColor::black);
         glPushMatrix();
-        glScaled(aspect*planes[i]->height*1.0/planes[i]->width, 1.0, 1.0);
+        glScalef(aspect*planes[i]->height*1.0/planes[i]->width, 1.0, 1.0);
         drawScenes(i);
         glPopMatrix();
         planes[i]->endLeft();
         
         planes[i]->beginRight();
+        ofClear(ofColor::black);
         glPushMatrix();
-        glScaled(aspect*planes[i]->height*1.0/planes[i]->width, 1.0, 1.0);
+        glScalef(aspect*planes[i]->height*1.0/planes[i]->width, 1.0, 1.0);
         drawScenes(i);
         glPopMatrix();
         planes[i]->endRight();
     }
-    
+
     ofDisableDepthTest();
     ofDisableLighting();
     
@@ -212,30 +200,24 @@ void testApp::draw()
     
     // Draw the scenes to the output fbo
     fbo.begin(); {
-        //ofClear(0, 0, 0);
-        ofSetColor(255);
+        ofClear(0, 0, 0, 0);
+        ofSetColor(255,255);
         ofFill();
-    
         for(int i=0; i<planes.size(); i++) {
             planes[i]->draw();
         }
         
     }fbo.end();
-    sbsOutputServer.publishTexture(&fbo.getTextureReference());
-    
-    // Draw interface and monitor view
-    //ofBackground(60,60,60);
     
     if(!hideMonitor) {
-    ofPushMatrix();
-    ofTranslate(300, 20);
-    ofPushMatrix();
-    ofScale(0.5,0.5);
-    ofSetColor(255);
-    fbo.draw(0, 0);
-    ofPopMatrix();
-    ofPopMatrix();
+        ofSetColor(255,255);
+        fbo.draw(300,0,(ofGetWidth()-300),(ofGetWidth()-300)*(fbo.getHeight()*1./fbo.getWidth()));
     }
+    
+    ofDisableArbTex();
+    ofTexture t = fbo.getTextureReference();
+    sbsOutputServer.publishTexture(&t);
+    
     
 }
 

@@ -1,15 +1,17 @@
 #include "ofMain.h"
 #include "testApp.h"
-#include <ofAppGlutWindow.h>
+//#include <ofAppGlutWindow.h>
+// import the fancy new renderer
+#include "ofGlProgrammableRenderer.h"
 
 //========================================================================
 int main( ){    
     
-    ofAppGlutWindow window;
+   // ofAppGlutWindow window;
 //    window.setDoubleBuffering(false);
-    window.setGlutDisplayString("rgb alpha double samples>=8 depth");
-    
-    ofSetupOpenGL(&window, 300+(1280/2), 850, OF_WINDOW);
+    //window.setGlutDisplayString("rgb alpha double samples>=8 depth");
+    ofSetCurrentRenderer(ofGLProgrammableRenderer::TYPE);
+    ofSetupOpenGL(300/*+(1280/2)*/, 850, OF_WINDOW);
     
 	// this kicks off the running of my app
 	// can be OF_WINDOW or OF_FULLSCREEN
