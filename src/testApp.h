@@ -22,6 +22,8 @@ public:
 	void drawScene1();
     void drawScene2();
     
+    void drawFly();
+    
 	void keyPressed(int key);
 	void keyReleased(int key);
 	void mouseMoved(int x, int y);
@@ -36,7 +38,6 @@ public:
 
     ofxSyphonServer sbsOutputServer;
     
-    bool showGrid;
 
     ofxOscReceiver oscReceiver;
 //    ofxOscSender oscSender;
@@ -47,8 +48,9 @@ public:
     float dancerEllipseSize;
     ofVec2f dancerPos;
     
-    bool hideGUI = false;
-    bool hideMonitor = true;
+    bool drawFBOs = false;
+    bool drawChessboards = false;
+    bool drawGrids = false;
     
     float aspect = 1.0;
     

@@ -75,6 +75,10 @@ public:
     ofLight warmlight;
     ofLight coldlight;
     
+    float zPos;
+    float speed;
+    float time;
+    
     bool regrow;
     bool hasRegrown;
     vector<Branch*> trees;

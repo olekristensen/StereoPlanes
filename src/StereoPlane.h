@@ -26,6 +26,8 @@ public:
     int camWidth; // resolution
     int camHeight;
     
+    float aspect = 1.0;
+    
     string name;
     
     ofVec2f pos;
@@ -135,15 +137,16 @@ public:
         */
     };
     
-    void drawGrid() {
+    void drawChessboard() {
         
         ofFill();
         glDisable(GL_DEPTH_TEST);
         
         float chessSize = 0.05;
-        
+
         ofPushMatrix();
-        
+        ofScale(1./(aspect*height*1.0/width),1, 1);
+
         bool white = true;
         
         ofTranslate(-1, -1);
@@ -160,26 +163,91 @@ public:
         }
         ofPopMatrix();
         
+        ofPushMatrix();
         
-        //ofSetColor(255,0,0);
-        //ofEllipse(0, 0, 1, 1);
+        ofSetColor(255,0,0);
+        ofEllipse(0, 0, 1, 1);
         ofDrawAxis(1);
+        ofPopMatrix();
     }
     
-    void drawGrids() {
+    void drawChessboards() {
         //warpLeft.begin();
-        cam.beginLeft();
-        drawGrid();
-        cam.endLeft();
+        beginLeft();
+        drawChessboard();
+        endLeft();
         //warpLeft.end();
         
         //warpRight.begin();
-        cam.beginRight();
-        drawGrid();
-        cam.endRight();
+        beginRight();
+        drawChessboard();
+        endRight();
         //warpRight.end();
     }
-    
+
+    void drawGrid() {
+        
+        ofFill();
+//        glDisable(GL_DEPTH_TEST);
+        
+//        ofDrawRotationAxes(0.01);
+        ofDrawGrid(1., 10, true);
+        ofDrawGrid(1., 10, true,false,true,false);
+
+        ofLight l;
+        
+        l.setDirectional();
+        l.setPosition(ofVec3f(-1,1,-1));
+        l.lookAt(ofVec3f(0,0,0));
+        
+        l.enable();
+
+        ofPushMatrix();
+        ofTranslate(0,0,1);
+        ofEnableLighting();
+        ofDrawSphere(0.1);
+        ofDisableLighting();
+        ofPopMatrix();
+
+        ofEnableLighting();
+        ofDrawSphere(0.1);
+        ofDisableLighting();
+        
+        ofPushMatrix();
+        ofTranslate(0,0,-1);
+        ofEnableLighting();
+        ofDrawSphere(0.1);
+        ofDisableLighting();
+        ofPopMatrix();
+        
+        l.disable();
+
+        ofPushMatrix();
+        ofTranslate(0,1,0);
+        ofDrawGrid(1., 10, true,false,true,false);
+        ofPopMatrix();
+
+        ofPushMatrix();
+        ofTranslate(0,-1,0);
+        ofDrawGrid(1., 10, true,false,true,false);
+        ofPopMatrix();
+
+    }
+
+    void drawGrids() {
+        //warpLeft.begin();
+        beginLeft();
+        drawGrid();
+        endLeft();
+        //warpLeft.end();
+        
+        //warpRight.begin();
+        beginRight();
+        drawGrid();
+        endRight();
+        //warpRight.end();
+    }
+
     
     int controlSide = 0; // 0: left, 1: right
     
@@ -205,6 +273,7 @@ public:
         ofPushView();
         glPushMatrix();
         cam.beginLeft();
+        glScalef(aspect*height*1.0/width, 1.0, 1.0);
     }
     
     void endLeft(){
@@ -217,6 +286,7 @@ public:
         ofPushView();
         glPushMatrix();
         cam.beginRight();
+        glScalef(aspect*height*1.0/width, 1.0, 1.0);
     }
     
     void endRight(){

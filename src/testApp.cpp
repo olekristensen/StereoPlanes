@@ -2,19 +2,14 @@
 #include <OpenGL/OpenGL.h>
 #include <ofGLUtils.h>
 
-// Syphon together with 3D primitive and NoFill does not run
-
-vector<ofVec3f> points;
-
 //--------------------------------------------------------------
 void testApp::setup()
 {
     int resX = 2560;
     int resY = 720;
     
-    ofSetLogLevel(OF_LOG_ERROR);
-    ofDisableArbTex();
-
+    ofSetLogLevel(OF_LOG_VERBOSE);
+    
     ofSetFrameRate(30);
 //    ofSetVerticalSync(true);
 //    ofSetBackgroundAuto(true);
@@ -24,7 +19,13 @@ void testApp::setup()
     //rightOutputServer.setName("Right");
     sbsOutputServer.setName("Side By Side");
     
-    fbo.allocate(resX, resY);
+    ofFbo::Settings fboSettings;
+    
+    fboSettings.width = resX;
+    fboSettings.height = resY;
+    fboSettings.textureTarget = GL_TEXTURE_RECTANGLE_ARB;
+    
+    fbo.allocate(fboSettings);
     
     fbo.begin();
     ofClear(0,0,0,0);
@@ -56,7 +57,6 @@ void testApp::setup()
     
     float xInit = OFX_UI_GLOBAL_WIDGET_SPACING;
     float width = 300-xInit;
-    hideGUI = false;
     
     gui = new ofxUIScrollableCanvas(0, 0, width+xInit, ofGetHeight());
     
@@ -78,7 +78,11 @@ void testApp::setup()
     
     gui->addSlider("Dancer X",  -1, 1, &dancerPos.x);
     gui->addSlider("Dancer Y",  -1, 1, &dancerPos.y);
-    
+
+    gui->addToggle("Draw Checkers", &drawChessboards);
+    gui->addToggle("Draw Planes", &drawGrids);
+    gui->addToggle("Draw FBOs", &drawFBOs);
+
     for(int i=0; i<contentScenes.size(); i++) {
         gui->addSpacer(width, 3)->setDrawOutline(true);
         contentScenes[i]->setGui(gui, width);
@@ -137,6 +141,8 @@ void testApp::update()
     
     wall->cam.setPosition(camPosWall);
     
+    wall->aspect = aspect;
+    
     for(int i=0; i<planes.size(); i++) {
         planes[i]->cam.setPhysicalEyeSeparation(eyeSeperation);
         planes[i]->update();
@@ -146,8 +152,6 @@ void testApp::update()
         contentScenes[s]->update();
     }
     
-    gui->setVisible(!hideGUI);
-    
     ofSetWindowTitle(ofToString(ofGetFrameRate()));
     
 }
@@ -156,7 +160,31 @@ void testApp::update()
 void testApp::drawScenes(int _surfaceId) {
     for(int s=0; s<contentScenes.size();s++) {
         contentScenes[s]->drawScene(_surfaceId);
+        drawFly();
     }
+}
+
+void testApp::drawFly(){
+    
+    float speed = 0.1;
+    float time = ofGetElapsedTimef()*speed;
+    
+    float zPos =ofSignedNoise(0,0,time);
+    float reduction = fmaxf(0,ofMap(zPos, 1, -1, 0.0, 1));
+    reduction = pow(reduction, 3);
+                              
+    ofVec3f pos(
+                ofMap(reduction, 0,1,ofSignedNoise(time), camPosWall.x),
+                ofMap(reduction, 0,1,ofSignedNoise(0,time), camPosWall.y),
+                2.2*zPos
+                );
+    
+    ofPushMatrix();
+    
+    ofDrawSphere(pos, 0.01);
+    
+    ofPopMatrix();
+    
 }
 
 //--------------------------------------------------------------
@@ -175,7 +203,6 @@ void testApp::draw()
         planes[i]->beginLeft();
         ofClear(ofColor::black);
         glPushMatrix();
-        glScalef(aspect*planes[i]->height*1.0/planes[i]->width, 1.0, 1.0);
         drawScenes(i);
         glPopMatrix();
         planes[i]->endLeft();
@@ -183,7 +210,6 @@ void testApp::draw()
         planes[i]->beginRight();
         ofClear(ofColor::black);
         glPushMatrix();
-        glScalef(aspect*planes[i]->height*1.0/planes[i]->width, 1.0, 1.0);
         drawScenes(i);
         glPopMatrix();
         planes[i]->endRight();
@@ -192,7 +218,13 @@ void testApp::draw()
     ofDisableDepthTest();
     ofDisableLighting();
     
-    if(showGrid) {
+    if(drawChessboards) {
+        for(int i=0; i<planes.size(); i++) {
+            planes[i]->drawChessboards();
+        }
+    }
+
+    if(drawGrids) {
         for(int i=0; i<planes.size(); i++) {
             planes[i]->drawGrids();
         }
@@ -209,14 +241,16 @@ void testApp::draw()
         
     }fbo.end();
     
-    if(!hideMonitor) {
+    if(drawFBOs) {
         ofSetColor(255,255);
         fbo.draw(300,0,(ofGetWidth()-300),(ofGetWidth()-300)*(fbo.getHeight()*1./fbo.getWidth()));
     }
     
-    ofDisableArbTex();
-    ofTexture t = fbo.getTextureReference();
-    sbsOutputServer.publishTexture(&t);
+//    ofEnableArbTex();
+    
+    sbsOutputServer.publishFBO(&fbo);
+//    ofTexture t = fbo.getTextureReference();
+//    sbsOutputServer.publishTexture(&t);
     
     
 }
@@ -228,11 +262,9 @@ void testApp::keyPressed(int key)
 	if (key == 'f'){
 		ofToggleFullscreen();
 	} else if (key == 'g') {
-		showGrid = !showGrid;
-	} else if (key == 'd') {
-        hideGUI = !hideGUI;
-    } else if (key == 'm') {
-        hideMonitor = !hideMonitor;
+		drawChessboards = !drawChessboards;
+	} else if (key == 'm') {
+        drawFBOs = !drawFBOs;
 	} else if (key == 'w'){
         gui->loadSettings("GUI/wallsetting.xml");
     } else if(key == 'q'){

@@ -13,13 +13,16 @@ void Trae::setup() {
     name = "Trae Scene";
     oscAddress = "/trae";
     warmlight.setPointLight();
-    warmlight.setDiffuseColor(ofColor::orange);
+    warmlight.setDiffuseColor(ofColor::white);
     warmlight.setPosition(0, 0.5, 0);
     warmlight.setAmbientColor(ofColor::black);
-    ofSetGlobalAmbientColor(ofColor::black);
+    ofSetGlobalAmbientColor(ofColor(64,64,32));
     coldlight.setPointLight();
     coldlight.setDiffuseColor(ofColor(33,33,33));
     coldlight.setPosition(0, -2, -2);
+    
+    zPos = 0;
+    speed = 0;
     
     makeTrees();
 }
@@ -34,18 +37,25 @@ void Trae::draw(int _surfaceId) {
 
         ofSetSmoothLighting(true);
         
-        ofTranslate(ofPoint(0.,0,1.0));
+        
+        ofPushMatrix();
+        ofRotateX(90);
+        ofTranslate(0,0,-1);
+        ofSetColor(255, 255, 127);
+        ofDrawPlane(2, 2);
+        ofDrawAxis(1);
+        ofPopMatrix();
+        
+        ofTranslate(ofPoint(0.,0,zPos));
 
         warmlight.enable();
         //coldlight.enable();
         
         ofColor fire = ofColor::orange;
         
-        warmlight.setDiffuseColor(fire.lerp(ofColor(64,24,0), ofNoise(ofGetElapsedTimef())));
+        //warmlight.setDiffuseColor(fire.lerp(ofColor(64,24,0), ofNoise(ofGetElapsedTimef())));
 
-        ofRotateY(ofGetElapsedTimef()*10);
-
-        //ofDrawGrid();
+        ofRotateY(time);
         
         ofSetColor(255,255,255);
         
@@ -71,6 +81,7 @@ void Trae::update() {
     if (!regrow){
         hasRegrown = false;
     }
+    time += speed;
 }
 
 void Trae::makeTrees(){
@@ -80,8 +91,7 @@ void Trae::makeTrees(){
         delete b;
     }
     trees.clear();
-    
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 1; i++) {
         Branch * b = new Branch();
         float bWidth = ofRandom(0.03,0.075);
         float bHeight = ofRandom(0.5,0.75);
@@ -89,7 +99,7 @@ void Trae::makeTrees(){
         b->setPosition(ofRandom(-.5,.5),1-(bHeight*.5),ofRandom(-.5,.5));
         b->setResolutionRadius(4);
         b->setResolutionHeight(1);
-        b->make(8);
+        b->make(9);
         trees.push_back(b);
     }
 }
@@ -97,6 +107,8 @@ void Trae::makeTrees(){
 void Trae::setGui(ofxUICanvas * gui, float width){
     ContentScene::setGui(gui, width);
     gui->addButton("Regrow", &regrow);
+    gui->addSlider("Z pos", -2, 3, &zPos);
+    gui->addSlider("Speed", -1, 1, &speed);
 }
 
 void Trae::receiveOsc(ofxOscMessage * m, string rest) {
@@ -110,4 +122,3 @@ void Trae::guiEvent(ofxUIEventArgs &e)
 	//cout << "got event from: " << name << endl;
     
 }
-
