@@ -139,9 +139,9 @@ public:
     
     void drawChessboard() {
         
+        ofPushStyle();
         ofFill();
-        glDisable(GL_DEPTH_TEST);
-        
+        ofDisableDepthTest();
         float chessSize = 0.05;
 
         ofPushMatrix();
@@ -169,6 +169,8 @@ public:
         ofEllipse(0, 0, 1, 1);
         ofDrawAxis(1);
         ofPopMatrix();
+        ofPopStyle();
+        
     }
     
     void drawChessboards() {

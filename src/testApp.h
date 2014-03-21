@@ -9,6 +9,30 @@
 #include "ContentScene.h"
 #include "ofxUI.h"
 #include "Trae.h"
+#include "ofxUbo.h"
+
+
+struct Material {
+    ofVec4f diffuseColor;
+    ofVec4f specularColor;
+    float specularShininess;
+};
+
+struct PerLight {
+    ofVec3f cameraSpaceLightPos;
+    ofVec4f lightIntensity;
+    float lightAttenuation;
+};
+
+struct Light {
+    ofVec4f ambientIntensity;
+    int numberLights;
+    PerLight lights[20];
+};
+
+class shaderLight : public ofNode {
+    
+};
 
 
 class testApp : public ofBaseApp
@@ -19,9 +43,6 @@ public:
 	void update();
 	void draw();
 	
-	void drawScene1();
-    void drawScene2();
-    
     void drawFly();
     
 	void keyPressed(int key);
@@ -34,11 +55,12 @@ public:
 	void dragEvent(ofDragInfo dragInfo);
 	void gotMessage(ofMessage msg);
     
+    ofMatrix3x3 calcNormalMatrix(ofMatrix4x4 matrix);
+    
     void exit();
 
     ofxSyphonServer sbsOutputServer;
     
-
     ofxOscReceiver oscReceiver;
 //    ofxOscSender oscSender;
     
@@ -72,8 +94,19 @@ public:
     
     // Scenes
     Trae * trae;
-    
     vector<ContentScene*> contentScenes;
+    
+    // Lights
+    
+    ofxUboShader lightShader;
+    vector<shaderLight*> lights;
+    Light light;
+    
+    Material white;
+
+    float vertexNoise;
+    
+    // Time
     
     float time = 0;;
     float speed;

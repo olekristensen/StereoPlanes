@@ -12,15 +12,6 @@ void Trae::setup() {
     
     name = "Trae Scene";
     oscAddress = "/trae";
-    warmlight.setPointLight();
-    warmlight.setDiffuseColor(ofColor::white);
-    warmlight.setPosition(0, 0.5, 0);
-    warmlight.setAmbientColor(ofColor::black);
-    ofSetGlobalAmbientColor(ofColor::black);
-    coldlight.setPointLight();
-    coldlight.setDiffuseColor(ofColor(33,33,33));
-    coldlight.setPosition(0, -2, -2);
-    
     zPos = 0;
     
     makeTrees();
@@ -33,8 +24,6 @@ void Trae::draw(int _surfaceId) {
     if(_surfaceId == 0) {
         
         ofPushMatrix();
-
-        ofSetSmoothLighting(true);
         
 /*      FLOOR AND AXIS
         ofPushMatrix();
@@ -47,25 +36,23 @@ void Trae::draw(int _surfaceId) {
 */
         ofTranslate(ofPoint(0.,0,zPos));
 
-        warmlight.enable();
-        //coldlight.enable();
-        
-        ofColor fire = ofColor::orange;
-        
-        warmlight.setDiffuseColor(fire.lerp(ofColor::yellow, ofNoise(ofGetElapsedTimef())));
-
-        ofRotateY(time);
+        ofRotateY(time*0.1);
         
         ofSetColor(255,255,255);
         
         for (std::vector<Branch*>::iterator it = trees.begin() ; it != trees.end(); ++it) {
             Branch *b = *(it);
             b->draw();
+            /* draw vectors
+            ofPushStyle();
+            ofDisableDepthTest();
+            ofSetColor(0, 255, 255, 127);
+            cout << b->drawVecTree() << endl;
+            ofEnableDepthTest();
+            ofPopStyle();
+             */
         }
 
-        warmlight.disable();
-        coldlight.disable();
-        
         ofPopMatrix();
         
     }
@@ -89,7 +76,7 @@ void Trae::makeTrees(){
         delete b;
     }
     trees.clear();
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < 3; i++) {
         Branch * b = new Branch();
         float bWidth = ofRandom(0.03,0.075);
         float bHeight = ofRandom(0.5,0.75);
@@ -97,7 +84,7 @@ void Trae::makeTrees(){
         b->setPosition(ofRandom(-.5,.5),1-(bHeight*.5),ofRandom(-.5,.5));
         //b->setPosition(0,1-(bHeight*.5),0);
         b->setResolutionRadius(10);
-        b->setResolutionHeight(10);
+        b->setResolutionHeight(3);
         b->make(7);
         trees.push_back(b);
     }

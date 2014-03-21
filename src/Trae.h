@@ -11,12 +11,11 @@
 #include "ofMain.h"
 
 class Branch : public ofCylinderPrimitive {
-    vector<Branch*> branches;
-    
-    void addBranch(){
+
+    void addBranch(int steps){
         Branch * b = new Branch();
         b->setParent(*this);
-        b->set(this->getRadius()*.65,this->getHeight()*ofRandom(0.5,0.85));
+        b->set(this->getRadius()*.65,this->getHeight()*ofRandom(0.5,ofMap(steps, 10,0, 0.5,1.25)));
         b->setResolutionRadius(this->getResolutionRadius());
         b->setResolutionHeight(this->getResolutionHeight());
         b->boom(-this->getHeight()*.5);
@@ -26,6 +25,8 @@ class Branch : public ofCylinderPrimitive {
         branches.push_back(b);
     }
 public:
+    vector<Branch*> branches;
+    ofMesh mesh;
 
     void make(int steps){
         if(steps > 1){
@@ -36,7 +37,7 @@ public:
             branches.clear();
             int numberBranches = ofRandom(2,4);
             for(int i = 0; i < numberBranches; i++){
-                addBranch();
+                addBranch(steps);
             }
             for (std::vector<Branch*>::iterator it = branches.begin() ; it != branches.end(); ++it) {
                 Branch *b = *(it);
@@ -48,7 +49,7 @@ public:
     void draw(){
         ofColor c = ofGetStyle().color;
         this->ofCylinderPrimitive::draw();
-//        ofSetColor(c.r, c.g, c.b, c.a*0.85);
+        //  ofSetColor(c.r, c.g, c.b, c.a*0.85);
         ofPushStyle();
         for (std::vector<Branch*>::iterator it = branches.begin() ; it != branches.end(); ++it) {
             Branch *b = *(it);
@@ -56,7 +57,32 @@ public:
         }
         ofPopStyle();
     }
+    
+    ofNode getTopNode(){
+        ofNode returnNode(*this);
+        returnNode.boom(-this->getHeight()*.5);
+        return returnNode;
+    }
 
+    vector<ofVec3f> getVecTree(){
+        vector<ofVec3f> retVecs;
+        retVecs.push_back(getTopNode().getGlobalPosition());
+        for (std::vector<Branch*>::iterator it = branches.begin() ; it != branches.end(); ++it) {
+            Branch *b = *(it);
+            vector<ofVec3f> branchVecs = b->getVecTree();
+            retVecs.insert(retVecs.end(), branchVecs.begin(), branchVecs.end());
+        }
+        return retVecs;
+    }
+    
+    int drawVecTree(){
+        vector<ofVec3f> vecs = getVecTree();
+        for (std::vector<ofVec3f>::iterator it = vecs.begin() ; it != vecs.end(); ++it) {
+            ofVec3f v = *(it);
+            ofDrawBox(v, 0.03);
+        }
+        return vecs.size();
+    }
     
 };
 
@@ -71,9 +97,6 @@ public:
     void setGui(ofxUICanvas * gui, float width);
     void guiEvent(ofxUIEventArgs &e);
     void receiveOsc(ofxOscMessage * m, string rest);
-    
-    ofLight warmlight;
-    ofLight coldlight;
     
     float zPos;
     

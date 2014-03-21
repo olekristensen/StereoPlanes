@@ -79,6 +79,7 @@ void testApp::setup()
 
     gui->addSlider("Aspect",  0.0, 2.0, &aspect);
     gui->addSlider("Speed", -1, 1, &speed);
+    gui->addSlider("Vertex Noise", -1, 1, &vertexNoise);
 
     gui->addSlider("Dancer X",  -1, 1, &dancerPos.x);
     gui->addSlider("Dancer Y",  -1, 1, &dancerPos.y);
@@ -99,6 +100,29 @@ void testApp::setup()
     gui->setScrollAreaToScreenHeight();
     
     gui->loadSettings("GUI/guiSettings.xml");
+    
+    // Set up Lighting
+
+    lightShader.load("shaders/light");
+    lightShader.printLayout("Material");
+    lightShader.printLayout("Light");
+//    lightShader.printLayout("NormalMatrix");
+    
+    light.ambientIntensity = ofVec4f(.0, .0, .0, 1.0);
+    light.numberLights = 2;
+    light.lights[0].lightIntensity = ofVec4f(1., .7, .5, 1.0);
+    light.lights[0].lightAttenuation = 1/.5;
+    light.lights[1].lightIntensity = ofVec4f(.0, 0.3, 0.5, 0.1);
+    light.lights[1].lightAttenuation = 1/.95;
+    
+    lights.push_back(new shaderLight());
+    lights.push_back(new shaderLight());
+    
+    // create Materials
+    white.diffuseColor = ofVec4f(0.9, 0.9, 0.9, 1.0);
+    white.specularColor = ofVec4f(0.0, 0.0, 0.0, 0.0);
+    white.specularShininess = 0.5;
+
     
 }
 
@@ -184,16 +208,11 @@ void testApp::drawFly(){
                 2.2*zPos
                 );
     
-    /*ofPushMatrix();
-    ofDisableLighting();
-    
+    lightShader.end();
     ofDrawSphere(pos, 0.01);
-    
-    ofEnableLighting();
-    ofPopMatrix();
-    */
-    trae->warmlight.setPosition(pos);
-    
+    lightShader.begin();
+    lights.front()->setGlobalPosition(pos);
+    lights.back()->setGlobalPosition(pos.y,-1,pos.x);
 }
 
 //--------------------------------------------------------------
@@ -203,7 +222,6 @@ void testApp::draw()
     ofBackgroundGradient(ofColor::darkGrey, ofColor::gray);
     //drawScenes(0);
     
-    ofEnableLighting();
     ofEnableDepthTest();
     
     // draw scenes to surfaces, they are kept in the cameras fbo
@@ -212,20 +230,52 @@ void testApp::draw()
         planes[i]->beginLeft();
         ofClear(ofColor::black);
         glPushMatrix();
+        
+        // update Lighting
+        ofVec3f light1CamSpacePosLeft = lights[0]->getPosition() * ofGetCurrentMatrix(OF_MATRIX_MODELVIEW);
+        light.lights[0].cameraSpaceLightPos = light1CamSpacePosLeft;
+        ofVec3f light2CamSpacePosLeft = lights[1]->getPosition() * ofGetCurrentMatrix(OF_MATRIX_MODELVIEW);
+        light.lights[1].cameraSpaceLightPos = light2CamSpacePosLeft;
+        
+
+        lightShader.begin();
+        lightShader.setUniform1f("vertexNoise", vertexNoise);
+        
+        lightShader.setUniformBuffer("Light", light);
+        //draw plane
+        lightShader.setUniformBuffer("Material", white);
+        //lightShader.setUniformBuffer("NormalMatrix", calcNormalMatrix(ofGetCurrentMatrix(OF_MATRIX_MODELVIEW) * trae->trees.back()->getGlobalTransformMatrix()));
+        
         drawScenes(i);
+        lightShader.end();
         glPopMatrix();
         planes[i]->endLeft();
         
         planes[i]->beginRight();
         ofClear(ofColor::black);
         glPushMatrix();
+        
+        // update Lighting
+        ofVec3f light1CamSpacePosRight = lights[0]->getPosition() * ofGetCurrentMatrix(OF_MATRIX_MODELVIEW);
+        light.lights[0].cameraSpaceLightPos = light1CamSpacePosRight;
+        ofVec3f light2CamSpacePosRight = lights[1]->getPosition() * ofGetCurrentMatrix(OF_MATRIX_MODELVIEW);
+        light.lights[1].cameraSpaceLightPos = light2CamSpacePosRight;
+        
+        lightShader.begin();
+        
+        lightShader.setUniformBuffer("Light", light);
+        //draw plane
+        lightShader.setUniformBuffer("Material", white);
+        //lightShader.setUniformBuffer("NormalMatrix",calcNormalMatrix(ofGetCurrentMatrix(OF_MATRIX_MODELVIEW) * trae->trees.back()->getGlobalTransformMatrix()));
+        
         drawScenes(i);
+        
+        lightShader.end();
         glPopMatrix();
         planes[i]->endRight();
     }
 
     ofDisableDepthTest();
-    ofDisableLighting();
     
     if(drawChessboards) {
         for(int i=0; i<planes.size(); i++) {
@@ -373,6 +423,13 @@ void testApp::guiEvent(ofxUIEventArgs &e)
     for(int i=0; i<contentScenes.size(); i++) {
         contentScenes[i]->guiEvent(e);
     }
-    
-    
+}
+
+ofMatrix3x3 testApp::calcNormalMatrix(ofMatrix4x4 matrix){
+    ofMatrix3x3 normalMat(matrix._mat[0].x,matrix._mat[0].y,matrix._mat[0].z,
+                          matrix._mat[1].x,matrix._mat[1].y,matrix._mat[1].z,
+                          matrix._mat[2].x,matrix._mat[2].y,matrix._mat[2].z);
+    normalMat.invert();
+    normalMat.transpose();
+    return normalMat;
 }
