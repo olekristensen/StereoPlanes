@@ -76,8 +76,6 @@ public:
     ofLight coldlight;
     
     float zPos;
-    float speed;
-    float time;
     
     bool regrow;
     bool hasRegrown;

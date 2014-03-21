@@ -21,7 +21,8 @@ public:
     string oscAddress = "/default";
     
     bool enabled;
-    
+    float time;
+
     ContentScene() {
     }
     

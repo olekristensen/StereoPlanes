@@ -75,4 +75,7 @@ public:
     
     vector<ContentScene*> contentScenes;
     
+    float time = 0;;
+    float speed;
+    
 };

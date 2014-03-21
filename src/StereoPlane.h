@@ -273,7 +273,7 @@ public:
         ofPushView();
         glPushMatrix();
         cam.beginLeft();
-        glScalef(aspect*height*1.0/width, 1.0, 1.0);
+        ofScale(aspect*height*1.0/width, 1.0, 1.0);
     }
     
     void endLeft(){
@@ -286,7 +286,7 @@ public:
         ofPushView();
         glPushMatrix();
         cam.beginRight();
-        glScalef(aspect*height*1.0/width, 1.0, 1.0);
+        ofScale(aspect*height*1.0/width, 1.0, 1.0);
     }
     
     void endRight(){

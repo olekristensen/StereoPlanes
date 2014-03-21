@@ -8,6 +8,9 @@ void testApp::setup()
     int resX = 2560;
     int resY = 720;
     
+    speed = 0;
+    time = 0;
+
     ofSetLogLevel(OF_LOG_VERBOSE);
     
     ofSetFrameRate(30);
@@ -75,7 +78,8 @@ void testApp::setup()
     gui->addSlider("Wall Z",  -4, -0.25, &camPosWall.z);
 
     gui->addSlider("Aspect",  0.0, 2.0, &aspect);
-    
+    gui->addSlider("Speed", -1, 1, &speed);
+
     gui->addSlider("Dancer X",  -1, 1, &dancerPos.x);
     gui->addSlider("Dancer Y",  -1, 1, &dancerPos.y);
 
@@ -149,11 +153,13 @@ void testApp::update()
     }
 
     for(int s=0; s<contentScenes.size();s++) {
+        contentScenes[s]->time = time;
         contentScenes[s]->update();
     }
     
     ofSetWindowTitle(ofToString(ofGetFrameRate()));
-    
+    time += speed;
+
 }
 
 
@@ -166,24 +172,27 @@ void testApp::drawScenes(int _surfaceId) {
 
 void testApp::drawFly(){
     
-    float speed = 0.1;
-    float time = ofGetElapsedTimef()*speed;
+    float flyTime = time * 0.01;
     
-    float zPos =ofSignedNoise(0,0,time);
+    float zPos =ofSignedNoise(0,0,flyTime);
     float reduction = fmaxf(0,ofMap(zPos, 1, -1, 0.0, 1));
     reduction = pow(reduction, 3);
                               
     ofVec3f pos(
-                ofMap(reduction, 0,1,ofSignedNoise(time), camPosWall.x),
-                ofMap(reduction, 0,1,ofSignedNoise(0,time), camPosWall.y),
+                ofMap(reduction, 0,1,ofSignedNoise(flyTime), camPosWall.x),
+                ofMap(reduction, 0,1,ofSignedNoise(0,flyTime), camPosWall.y),
                 2.2*zPos
                 );
     
-    ofPushMatrix();
+    /*ofPushMatrix();
+    ofDisableLighting();
     
     ofDrawSphere(pos, 0.01);
     
+    ofEnableLighting();
     ofPopMatrix();
+    */
+    trae->warmlight.setPosition(pos);
     
 }
 
