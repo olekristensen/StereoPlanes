@@ -7,8 +7,8 @@
 //
 
 #pragma once
-#include "ContentScene.h"
 #include "ofMain.h"
+#include "ContentScene.h"
 
 class Branch : public ofCylinderPrimitive {
 
@@ -87,6 +87,7 @@ public:
 };
 
 class Trae : public ContentScene {
+    
     
 public:
     void draw(int _surfaceId);

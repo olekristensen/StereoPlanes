@@ -12,6 +12,7 @@ uniform Material
 	float specularShininess;
 } Mtl;
 
+
 struct PerLight
 {
 	vec3 cameraSpaceLightPos;

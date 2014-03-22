@@ -11,6 +11,7 @@
 #include "ofxUI.h"
 #include "ofxOsc.h"
 
+// Todo: rename StereoContentScene
 class ContentScene {
     
 public:
@@ -30,7 +31,7 @@ public:
     
     virtual void setup(){}
     virtual void update(){}
-    virtual void draw(int _surfaceId=0){}
+    virtual void draw(int _surfaceId){}
     virtual void debugDraw(int _surfaceId=0) {}
     virtual void exit(){}
     virtual void receiveOsc(ofxOscMessage * m, string rest) {};
@@ -58,15 +59,21 @@ public:
         }
     }
     
-    void drawScene(int _surfaceId=0) {
+    void drawScene(int _surfaceId) {
         if(enabled) {
-            glPushMatrix();ofPushStyle();ofPushMatrix();
-            draw(_surfaceId);
-            ofPopMatrix();ofPopStyle();glPopMatrix();
+            glPushMatrix();{
+                ofPushStyle();{
+                    ofPushMatrix();{
+                        
+                        draw(_surfaceId);
+                        
+                    }ofPopMatrix();
+                }ofPopStyle();
+            }glPopMatrix();
             
-//            ofPushMatrix();ofPushStyle();
-//            debugDraw(_surfaceId);
-//            ofPopStyle();ofPopMatrix();
+//          ofPushMatrix();ofPushStyle();
+//          debugDraw(_surfaceId);
+//          ofPopStyle();ofPopMatrix();
         }
     }
     

@@ -3,6 +3,7 @@
 #include "ofMain.h"
 
 class ofxCoolGlasses {
+    
 public:
     
     ofCamera left;
@@ -11,29 +12,7 @@ public:
     ofxCoolGlasses(): physical_eye_seperation_cm(6.5), physical_focus_distance_cm(200), focus_distance(200) {};
     ~ofxCoolGlasses(){};
     
-	void setup(int w, int h)
-	{
-        height = 2.;
-        width = height *(w/h);
-        
-        leftFbo.allocate(w,h, GL_RGBA);
-		rightFbo.allocate(w, h, GL_RGBA);
-        
-        leftFbo.begin();
-        ofClear(0,0,0,0);
-        leftFbo.end();
-        
-        rightFbo.begin();
-        ofClear(0,0,0,0);
-        rightFbo.end();
-        
-        left.setScale(1, 1, 1);
-        left.setNearClip(0.1);
-        
-        right.setScale(1, 1, 1);
-        right.setNearClip(0.1);
-	}
-    
+	void setup(int _w, int _h);
     
     void setPosition(float x, float y, float z) {
         setPosition(ofVec3f(x,y,z));
@@ -43,7 +22,6 @@ public:
         left.setPosition(pos);
         right.setPosition(pos);
     }
-    
     
     void setupPerspective(){
         left.setupPerspective();
@@ -55,32 +33,18 @@ public:
         right.lookAt(v);
     }
     
-	void update(ofRectangle viewport = ofGetCurrentViewport())
-	{
- 
-		eye = physical_eye_seperation_cm / physical_focus_distance_cm;
-        
-		/*aspect = viewport.width / viewport.height;
-		fovy_tan = tanf(PI * left.getFov() / 360.);
-		fovx_tan = fovy_tan * aspect;
-         */
-        
-		//zNear = left.getNearClip();
-		//zFar  = left.getFarClip();
-        
-        right.setPosition(left.getPosition().x + eye, left.getPosition().y, left.getPosition().z);
-        
-        right.setupOffAxisViewPortal(viewport.getTopLeft(), viewport.getBottomLeft(), viewport.getBottomRight());
-        left.setupOffAxisViewPortal(viewport.getTopLeft(), viewport.getBottomLeft(), viewport.getBottomRight());
+	void update(ofRectangle viewport = ofGetCurrentViewport());
 
-	}
-
-	void setPhysicalEyeSeparation(float cm) { physical_eye_seperation_cm = cm; }
-	void setPhysicalFocusDistance(float cm) { physical_focus_distance_cm = cm; }
-	void setFocusDistance(float v) { focus_distance = v; }
+	void setPhysicalEyeSeparation(float cm) {
+        physical_eye_seperation_cm = cm; }
+	void setPhysicalFocusDistance(float cm) {
+        physical_focus_distance_cm = cm; }
+	void setFocusDistance(float v) {
+        focus_distance = v; }
 
 	void beginLeft()
 	{
+        currentCam = &left;
         leftFbo.begin();
         ofClear(0,0,0,0);
         left.begin();
@@ -94,6 +58,7 @@ public:
 
 	void beginRight()
 	{
+        currentCam = &right;
         rightFbo.begin();
         ofClear(0,0,0,0);
         right.begin();
@@ -105,10 +70,15 @@ public:
         rightFbo.end();
 	}
     
+    ofCamera * getCurrentCam() {
+        return currentCam;
+    };
+    
     ofFbo leftFbo, rightFbo;
-
+    
 protected:
-
+    ofCamera * currentCam;
+    
 	int width, height;
 
 	float eye, focus_distance;

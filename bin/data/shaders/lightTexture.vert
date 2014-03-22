@@ -1,6 +1,6 @@
 #version 150
 
-in vec4 position;
+in vec3 position;
 in vec3 normal;
 in vec2 texcoord;
 
@@ -17,7 +17,7 @@ uniform NormalMatrix{
 
 void main(){
 	vertexNormal = normalize(normalMatrix * normal);
-	cameraSpacePosition = (modelViewMatrix * position).xyz;
+    cameraSpacePosition = (modelViewMatrix * vec4(position,0.0)).xyz;
 	TexCoord = texcoord;
-	gl_Position = modelViewProjectionMatrix * position;
+	gl_Position = modelViewProjectionMatrix * vec4(position,0.0);
 }

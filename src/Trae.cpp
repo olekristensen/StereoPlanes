@@ -17,7 +17,6 @@ void Trae::setup() {
     makeTrees();
 }
 
-
 void Trae::draw(int _surfaceId) {
     
     // A scene can draw to multiple surfaces
@@ -37,7 +36,6 @@ void Trae::draw(int _surfaceId) {
         ofTranslate(ofPoint(0.,0,zPos));
 
         ofRotateY(time*0.1);
-        
         ofSetColor(255,255,255);
         
         for (std::vector<Branch*>::iterator it = trees.begin() ; it != trees.end(); ++it) {
@@ -107,3 +105,4 @@ void Trae::guiEvent(ofxUIEventArgs &e)
 	//cout << "got event from: " << name << endl;
     
 }
+
