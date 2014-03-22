@@ -111,7 +111,7 @@ void testApp::setup()
     light.ambientIntensity = ofVec4f(.0, .0, .0, 1.0);
     light.numberLights = 2;
     light.lights[0].lightIntensity = ofVec4f(1., .7, .5, 1.0);
-    light.lights[0].lightAttenuation = 1/.5;
+    light.lights[0].lightAttenuation = 1/.25;
     light.lights[1].lightIntensity = ofVec4f(.0, 0.3, 0.5, 0.1);
     light.lights[1].lightAttenuation = 1/.95;
     
@@ -189,8 +189,11 @@ void testApp::update()
 
 void testApp::drawScenes(int _surfaceId) {
     for(int s=0; s<contentScenes.size();s++) {
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_BACK);
         contentScenes[s]->drawScene(_surfaceId);
         drawFly();
+        glDisable(GL_CULL_FACE);
     }
 }
 

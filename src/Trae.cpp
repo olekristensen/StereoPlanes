@@ -76,16 +76,16 @@ void Trae::makeTrees(){
         delete b;
     }
     trees.clear();
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 1; i++) {
         Branch * b = new Branch();
         float bWidth = ofRandom(0.03,0.075);
         float bHeight = ofRandom(0.5,0.75);
         b->set(bWidth,bHeight);
         b->setPosition(ofRandom(-.5,.5),1-(bHeight*.5),ofRandom(-.5,.5));
         //b->setPosition(0,1-(bHeight*.5),0);
-        b->setResolutionRadius(10);
-        b->setResolutionHeight(3);
-        b->make(7);
+        b->setResolutionRadius(5);
+        b->setResolutionHeight(5);
+        b->make(9);
         trees.push_back(b);
     }
 }
