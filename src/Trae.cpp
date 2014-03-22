@@ -81,11 +81,11 @@ void Trae::makeTrees(){
         float bWidth = ofRandom(0.03,0.075);
         float bHeight = ofRandom(0.5,0.75);
         b->set(bWidth,bHeight);
-        b->setPosition(ofRandom(-.5,.5),1-(bHeight*.5),ofRandom(-.5,.5));
-        //b->setPosition(0,1-(bHeight*.5),0);
+        //b->setPosition(ofRandom(-.5,.5),1-(bHeight*.5),ofRandom(-.5,.5));
+        b->setPosition(0,1-(bHeight*.5),0);
         b->setResolutionRadius(5);
         b->setResolutionHeight(5);
-        b->make(9);
+        b->make(6);
         trees.push_back(b);
     }
 }

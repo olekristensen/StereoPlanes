@@ -78,6 +78,14 @@ public:
     Trae * trae;
     vector<ContentScene*> contentScenes;
     
+    // Lights
+    
+    ofxOlaShaderLight flyLight;
+    ofxOlaShaderLight moonLight;
+    
+    ofxOlaShaderLight::Material white;
+    
+    vector<ofxOlaShaderLight*> randomLights;
     
     float vertexNoise;
     

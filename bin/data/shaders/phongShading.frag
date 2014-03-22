@@ -19,7 +19,7 @@ struct PerLight
     float lightAttenuation;
 };
 
-const int maxNumberofLights = 100;
+const int maxNumberofLights = 512;
 
 uniform Light
 {

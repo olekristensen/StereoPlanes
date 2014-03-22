@@ -101,7 +101,7 @@
 		7A16707118DB420700858F2E /* Syphon.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7A16706F18DB41F000858F2E /* Syphon.framework */; };
 		7A16707218DB422100858F2E /* Syphon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A16706F18DB41F000858F2E /* Syphon.framework */; };
 		7A6DC1C218D494540054D5B6 /* Trae.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7A6DC1C018D494540054D5B6 /* Trae.cpp */; };
-		7ACEE26218DDAC3500AD4D9F /* ofxOlaShaderLight.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7ACEE26018DDAC3500AD4D9F /* ofxOlaShaderLight.cpp */; };
+		7ACEE26618DDE8F500AD4D9F /* ofxOlaShaderLight.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7ACEE26518DDE8F500AD4D9F /* ofxOlaShaderLight.cpp */; };
 		7AF1C6BD1885DE7000B38D3B /* ofxBulletJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7AF1C6881885D44800B38D3B /* ofxBulletJoint.cpp */; };
 		7AF1C6BE1885DE7000B38D3B /* ofxBulletWorldRigid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7AF1C68E1885D44800B38D3B /* ofxBulletWorldRigid.cpp */; };
 		7AF1C6BF1885DE7000B38D3B /* GLDebugDrawer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7AF1C6911885D44800B38D3B /* GLDebugDrawer.cpp */; };
@@ -497,8 +497,8 @@
 		7A6DC1C018D494540054D5B6 /* Trae.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Trae.cpp; sourceTree = "<group>"; };
 		7A6DC1C118D494540054D5B6 /* Trae.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Trae.h; sourceTree = "<group>"; };
 		7ACEE25E18DDAC1B00AD4D9F /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
-		7ACEE26018DDAC3500AD4D9F /* ofxOlaShaderLight.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxOlaShaderLight.cpp; sourceTree = "<group>"; };
 		7ACEE26118DDAC3500AD4D9F /* ofxOlaShaderLight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxOlaShaderLight.h; sourceTree = "<group>"; };
+		7ACEE26518DDE8F500AD4D9F /* ofxOlaShaderLight.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxOlaShaderLight.cpp; sourceTree = "<group>"; };
 		7AF1C3BD18859C8200B38D3B /* stereoplanes.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = stereoplanes.xml; path = bin/data/stereoplanes.xml; sourceTree = "<group>"; };
 		7AF1C3BF1885D44600B38D3B /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		7AF1C66C1885D44800B38D3B /* ofxaddons_thumbnail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ofxaddons_thumbnail.png; sourceTree = "<group>"; };
@@ -1335,8 +1335,8 @@
 		7ACEE25F18DDAC1B00AD4D9F /* src */ = {
 			isa = PBXGroup;
 			children = (
-				7ACEE26018DDAC3500AD4D9F /* ofxOlaShaderLight.cpp */,
 				7ACEE26118DDAC3500AD4D9F /* ofxOlaShaderLight.h */,
+				7ACEE26518DDE8F500AD4D9F /* ofxOlaShaderLight.cpp */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -1961,7 +1961,7 @@
 				04A6C849188099E700B17C45 /* ofxGuiGroup.cpp in Sources */,
 				7AF1C73F1885EAD500B38D3B /* GuiSlider.cpp in Sources */,
 				04A6C9261882166800B17C45 /* ofxCvGrayscaleImage.cpp in Sources */,
-				7ACEE26218DDAC3500AD4D9F /* ofxOlaShaderLight.cpp in Sources */,
+				7ACEE26618DDE8F500AD4D9F /* ofxOlaShaderLight.cpp in Sources */,
 				0420B5AD188F8E4F0086D388 /* ofxUIRangeSlider.cpp in Sources */,
 				7AF1C73A1885EAD500B38D3B /* GuiManager.cpp in Sources */,
 				0420B319188ECE3F0086D388 /* cell.cpp in Sources */,

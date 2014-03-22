@@ -23,6 +23,7 @@ float rand(vec2 co){
 void main(){
 	//vertexNormal = normalize(normalMatrix.matrix * normal);
     // this is a dirty hack!!
+    vertexNormal = vec3(modelViewMatrix * vec4(normal,0.0));
     
     vec3 vertexOffset;
     vertexOffset.x =rand(position.yz)*2;
@@ -30,7 +31,6 @@ void main(){
     vertexOffset.z =rand(position.xy)*2;
     vertexOffset*=vertexNoise;
     vertexOffset*=position.z;
-    vertexNormal = vec3(modelViewMatrix * vec4(normal,0.0));
     cameraSpacePosition = (modelViewMatrix * position).xyz;
     cameraSpacePosition += vertexOffset;
 	gl_Position = modelViewProjectionMatrix * (position+vec4(vertexOffset,0.0));

@@ -101,28 +101,31 @@ void testApp::setup()
     
     gui->loadSettings("GUI/guiSettings.xml");
     
-    // Set up Lighting
-
-    lightShader.load("shaders/light");
-    lightShader.printLayout("Material");
-    lightShader.printLayout("Light");
-//    lightShader.printLayout("NormalMatrix");
-    
-    light.ambientIntensity = ofVec4f(.0, .0, .0, 1.0);
-    light.numberLights = 2;
-    light.lights[0].lightIntensity = ofVec4f(1., .7, .5, 1.0);
-    light.lights[0].lightAttenuation = 1/.25;
-    light.lights[1].lightIntensity = ofVec4f(.0, 0.3, 0.5, 0.1);
-    light.lights[1].lightAttenuation = 1/.95;
-    
-    lights.push_back(new shaderLight());
-    lights.push_back(new shaderLight());
-    
     // create Materials
     white.diffuseColor = ofVec4f(0.9, 0.9, 0.9, 1.0);
     white.specularColor = ofVec4f(0.0, 0.0, 0.0, 0.0);
     white.specularShininess = 0.5;
 
+    flyLight.setNormalisedBrightness(1.0);
+    flyLight.setAttenuation(1.0/0.3);
+    flyLight.setTemperature(4200);
+    
+    moonLight.setNormalisedBrightness(0.3);
+    moonLight.setAttenuation(1./10.);
+    moonLight.setTemperature(10000);
+    
+    int numberRandomLights = 510;
+    for(int i = 0; i < numberRandomLights; i++){
+        ofxOlaShaderLight * l = new ofxOlaShaderLight();
+        
+        l->setNormalisedBrightness(0.5);
+        l->setAttenuation(1.0/.01);
+        l->setTemperature(ofMap(i, 0, numberRandomLights, 4200, 10000));
+        l->setupBrightnessDMXChannel(i);
+        
+        randomLights.push_back(l);
+    
+    }
     
 }
 
@@ -181,6 +184,20 @@ void testApp::update()
         contentScenes[s]->update();
     }
     
+    int i = 0;
+    for(vector<ofxOlaShaderLight*>::iterator it = randomLights.begin(); it != randomLights.end();++it){
+        ofxOlaShaderLight * l = *(it);
+        float thisTime = (time*0.01);
+        ofVec3f pos(
+                    .5*ofSignedNoise(thisTime,i,0),
+                    ofSignedNoise(i,thisTime,0),.5*ofSignedNoise(0,i,thisTime)
+                    );
+        l->setGlobalPosition(pos);
+        l->setNormalisedBrightness(ofNoise(thisTime+(i*1.0/510))*0.1);
+        i++;
+    }
+
+    
     ofSetWindowTitle(ofToString(ofGetFrameRate()));
     time += speed;
 
@@ -211,11 +228,11 @@ void testApp::drawFly(){
                 2.2*zPos
                 );
     
-    lightShader.end();
+    ofxOlaShaderLight::end();
     ofDrawSphere(pos, 0.01);
-    lightShader.begin();
-    lights.front()->setGlobalPosition(pos);
-    lights.back()->setGlobalPosition(pos.y,-1,pos.x);
+    ofxOlaShaderLight::begin();
+    flyLight.setGlobalPosition(pos);
+    moonLight.setGlobalPosition(pos.y,-1,pos.x);
 }
 
 //--------------------------------------------------------------
@@ -233,24 +250,14 @@ void testApp::draw()
         planes[i]->beginLeft();
         ofClear(ofColor::black);
         glPushMatrix();
-        
         // update Lighting
-        ofVec3f light1CamSpacePosLeft = lights[0]->getPosition() * ofGetCurrentMatrix(OF_MATRIX_MODELVIEW);
-        light.lights[0].cameraSpaceLightPos = light1CamSpacePosLeft;
-        ofVec3f light2CamSpacePosLeft = lights[1]->getPosition() * ofGetCurrentMatrix(OF_MATRIX_MODELVIEW);
-        light.lights[1].cameraSpaceLightPos = light2CamSpacePosLeft;
-        
+        ofxOlaShaderLight::begin();
+//        lightShader.setUniform1f("vertexNoise", vertexNoise);
+        ofxOlaShaderLight::setMaterial(white);
 
-        lightShader.begin();
-        lightShader.setUniform1f("vertexNoise", vertexNoise);
-        
-        lightShader.setUniformBuffer("Light", light);
-        //draw plane
-        lightShader.setUniformBuffer("Material", white);
-        //lightShader.setUniformBuffer("NormalMatrix", calcNormalMatrix(ofGetCurrentMatrix(OF_MATRIX_MODELVIEW) * trae->trees.back()->getGlobalTransformMatrix()));
-        
         drawScenes(i);
-        lightShader.end();
+        
+        ofxOlaShaderLight::end();
         glPopMatrix();
         planes[i]->endLeft();
         
@@ -259,21 +266,13 @@ void testApp::draw()
         glPushMatrix();
         
         // update Lighting
-        ofVec3f light1CamSpacePosRight = lights[0]->getPosition() * ofGetCurrentMatrix(OF_MATRIX_MODELVIEW);
-        light.lights[0].cameraSpaceLightPos = light1CamSpacePosRight;
-        ofVec3f light2CamSpacePosRight = lights[1]->getPosition() * ofGetCurrentMatrix(OF_MATRIX_MODELVIEW);
-        light.lights[1].cameraSpaceLightPos = light2CamSpacePosRight;
-        
-        lightShader.begin();
-        
-        lightShader.setUniformBuffer("Light", light);
-        //draw plane
-        lightShader.setUniformBuffer("Material", white);
-        //lightShader.setUniformBuffer("NormalMatrix",calcNormalMatrix(ofGetCurrentMatrix(OF_MATRIX_MODELVIEW) * trae->trees.back()->getGlobalTransformMatrix()));
+        ofxOlaShaderLight::begin();
+        //        lightShader.setUniform1f("vertexNoise", vertexNoise);
+        ofxOlaShaderLight::setMaterial(white);
         
         drawScenes(i);
         
-        lightShader.end();
+        ofxOlaShaderLight::end();
         glPopMatrix();
         planes[i]->endRight();
     }
