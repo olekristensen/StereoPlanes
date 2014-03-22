@@ -10,25 +10,7 @@
 #include "ofxUI.h"
 #include "Trae.h"
 #include "ofxUbo.h"
-
-
-struct Material {
-    ofVec4f diffuseColor;
-    ofVec4f specularColor;
-    float specularShininess;
-};
-
-struct PerLight {
-    ofVec3f cameraSpaceLightPos;
-    ofVec4f lightIntensity;
-    float lightAttenuation;
-};
-
-struct Light {
-    ofVec4f ambientIntensity;
-    int numberLights;
-    PerLight lights[20];
-};
+#include "ofxOlaShaderLight.h"
 
 class shaderLight : public ofNode {
     
@@ -96,14 +78,7 @@ public:
     Trae * trae;
     vector<ContentScene*> contentScenes;
     
-    // Lights
     
-    ofxUboShader lightShader;
-    vector<shaderLight*> lights;
-    Light light;
-    
-    Material white;
-
     float vertexNoise;
     
     // Time

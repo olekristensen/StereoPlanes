@@ -14,6 +14,7 @@ LIB_BULLET_MINI_CL_RELEASE = "$(OF_PATH)/addons/ofxBullet/libs/bullet2.8.1/lib/o
 LIB_BULLET_SOFT_BODY_RELEASE = "$(OF_PATH)/addons/ofxBullet/libs/bullet2.8.1/lib/osx/i386/libBulletSoftBody.a"
 
 LIB_VORONI = "$(OF_PATH)/addons/ofxVoronoi/addon/ofxVoronoi/lib/Voronoi/lib/libvoro++_2d32.a"
+HEADER_OLA = "/usr/local/include"
 
 //ICONS - NEW IN 0072 
 ICON_NAME_DEBUG = icon-debug.icns
@@ -32,4 +33,4 @@ OTHER_LDFLAGS = $(OF_CORE_LIBS) $(LIB_BULLET_ALL_RELEASE) $(OF_OPENCV_LIBS) $(LI
 
 HEADER_SEARCH_PATHS = $(OF_CORE_HEADERS)
 
-USER_HEADER_SEARCH_PATHS = $(OF_OPENCV_HEADERS) $(HEADER_BULLET) "src"
+USER_HEADER_SEARCH_PATHS = $(OF_OPENCV_HEADERS) $(HEADER_BULLET) "src" $(HEADER_OLA)
