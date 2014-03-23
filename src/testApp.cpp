@@ -114,12 +114,12 @@ void testApp::setup()
     moonLight.setAttenuation(1./10.);
     moonLight.setTemperature(10000);
     
-    int numberRandomLights = 510;
+    int numberRandomLights = 10;
     for(int i = 0; i < numberRandomLights; i++){
         ofxOlaShaderLight * l = new ofxOlaShaderLight();
         
         l->setNormalisedBrightness(0.5);
-        l->setAttenuation(1.0/.01);
+        l->setAttenuation(1.0/.1);
         l->setTemperature(ofMap(i, 0, numberRandomLights, 4200, 10000));
         l->setupBrightnessDMXChannel(i);
         
@@ -196,7 +196,7 @@ void testApp::update()
         l->setNormalisedBrightness(ofNoise(thisTime+(i*1.0/510))*0.1);
         i++;
     }
-
+    ofxOlaShaderLight::update();
     
     ofSetWindowTitle(ofToString(ofGetFrameRate()));
     time += speed;

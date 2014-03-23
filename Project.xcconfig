@@ -14,9 +14,13 @@ LIB_BULLET_MINI_CL_RELEASE = "$(OF_PATH)/addons/ofxBullet/libs/bullet2.8.1/lib/o
 LIB_BULLET_SOFT_BODY_RELEASE = "$(OF_PATH)/addons/ofxBullet/libs/bullet2.8.1/lib/osx/i386/libBulletSoftBody.a"
 
 LIB_VORONI = "$(OF_PATH)/addons/ofxVoronoi/addon/ofxVoronoi/lib/Voronoi/lib/libvoro++_2d32.a"
-HEADER_OLA = "/usr/local/include"
 
-LIB_OLA = "/usr/local/lib/olad"
+FRAMEWORK_SYPHON = "$(OF_PATH)/addons/ofxSyphon/libs/Syphon/lib/osx/"
+
+HEADER_OLA = "$(OF_PATH)/addons/ofxOlaShaderLight/libs/olad/include"
+
+LIB_OLA = "$(OF_PATH)/addons/ofxOlaShaderLight/libs/olad/lib/osx/libola.a"
+LIB_OLA_COMMON = "$(OF_PATH)/addons/ofxOlaShaderLight/libs/olad/lib/osx/libolacommon.a"
 
 //ICONS - NEW IN 0072 
 ICON_NAME_DEBUG = icon-debug.icns
@@ -31,8 +35,12 @@ OF_OPENCV_LIBS = "$(OF_PATH)/addons/ofxOpenCv/libs/opencv/lib/osx/opencv.a"
 
 LIB_BULLET_ALL_RELEASE = $(LIB_BULLET_COLLISION_RELEASE) $(LIB_BULLET_DYNAMICS_RELEASE) $(LIB_BULLET_MATH_RELEASE) $(LIB_BULLET_MINI_CL_RELEASE) $(LIB_BULLET_SOFT_BODY_RELEASE)
 
-OTHER_LDFLAGS = $(OF_CORE_LIBS) $(LIB_BULLET_ALL_RELEASE) $(OF_OPENCV_LIBS) $(LIB_VORONI) $(LIB_OLA)
+OTHER_LDFLAGS = $(OF_CORE_LIBS) $(LIB_BULLET_ALL_RELEASE) $(OF_OPENCV_LIBS) $(LIB_VORONI) $(LIB_OLA) $(LIB_OLA_COMMON) "-L/usr/local/lib/"
 
 HEADER_SEARCH_PATHS = $(OF_CORE_HEADERS)
+
+FRAMEWORK_SEARCH_PATHS = $(FRAMEWORK_SYPHON)
+
+OTHER_CPLUSPLUSFLAGS = "-D__MACOSX_CORE__ -lpthread -mtune=native"
 
 USER_HEADER_SEARCH_PATHS = $(OF_OPENCV_HEADERS) $(HEADER_BULLET) "src" $(HEADER_OLA)
