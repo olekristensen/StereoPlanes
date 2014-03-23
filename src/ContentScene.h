@@ -11,6 +11,7 @@
 #include "ofxUI.h"
 #include "ofxOsc.h"
 
+
 // Todo: rename StereoContentScene
 class ContentScene {
     
@@ -29,11 +30,8 @@ public:
     
     virtual ~ContentScene(){}
     
-    virtual void setup(){}
-    virtual void update(){}
-    virtual void draw(int _surfaceId){}
-    virtual void debugDraw(int _surfaceId=0) {}
     virtual void exit(){}
+    
     virtual void receiveOsc(ofxOscMessage * m, string rest) {};
     
     virtual void setGui(ofxUICanvas * gui, float width){
@@ -59,6 +57,18 @@ public:
         }
     }
     
+    void lightPassScene(int _surfaceId=0){
+        if(enabled) {
+            lightPass(_surfaceId);
+        }
+    }
+    
+    void geometryPassScene(int _surfaceId=0){
+        if(enabled) {
+            geometryPass(_surfaceId);
+        }
+    }
+    
     void drawScene(int _surfaceId) {
         if(enabled) {
             glPushMatrix();{
@@ -70,10 +80,12 @@ public:
                     }ofPopMatrix();
                 }ofPopStyle();
             }glPopMatrix();
-            
-//          ofPushMatrix();ofPushStyle();
-//          debugDraw(_surfaceId);
-//          ofPopStyle();ofPopMatrix();
+        }
+    }
+    
+    void sceneDebugDraw(int _surfaceId) {
+        if(enabled) {
+            debugDraw(_surfaceId);
         }
     }
     
@@ -91,5 +103,17 @@ public:
             receiveOsc(m, rest);
         }
     }
-    	
+    
+protected:
+    virtual void setup(){}
+    virtual void update(){}
+    
+    virtual void lightPass(int _surfaceId=0){};
+    
+    virtual void geometryPass(int _surfaceId=0){}
+    
+    virtual void draw(int _surfaceId=0){}
+    
+    virtual void debugDraw(int _surfaceId=0){}
+    
 };

@@ -6,15 +6,12 @@
 //--------------------------------------------------------------
 void testApp::setup()
 {
-    
     ofSetVerticalSync(false); // can cause problems on some Linux implementations
     
-    ofDisableArbTex();
+    DeferredRenderer::genericSetup();
+    
     setupScreenQuad();
     
-    m_shader.load("shaders/mainScene.vert", "shaders/mainScene.frag");
-    m_pointLightPassShader.load("shaders/pointLightPass.vert", "shaders/pointLightPass.frag");
-    m_pointLightStencilShader.load("shaders/pointLightStencil.vert", "shaders/pointLightStencil.frag");
     
     m_texture.loadImage("textures/concrete.jpg");
     
@@ -55,7 +52,6 @@ void testApp::setup()
     planes.push_back(wall);
     
     
-
     m_windowWidth  = resX/2;
     m_windowHeight = resY;
     
@@ -64,25 +60,26 @@ void testApp::setup()
     //m_gBufferRight.setup( m_windowWidth, m_windowHeight);
     
     m_ssaoPassLeft.setup(m_windowWidth, m_windowHeight);
-    m_ssaoPassRight.setup(m_windowWidth, m_windowHeight);
+    //m_ssaoPassRight.setup(m_windowWidth, m_windowHeight);
     
     // set our camera parameters for ssao pass - inverse proj matrix + far clip are used in shader to recreate position from linear depth
     //ofGetCurrentMatrix();
     m_ssaoPassLeft.setCameraProperties(wall->cam.left.getProjectionMatrix().getInverse(),  wall->cam.left.getFarClip());
-    m_ssaoPassRight.setCameraProperties(wall->cam.right.getProjectionMatrix().getInverse(), wall->cam.right.getFarClip());
+    //m_ssaoPassRight.setCameraProperties(wall->cam.right.getProjectionMatrix().getInverse(), wall->cam.right.getFarClip());
     
     bindGBufferTextures(); // bind them once to upper texture units - faster than binding/unbinding every frame
     
     setupLights();
-    createRandomBoxes();
+    //createRandomBoxes();
     
-    ofMesh boxMesh = Primitives::getBoxMesh(1.0f, 1.0f, 1.0f);
+    /*ofMesh boxMesh = Primitives::getBoxMesh(1.0f, 1.0f, 1.0f);
     m_numBoxVerts = boxMesh.getNumVertices();
     m_boxVbo.setMesh(boxMesh, GL_STATIC_DRAW);
     
     ofMesh sphereMesh = Primitives::getSphereMesh(6);
     m_numSphereVerts = sphereMesh.getVertices().size();
     m_sphereVbo.setMesh(sphereMesh, GL_STATIC_DRAW);
+    */
     
     activePlaneIndex = 0;
     activePlane = planes[activePlaneIndex];
@@ -165,7 +162,6 @@ void testApp::setup()
     white.diffuseColor = ofVec4f(0.9, 0.9, 0.9, 1.0);
     white.specularColor = ofVec4f(0.0, 0.0, 0.0, 0.0);
     white.specularShininess = 0.5;
-
     
 }
 
@@ -226,7 +222,26 @@ void testApp::update()
     
     ofSetWindowTitle(ofToString(ofGetFrameRate()));
     time += speed;
-
+    
+    
+    //////////////////////////////////////
+    m_angle += 1.0f;
+    
+    int count = 0;
+    float ttime = ofGetElapsedTimeMillis()/1000.0f;
+    
+    // orbit our lights around (0, 0, 0) in a random orbit direction that was assigned when
+    // we created them
+    for (vector<PointLight>::iterator it = m_lights.begin(); it != m_lights.end(); it++) {
+        float percent = count/(float)m_lights.size();
+        it->rotateAround(percent * 0.2f + 0.1f, it->orbitAxis, ofVec3f(0.0f, 0.0f, 0.0f));
+        
+        if (m_bPulseLights) {
+            it->intensity = 0.5f + 0.25f * (1.0f + cosf(ttime + percent*PI)); // pulse between 0.5 and 1
+        }
+        
+        ++count;
+    }
 }
 
 
@@ -265,6 +280,32 @@ void testApp::drawFly(){
 //--------------------------------------------------------------
 void testApp::draw()
 {
+    
+    geometryPass();
+    pointLightPass();
+    
+    // GENERATE SSAO TEXTURE
+    // ---------------------
+    // pass in texture units. ssaoPass.applySSAO() expects the required textures to already be bound at these units
+    m_ssaoPassLeft.applySSAO(m_textureUnits[TEX_UNIT_NORMALS_DEPTH]);
+    
+    deferredRender();
+    
+    if (m_bDrawDebug) {
+        m_gBuffer.drawDebug(0, 0);
+        m_ssaoPassLeft.drawDebug(ofGetWidth()/4*3, 0);
+        
+        // draw our debug/message string
+        ofEnableAlphaBlending();
+        glDisable(GL_CULL_FACE); // need to do this to draw planes in OF because of vertex ordering
+        
+        ofSetColor(255, 255, 255, 255);
+        char debug_str[255];
+        sprintf(debug_str, "Framerate: %f\nNumber of lights: %li\nPress SPACE to toggle drawing of debug buffers\nPress +/- to add and remove lights\n'p' to toggle pulsing of light intensity\n'r' to randomize light colours", ofGetFrameRate(), m_lights.size());
+        ofDrawBitmapString(debug_str, ofPoint(15, 20));
+    }
+    
+    
     ofSetColor(255);
     ofBackgroundGradient(ofColor::darkGrey, ofColor::gray);
     //drawScenes(0);
@@ -276,9 +317,6 @@ void testApp::draw()
     for(int i=0;i < planes.size(); i++) {
         
         planes[i]->beginLeft();
-        
-        geometryPass();
-        pointLightPass();
         
         ofClear(ofColor::black);
         glPushMatrix();
@@ -357,7 +395,6 @@ void testApp::draw()
         fbo.draw(300,0,(ofGetWidth()-300),(ofGetWidth()-300)*(fbo.getHeight()*1./fbo.getWidth()));
     }
     
-//    ofEnableArbTex();
     
     sbsOutputServer.publishFBO(&fbo);
 //    ofTexture t = fbo.getTextureReference();
@@ -466,12 +503,6 @@ void testApp::guiEvent(ofxUIEventArgs &e)
 	int kind = e.getKind();
 	//cout << "got event from: " << name << endl;
     
-    /*if(name=="Wall cam") {
-        ofxUI2DPad *pad = (ofxUI2DPad *) e.widget;
-        camPosWall.x = pad->getScaledValue().x;
-        camPosWall.y = pad->getScaledValue().y;
-    }*/
-    
     for(int i=0; i<contentScenes.size(); i++) {
         contentScenes[i]->guiEvent(e);
     }
@@ -484,59 +515,6 @@ ofMatrix3x3 testApp::calcNormalMatrix(ofMatrix4x4 matrix){
     normalMat.invert();
     normalMat.transpose();
     return normalMat;
-}
-
-void testApp::createRandomBoxes() {
-    // create randomly rotated boxes
-    for (unsigned int i=0; i<skNumBoxes; i++) {
-        float x = 0;
-        float y = 0;
-        float z = 0;
-        float size = skRadius;
-        float angle = ofRandom(0.0f, 90.0f);
-        ofVec3f axis = ofVec3f(ofRandom(0.0f, 1.0f), ofRandom(0.0f, 1.0f), ofRandom(0.0f, 1.0f));
-        axis.normalize();
-        
-        m_boxes.push_back(Box(ofVec3f(x, y, z), angle, axis.x, axis.y, axis.z, size));
-    }
-}
-
-void testApp::setupLights() {
-    for (unsigned int i=0; i<skNumLights; i++) {
-        addRandomLight();
-    }
-}
-
-void testApp::addRandomLight() {
-    // create a random light that is positioned on bounding sphere of scene (skRadius)
-    PointLight l;
-    ofVec3f posOnSphere = ofVec3f(ofRandom(-1.0f, 1.0f), ofRandom(-1.0f, 1.0f), ofRandom(-1.0f, 1.0f));
-    posOnSphere.normalize();
-    posOnSphere.scale(ofRandom(0.95f, 1.05f));
-    
-    ofVec3f orbitAxis = ofVec3f(ofRandom(0.0f, 1.0f), ofRandom(0.0f, 1.0f), ofRandom(0.0f, 1.0f));
-    orbitAxis.normalize();
-    l.orbitAxis = orbitAxis;
-    
-    posOnSphere.scale(skRadius-1);
-    
-    l.setPosition(posOnSphere);
-    l.setAmbient(0.0f, 0.0f, 0.0f);
-    
-    ofVec3f col = ofVec3f(ofRandom(0.3f, 0.5f), ofRandom(0.2f, 0.4f), ofRandom(0.7f, 1.0f));
-    l.setDiffuse(col.x, col.y, col.z);
-    l.setSpecular(col.x, col.y, col.z);
-    l.setAttenuation(0.0f, 0.0f, 0.2f); // set constant, linear, and exponential attenuation
-    l.intensity = 0.8f;
-    
-    m_lights.push_back(l);
-}
-
-void testApp::randomizeLightColors() {
-    for (vector<PointLight>::iterator it = m_lights.begin(); it != m_lights.end(); it++) {
-        ofVec3f col = ofVec3f(ofRandom(0.4f, 1.0f), ofRandom(0.1f, 1.0f), ofRandom(0.3f, 1.0f));
-        it->setDiffuse(col.x, col.y, col.z);
-    }
 }
 
 void testApp::bindGBufferTextures() {
@@ -586,123 +564,6 @@ void testApp::unbindGBufferTextures() {
     glActiveTexture(GL_TEXTURE0);
 }
 
-void testApp::geometryPass() {
-    
-    glDisable(GL_STENCIL_TEST);
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);
-    
-    // CREATE GBUFFER
-    // --------------
-    // start our GBuffer for writing (pass in near and far so that we can create linear depth values in that range)
-    m_gBuffer.bindForGeomPass(wall->cam.left.getNearClip(), wall->cam.left.getFarClip());
-    
-    wall->cam.left.begin();
-    
-    glActiveTexture(GL_TEXTURE0); // bind concrete texture
-    m_texture.getTextureReference().bind();
-    m_boxVbo.bind();
-    
-    // draw our randomly rotate boxes
-    for (vector<Box>::iterator it=m_boxes.begin() ; it < m_boxes.end(); it++) {
-        ofPushMatrix();
-        ofRotate(it->angle, it->axis_x, it->axis_y, it->axis_z);
-        ofScale(it->size, it->size, it->size);
-        glDrawArrays(GL_TRIANGLES, 0, m_numBoxVerts);
-        ofPopMatrix();
-    }
-    
-    m_boxVbo.unbind();
-    
-    // draw all of our light spheres so we can see where our lights are at
-    m_sphereVbo.bind();
-    
-    for (vector<PointLight>::iterator it = m_lights.begin(); it != m_lights.end(); it++) {
-        ofPushMatrix();
-        ofTranslate(it->getGlobalPosition());
-        ofScale(0.25f, 0.25f, 0.25f);
-        glDrawArrays(GL_TRIANGLE_STRIP, 0, m_numSphereVerts);
-        ofPopMatrix();
-    }
-    
-    m_sphereVbo.unbind();
-    
-    glBindTexture(GL_TEXTURE_2D, 0); // unbind the texture
-    
-    m_cam.end();
-    
-    m_gBuffer.unbindForGeomPass(); // done rendering out to our GBuffer
-}
-
-void testApp::pointLightStencilPass() {
-}
-
-void testApp::pointLightPass() {
-    
-    m_gBuffer.resetLightPass();
-    m_pointLightPassShader.begin();
-    // pass in lighting info
-    int numLights = m_lights.size();
-    m_pointLightPassShader.setUniform1i("u_numLights", numLights);
-    m_pointLightPassShader.setUniform1f("u_farDistance", wall->cam.left.getFarClip());
-    m_pointLightPassShader.end();
-    
-    wall->cam.left.begin();
-    
-    ofMatrix4x4 camModelViewMatrix = wall->cam.left.getModelViewMatrix(); // need to multiply light positions by camera's modelview matrix to transform them from world space to view space (reason for this is our normals and positions in the GBuffer are in view space so we must do our lighting calculations in the same space). It's faster to do it here on CPU vs. in shader
-    
-    m_sphereVbo.bind();
-    
-    for (vector<PointLight>::iterator it = m_lights.begin(); it != m_lights.end(); it++) {
-        ofVec3f lightPos = it->getPosition();
-        float radius = it->intensity * skMaxPointLightRadius;
-        
-        // STENCIL
-        // this pass creates a stencil so that only the affected pixels are shaded - prevents us shading things that are outside our light volume
-        m_gBuffer.bindForStencilPass();
-        m_pointLightStencilShader.begin();
-        ofPushMatrix();
-        ofTranslate(lightPos);
-        ofScale(radius, radius, radius);
-        glDrawArrays(GL_TRIANGLE_STRIP, 0, m_numSphereVerts);
-        ofPopMatrix();
-        m_pointLightStencilShader.end();
-        
-        // SHADING/LIGHTING CALCULATION
-        // this pass draws the spheres representing the area of influence each light has
-        // in a fragment shader, only the pixels that are affected by the drawn geometry are processed
-        // drawing light volumes (spheres for point lights) ensures that we're only running light calculations on
-        // the areas that the spheres affect
-        m_gBuffer.bindForLightPass();
-        m_pointLightPassShader.begin();
-        ofVec3f lightPosInViewSpace = it->getPosition() * camModelViewMatrix;
-        
-        m_pointLightPassShader.setUniform3fv("u_lightPosition", &lightPosInViewSpace.getPtr()[0]);
-        m_pointLightPassShader.setUniform4fv("u_lightAmbient", it->ambient);
-        m_pointLightPassShader.setUniform4fv("u_lightDiffuse", it->diffuse);
-        m_pointLightPassShader.setUniform4fv("u_lightSpecular", it->specular);
-        m_pointLightPassShader.setUniform1f("u_lightIntensity", it->intensity);
-        m_pointLightPassShader.setUniform3fv("u_lightAttenuation", it->attenuation);
-        
-        m_pointLightPassShader.setUniform1f("u_lightRadius", radius);
-        
-        ofPushMatrix();
-        ofTranslate(lightPos);
-        ofScale(radius, radius, radius);
-        glDrawArrays(GL_TRIANGLE_STRIP, 0, m_numSphereVerts);
-        ofPopMatrix();
-        
-        m_pointLightPassShader.end();
-        glDisable(GL_STENCIL_TEST);
-        glDisable(GL_BLEND);
-        glCullFace(GL_BACK);
-    }
-    
-    m_sphereVbo.unbind();
-    
-    m_gBuffer.unbind();
-    wall->cam.left.end();
-}
 
 void testApp::deferredRender() {
     
@@ -717,8 +578,26 @@ void testApp::deferredRender() {
     glActiveTexture(GL_TEXTURE0);
 }
 
+void testApp::drawScreenQuad() {
+    // set identity matrices and save current matrix state
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glLoadIdentity();
+    
+    // draw the full viewport quad
+    m_quadVbo.draw(GL_QUADS, 0, 4);
+    
+    glMatrixMode(GL_MODELVIEW);
+    glPopMatrix();
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+}
 
 void testApp::setupScreenQuad() {
+    
     ofVec2f quadVerts[] = {
         ofVec2f(-1.0f, -1.0f),
         ofVec2f(1.0f, -1.0f),
@@ -737,4 +616,43 @@ void testApp::setupScreenQuad() {
     m_quadVbo.setVertexData(&quadVerts[0], 4, GL_STATIC_DRAW);
     m_quadVbo.setTexCoordData(&quadTexCoords[0], 4, GL_STATIC_DRAW);
 }
+
+void testApp::setupLights() {
+    for (unsigned int i=0; i<skNumLights; i++) {
+        addRandomLight();
+    }
+}
+
+void testApp::addRandomLight() {
+    // create a random light that is positioned on bounding sphere of scene (skRadius)
+    PointLight l;
+    ofVec3f posOnSphere = ofVec3f(ofRandom(-1.0f, 1.0f), ofRandom(-1.0f, 1.0f), ofRandom(-1.0f, 1.0f));
+    posOnSphere.normalize();
+    posOnSphere.scale(ofRandom(0.95f, 1.05f));
+    
+    ofVec3f orbitAxis = ofVec3f(ofRandom(0.0f, 1.0f), ofRandom(0.0f, 1.0f), ofRandom(0.0f, 1.0f));
+    orbitAxis.normalize();
+    l.orbitAxis = orbitAxis;
+    
+    posOnSphere.scale(skRadius-1);
+    
+    l.setPosition(posOnSphere);
+    l.setAmbient(0.0f, 0.0f, 0.0f);
+    
+    ofVec3f col = ofVec3f(ofRandom(0.3f, 0.5f), ofRandom(0.2f, 0.4f), ofRandom(0.7f, 1.0f));
+    l.setDiffuse(col.x, col.y, col.z);
+    l.setSpecular(col.x, col.y, col.z);
+    l.setAttenuation(0.0f, 0.0f, 0.2f); // set constant, linear, and exponential attenuation
+    l.intensity = 0.8f;
+    
+    m_lights.push_back(l);
+}
+
+void testApp::randomizeLightColors() {
+    for (vector<PointLight>::iterator it = m_lights.begin(); it != m_lights.end(); it++) {
+        ofVec3f col = ofVec3f(ofRandom(0.4f, 1.0f), ofRandom(0.1f, 1.0f), ofRandom(0.3f, 1.0f));
+        it->setDiffuse(col.x, col.y, col.z);
+    }
+}
+
 

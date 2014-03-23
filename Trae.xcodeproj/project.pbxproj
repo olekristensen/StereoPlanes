@@ -106,6 +106,8 @@
 		04D4AE4F18DDABDC003872F1 /* gBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04D4AE4918DDABDC003872F1 /* gBuffer.cpp */; };
 		04D4AE5018DDABDC003872F1 /* ssaoPass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04D4AE4D18DDABDC003872F1 /* ssaoPass.cpp */; };
 		04D4AE5218DDAFB6003872F1 /* ofxCoolGlasses.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04D4AE5118DDAFB6003872F1 /* ofxCoolGlasses.cpp */; };
+		04D4AE5F18DE0049003872F1 /* deferredRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04D4AE5D18DE0049003872F1 /* deferredRenderer.cpp */; };
+		04D4AE6218DE0AA0003872F1 /* DeferredScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04D4AE6018DE0AA0003872F1 /* DeferredScene.cpp */; };
 		7A0C9CF918DCA40D005A65A0 /* ofxUbo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7A0C9CE418DCA40D005A65A0 /* ofxUbo.cpp */; };
 		7A6DC1C218D494540054D5B6 /* Trae.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7A6DC1C018D494540054D5B6 /* Trae.cpp */; };
 		7AF1C6BD1885DE7000B38D3B /* ofxBulletJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7AF1C6881885D44800B38D3B /* ofxBulletJoint.cpp */; };
@@ -519,6 +521,10 @@
 		04D4AE5A18DDDB66003872F1 /* pointLightStencil.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = pointLightStencil.vert; sourceTree = "<group>"; };
 		04D4AE5B18DDDB66003872F1 /* ssao.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = ssao.frag; sourceTree = "<group>"; };
 		04D4AE5C18DDDB66003872F1 /* ssao.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = ssao.vert; sourceTree = "<group>"; };
+		04D4AE5D18DE0049003872F1 /* deferredRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = deferredRenderer.cpp; sourceTree = "<group>"; };
+		04D4AE5E18DE0049003872F1 /* deferredRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = deferredRenderer.h; sourceTree = "<group>"; };
+		04D4AE6018DE0AA0003872F1 /* DeferredScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DeferredScene.cpp; sourceTree = "<group>"; };
+		04D4AE6118DE0AA0003872F1 /* DeferredScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeferredScene.h; sourceTree = "<group>"; };
 		7A0C9C9118DCA40C005A65A0 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		7A0C9CE218DCA40D005A65A0 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		7A0C9CE418DCA40D005A65A0 /* ofxUbo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxUbo.cpp; sourceTree = "<group>"; };
@@ -1401,6 +1407,8 @@
 				04D4AE4C18DDABDC003872F1 /* primitives.h */,
 				04D4AE4D18DDABDC003872F1 /* ssaoPass.cpp */,
 				04D4AE4E18DDABDC003872F1 /* ssaoPass.h */,
+				04D4AE5D18DE0049003872F1 /* deferredRenderer.cpp */,
+				04D4AE5E18DE0049003872F1 /* deferredRenderer.h */,
 			);
 			name = deferred;
 			sourceTree = "<group>";
@@ -1793,6 +1801,8 @@
 				042E838B1891BD8600007697 /* VoroUtils.h */,
 				7A6DC1C018D494540054D5B6 /* Trae.cpp */,
 				7A6DC1C118D494540054D5B6 /* Trae.h */,
+				04D4AE6018DE0AA0003872F1 /* DeferredScene.cpp */,
+				04D4AE6118DE0AA0003872F1 /* DeferredScene.h */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -1898,10 +1908,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04D4AE5F18DE0049003872F1 /* deferredRenderer.cpp in Sources */,
 				7AF1C7371885EAD500B38D3B /* GuiButton.cpp in Sources */,
 				7AF1C6BD1885DE7000B38D3B /* ofxBulletJoint.cpp in Sources */,
 				7AF1C6BE1885DE7000B38D3B /* ofxBulletWorldRigid.cpp in Sources */,
 				7AF1C6BF1885DE7000B38D3B /* GLDebugDrawer.cpp in Sources */,
+				04D4AE6218DE0AA0003872F1 /* DeferredScene.cpp in Sources */,
 				7AF1C6C01885DE7000B38D3B /* ofxBulletBaseShape.cpp in Sources */,
 				7AF1C7401885EAD500B38D3B /* GuiStyle.cpp in Sources */,
 				7AF1C6C11885DE7000B38D3B /* ofxBulletBox.cpp in Sources */,

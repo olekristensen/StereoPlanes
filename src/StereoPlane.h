@@ -17,7 +17,6 @@ public:
     // TODO viewer world location - inherit from world
     
     //ofxStereoCamera<ofCamera> cam;
-    
     ofxCoolGlasses cam;
     
     int width;
