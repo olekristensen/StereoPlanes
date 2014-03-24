@@ -20,8 +20,10 @@ void Trae::setup() {
     branchCylinder.cylinder(0.1, 4);
     branchVbo.setMesh(branchCylinder, GL_STATIC_DRAW);
     
-    branchVboMesh = ofVboMesh(ofCylinderPrimitive(0.01, 1, 4, 4).getMesh());
-
+    branchVboMesh = ofVboMesh(ofCylinderPrimitive(0.02, 1, 2, 4).getMesh());
+    //branchVboMesh = ofVboMesh(ofBoxPrimitive(0.01, 1., 0.01).getMesh());
+    //branchVboMesh = ofVboMesh(ofConePrimitive(0.02, 1.2, 3, 3).getMesh());
+    
     
 }
 
@@ -34,7 +36,6 @@ void Trae::drawVboBranches(Branch * branch) {
     //ofGetCurrentMatrix(OF_MATRIX_MODELVIEW).setRotate(branch->getGlobalOrientation());
     
     //branch->getGlobalOrientation().w()
-    
     ofVec3f qaxis; float qangle;
     branch->getGlobalOrientation().getRotate(qangle, qaxis);
     ofRotate(qangle, qaxis.x, qaxis.y, qaxis.z);
@@ -42,17 +43,15 @@ void Trae::drawVboBranches(Branch * branch) {
     //ofRotateX(branch->getGlobalTransformMatrix().x());
     //ofRotateY(branch->getGlobalOrientation().y()*360);
     //ofRotateZ(branch->getGlobalOrientation().z()*360);
-    
     //branch->getGlobalTransformMatrix().
     
     ofScale(branch->getScale().x, branch->getHeight(), branch->getScale().z);
-    //branchVbo.draw(OF_PRIMITIVE_TRIANGLE_STRIP, 0, branchVbo.getNumVertices());
     
     ofPushMatrix();
-    ofScale(branch->getRadius()*100,1,branch->getRadius()*100);
-    branchVboMesh.draw();
+    ofScale(branch->getRadius()*20,1,branch->getRadius()*20);
+     branchVboMesh.draw();
+    //branchVboMesh.drawInstanced(OF_MESH_FILL, 1);
     ofPopMatrix();
-    //ofDrawBox(0, 0, 0, 0.1, 0.1, 0.1);
     
     ofPopMatrix();
     
@@ -90,15 +89,7 @@ void Trae::draw(int _surfaceId) {
             Branch *b = *(it);
             
             drawVboBranches(b);
-            //b->drawFull();
-            /* draw vectors
-            ofPushStyle();
-            ofDisableDepthTest();
-            ofSetColor(0, 255, 255, 127);
-            cout << b->drawVecTree() << endl;
-            ofEnableDepthTest();
-            ofPopStyle();
-             */
+
         }
 
         ofPopMatrix();
@@ -131,9 +122,9 @@ void Trae::makeTrees(){
         b->set(bWidth,bHeight);
         //b->setPosition(ofRandom(-.5,.5),1-(bHeight*.5),ofRandom(-.5,.5));
         b->setPosition(0,1-(bHeight*.5),0);
-        b->setResolutionRadius(5);
-        b->setResolutionHeight(5);
-        b->make(8);
+        //b->setResolutionRadius(1);
+        //b->setResolutionHeight(1);
+        b->make(9);
         trees.push_back(b);
     }
 }
