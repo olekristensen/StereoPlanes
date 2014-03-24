@@ -22,12 +22,19 @@ class Branch : public ofCylinderPrimitive {
         b->rotate(ofRandom(-75,75), ofVec3f(1,0,0));
         b->rotate(ofRandom(-180,180), ofVec3f(0,1,0));
         b->boom(-b->getHeight()*.5);
+        
+        //b->vbo.addVertices(b->getMesh().getVertices());
+        
         branches.push_back(b);
     }
 public:
     vector<Branch*> branches;
-    ofMesh mesh;
-
+    ofMesh fullMesh;
+   // ofVboMesh vbo;
+    float bWidth;
+    float bHeight;
+    ofVec3f pos;
+    
     void make(int steps){
         if(steps > 1){
             for (std::vector<Branch*>::iterator it = branches.begin() ; it != branches.end(); ++it) {
@@ -43,7 +50,14 @@ public:
                 Branch *b = *(it);
                 b->make(steps-1);
             }
+            
+            
+            fullMesh.addVertices(getAllVertices());
+            fullMesh.setMode(OF_PRIMITIVE_TRIANGLE_STRIP);
         }
+        
+        //vbo = computeVbo();
+        
     }
     
     void draw(){
@@ -54,6 +68,33 @@ public:
         for (std::vector<Branch*>::iterator it = branches.begin() ; it != branches.end(); ++it) {
             Branch *b = *(it);
             b->draw();
+        }
+        ofPopStyle();
+    }
+    
+    void drawFull() {
+        fullMesh.draw();
+    }
+    
+    void drawVbo() {
+        ofColor c = ofGetStyle().color;
+        //this->ofCylinderPrimitive::draw();
+        //  ofSetColor(c.r, c.g, c.b, c.a*0.85);
+        //this->vbo.drawWireframe();
+        //this->vbo.draw();
+        //glDrawArrays(GL_TRIANGLES, 0, this->vbo.getNumVertices());
+//        this->vbo.draw(GL_TRIANGLES, 0, this->vbo.getNumVertices());
+//        this->vbo.unbind();
+        
+        ofPushStyle();
+        for (std::vector<Branch*>::iterator it = branches.begin() ; it != branches.end(); ++it) {
+            Branch *b = *(it);
+            
+            
+            b->drawVbo();
+            
+            
+            
         }
         ofPopStyle();
     }
@@ -74,6 +115,23 @@ public:
         }
         return retVecs;
     }
+    
+    
+    vector<ofVec3f> getAllVertices(){
+        vector<ofVec3f> retVecs;
+        
+        retVecs.insert(retVecs.end(), this->getMesh().getVertices().begin(), this->getMesh().getVertices().end());
+        
+        retVecs.push_back(getTopNode().getGlobalPosition());
+        for (std::vector<Branch*>::iterator it = branches.begin() ; it != branches.end(); ++it) {
+            Branch *b = *(it);
+            vector<ofVec3f> branchVecs = b->getAllVertices();
+            retVecs.insert(retVecs.end(), branchVecs.begin(), branchVecs.end());
+        }
+        return retVecs;
+    }
+    
+    
     
     int drawVecTree(){
         vector<ofVec3f> vecs = getVecTree();
@@ -103,5 +161,10 @@ public:
     bool regrow;
     bool hasRegrown;
     vector<Branch*> trees;
+    
+    void drawVboBranches(Branch * branch);
+    
+    ofVbo branchVbo;
+    ofVboMesh branchVboMesh;
     
 };

@@ -19,7 +19,7 @@ void testApp::setup()
     ofBackground(0);
     
     //leftOutputServer.setName("Left");
-    //rightOutputServer.setName("Right");
+    //rightOutputServefr.setName("Right");
     sbsOutputServer.setName("Side By Side");
     
     ofFbo::Settings fboSettings;
@@ -102,7 +102,7 @@ void testApp::setup()
     gui->loadSettings("GUI/guiSettings.xml");
     
     // create Materials
-    white.diffuseColor = ofVec4f(0.9, 0.9, 0.9, 1.0);
+    /*white.diffuseColor = ofVec4f(0.9, 0.9, 0.9, 1.0);
     white.specularColor = ofVec4f(0.0, 0.0, 0.0, 0.0);
     white.specularShininess = 0.5;
 
@@ -112,10 +112,10 @@ void testApp::setup()
     
     moonLight.setNormalisedBrightness(0.3);
     moonLight.setAttenuation(1./10.);
-    moonLight.setTemperature(10000);
+    moonLight.setTemperature(10000);*/
     
     int numberRandomLights = 10;
-    for(int i = 0; i < numberRandomLights; i++){
+    /*for(int i = 0; i < numberRandomLights; i++){
         ofxOlaShaderLight * l = new ofxOlaShaderLight();
         
         l->setNormalisedBrightness(0.5);
@@ -125,7 +125,7 @@ void testApp::setup()
         
         randomLights.push_back(l);
     
-    }
+    }*/
     
 }
 
@@ -185,7 +185,7 @@ void testApp::update()
     }
     
     int i = 0;
-    for(vector<ofxOlaShaderLight*>::iterator it = randomLights.begin(); it != randomLights.end();++it){
+    /*for(vector<ofxOlaShaderLight*>::iterator it = randomLights.begin(); it != randomLights.end();++it){
         ofxOlaShaderLight * l = *(it);
         float thisTime = (time*0.01);
         ofVec3f pos(
@@ -197,6 +197,7 @@ void testApp::update()
         i++;
     }
     ofxOlaShaderLight::update();
+    */
     
     ofSetWindowTitle(ofToString(ofGetFrameRate()));
     time += speed;
@@ -227,12 +228,13 @@ void testApp::drawFly(){
                 ofMap(reduction, 0,1,ofSignedNoise(0,flyTime), camPosWall.y),
                 2.2*zPos
                 );
-    
+    /*
     ofxOlaShaderLight::end();
     ofDrawSphere(pos, 0.01);
     ofxOlaShaderLight::begin();
     flyLight.setGlobalPosition(pos);
     moonLight.setGlobalPosition(pos.y,-1,pos.x);
+    */
 }
 
 //--------------------------------------------------------------
@@ -251,13 +253,13 @@ void testApp::draw()
         ofClear(ofColor::black);
         glPushMatrix();
         // update Lighting
-        ofxOlaShaderLight::begin();
+        //ofxOlaShaderLight::begin();
 //        lightShader.setUniform1f("vertexNoise", vertexNoise);
-        ofxOlaShaderLight::setMaterial(white);
+       // ofxOlaShaderLight::setMaterial(white);
 
         drawScenes(i);
         
-        ofxOlaShaderLight::end();
+        //ofxOlaShaderLight::end();
         glPopMatrix();
         planes[i]->endLeft();
         
@@ -266,13 +268,13 @@ void testApp::draw()
         glPushMatrix();
         
         // update Lighting
-        ofxOlaShaderLight::begin();
+        //ofxOlaShaderLight::begin();
         //        lightShader.setUniform1f("vertexNoise", vertexNoise);
-        ofxOlaShaderLight::setMaterial(white);
+        //ofxOlaShaderLight::setMaterial(white);
         
         drawScenes(i);
         
-        ofxOlaShaderLight::end();
+        //ofxOlaShaderLight::end();
         glPopMatrix();
         planes[i]->endRight();
     }

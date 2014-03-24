@@ -10,7 +10,7 @@
 #include "ofxUI.h"
 #include "Trae.h"
 #include "ofxUbo.h"
-#include "ofxOlaShaderLight.h"
+//#include "ofxOlaShaderLight.h"
 
 class shaderLight : public ofNode {
     
@@ -80,12 +80,12 @@ public:
     
     // Lights
     
-    ofxOlaShaderLight flyLight;
+    /*ofxOlaShaderLight flyLight;
     ofxOlaShaderLight moonLight;
     
     ofxOlaShaderLight::Material white;
     
-    vector<ofxOlaShaderLight*> randomLights;
+    vector<ofxOlaShaderLight*> randomLights;*/
     
     float vertexNoise;
     
