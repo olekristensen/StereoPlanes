@@ -10,6 +10,7 @@
 #include "ofxUI.h"
 #include "Trae.h"
 #include "ofxUbo.h"
+//#define USE_OLA_LIB_AND_NOT_OSC 1
 #include "ofxOlaShaderLight.h"
 
 class shaderLight : public ofNode {
