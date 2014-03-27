@@ -110,18 +110,18 @@ void testApp::setup()
     flyLight.setAttenuation(1.0/0.3);
     flyLight.setTemperature(4200);
     
-    moonLight.setNormalisedBrightness(0.3);
+    moonLight.setNormalisedBrightness(0.5);
     moonLight.setAttenuation(1./10.);
     moonLight.setTemperature(10000);
     
-    int numberRandomLights = 10;
+    int numberRandomLights = 50;
     for(int i = 0; i < numberRandomLights; i++){
         ofxOlaShaderLight * l = new ofxOlaShaderLight();
         
         l->setNormalisedBrightness(0.5);
         l->setAttenuation(1.0/.1);
         l->setTemperature(ofMap(i, 0, numberRandomLights, 4200, 10000));
-        l->setupBrightnessDMXChannel(i);
+        //l->setupBrightnessDMXChannel(i);
         
         randomLights.push_back(l);
     
@@ -207,7 +207,7 @@ void testApp::update()
 void testApp::drawScenes(int _surfaceId) {
     for(int s=0; s<contentScenes.size();s++) {
         glEnable(GL_CULL_FACE);
-        glCullFace(GL_BACK);
+        glCullFace(GL_FRONT);
         contentScenes[s]->drawScene(_surfaceId);
         drawFly();
         glDisable(GL_CULL_FACE);

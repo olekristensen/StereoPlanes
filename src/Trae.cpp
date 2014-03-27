@@ -15,6 +15,7 @@ void Trae::setup() {
     zPos = 0;
     
     makeTrees();
+    
 }
 
 
@@ -36,23 +37,24 @@ void Trae::draw(int _surfaceId) {
 */
         ofTranslate(ofPoint(0.,0,zPos));
 
-        ofRotateY(time*0.1);
+        ofRotateY(time);
         
         ofSetColor(255,255,255);
         
-        for (std::vector<Branch*>::iterator it = trees.begin() ; it != trees.end(); ++it) {
-            Branch *b = *(it);
-            b->draw();
-            /* draw vectors
-            ofPushStyle();
-            ofDisableDepthTest();
-            ofSetColor(0, 255, 255, 127);
-            cout << b->drawVecTree() << endl;
-            ofEnableDepthTest();
-            ofPopStyle();
-             */
+        int i = 0;
+        for (std::vector<ofxProcTree::Tree*>::iterator it = trees.begin() ; it != trees.end(); ++it) {
+            ofPushMatrix();
+            ofRotateY(360.0*i/trees.size());
+            ofTranslate(0, 0, 1);
+            ofRotateX(-180);
+            ofTranslate(0,-1,0);
+            ofScale(1./3, 1./3, 1./3);
+            ofxProcTree::Tree *t = *(it);
+            t->mesh.draw();
+            ofPopMatrix();
+            i++;
         }
-
+        //tree->drawSkeleton();
         ofPopMatrix();
         
     }
@@ -71,22 +73,39 @@ void Trae::update() {
 
 void Trae::makeTrees(){
     
-    for (std::vector<Branch*>::iterator it = trees.begin() ; it != trees.end(); ++it) {
-        Branch *b = *(it);
-        delete b;
+    for (std::vector<ofxProcTree::Tree*>::iterator it = trees.begin() ; it != trees.end(); ++it) {
+        ofxProcTree::Tree *t = *(it);
+        delete t;
     }
     trees.clear();
-    for (int i = 0; i < 1; i++) {
-        Branch * b = new Branch();
-        float bWidth = ofRandom(0.03,0.075);
-        float bHeight = ofRandom(0.5,0.75);
-        b->set(bWidth,bHeight);
-        //b->setPosition(ofRandom(-.5,.5),1-(bHeight*.5),ofRandom(-.5,.5));
-        b->setPosition(0,1-(bHeight*.5),0);
-        b->setResolutionRadius(5);
-        b->setResolutionHeight(5);
-        b->make(6);
-        trees.push_back(b);
+    for (int i = 0; i < 10; i++) {
+        
+        ofxProcTree::Branch::Properties * p = new ofxProcTree::Branch::Properties();
+        
+        p->seed = 519+i;
+        p->segments = 14+ofRandom(-3,1);
+        p->levels = 5;
+        p->vMultiplier = 1.01;
+        p->twigScale = 0;
+        p->initalBranchLength = 0.65+ofRandom(-.1,.1);
+        p->lengthFalloffFactor = 0.73;
+        p->lengthFalloffPower = 0.76;
+        p->clumpMax = 0.53;
+        p->clumpMin = 0.419;
+        p->branchFactor = 3.4 + ofRandom(-1,1);
+        p->dropAmount = -0.16;
+        p->growAmount = 0.419+ofRandom(-1,1);
+        p->sweepAmount = 0.01;
+        p->maxRadius = 0.168 + ofRandom(-0.1,0);
+        p->climbRate = 0.472;
+        p->trunkKink = 0.06;
+        p->treeSteps = 5;
+        p->taperRate = 0.835;
+        p->radiusFalloffRate = 0.73;
+        p->twistRate = 1.29;
+        p->trunkLength = 2.2+ofRandom(-1,0);
+        
+        trees.push_back(new ofxProcTree::Tree(p));
     }
 }
 

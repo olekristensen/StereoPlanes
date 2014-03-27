@@ -100,6 +100,9 @@
 		7A0C9CF918DCA40D005A65A0 /* ofxUbo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7A0C9CE418DCA40D005A65A0 /* ofxUbo.cpp */; };
 		7A16707118DB420700858F2E /* Syphon.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7A16706F18DB41F000858F2E /* Syphon.framework */; };
 		7A16707218DB422100858F2E /* Syphon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A16706F18DB41F000858F2E /* Syphon.framework */; };
+		7A54BEA418E42DE70008625D /* proctree.js in Sources */ = {isa = PBXBuildFile; fileRef = 7A54BEA018E42DE70008625D /* proctree.js */; };
+		7A54BEA518E42DE70008625D /* ofxProcTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7A54BEA218E42DE70008625D /* ofxProcTree.cpp */; };
+		7A54BEAB18E4C3A30008625D /* ofxMeshUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7A54BEA918E4C3A30008625D /* ofxMeshUtils.cpp */; };
 		7A6DC1C218D494540054D5B6 /* Trae.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7A6DC1C018D494540054D5B6 /* Trae.cpp */; };
 		7ACEE26618DDE8F500AD4D9F /* ofxOlaShaderLight.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7ACEE26518DDE8F500AD4D9F /* ofxOlaShaderLight.cpp */; };
 		7AF1C6BD1885DE7000B38D3B /* ofxBulletJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7AF1C6881885D44800B38D3B /* ofxBulletJoint.cpp */; };
@@ -494,6 +497,14 @@
 		7A0C9D0318DCA6E0005A65A0 /* lightTexture.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = lightTexture.frag; sourceTree = "<group>"; };
 		7A0C9D0418DCA6E0005A65A0 /* lightTexture.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = lightTexture.vert; sourceTree = "<group>"; };
 		7A16706F18DB41F000858F2E /* Syphon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Syphon.framework; sourceTree = "<group>"; };
+		7A54BE9D18E42DE70008625D /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		7A54BE9E18E42DE70008625D /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		7A54BEA018E42DE70008625D /* proctree.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = proctree.js; sourceTree = "<group>"; };
+		7A54BEA218E42DE70008625D /* ofxProcTree.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxProcTree.cpp; sourceTree = "<group>"; };
+		7A54BEA318E42DE70008625D /* ofxProcTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxProcTree.h; sourceTree = "<group>"; };
+		7A54BEA718E4C3A30008625D /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		7A54BEA918E4C3A30008625D /* ofxMeshUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxMeshUtils.cpp; sourceTree = "<group>"; };
+		7A54BEAA18E4C3A30008625D /* ofxMeshUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxMeshUtils.h; sourceTree = "<group>"; };
 		7A6DC1C018D494540054D5B6 /* Trae.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Trae.cpp; sourceTree = "<group>"; };
 		7A6DC1C118D494540054D5B6 /* Trae.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Trae.h; sourceTree = "<group>"; };
 		7ACEE25E18DDAC1B00AD4D9F /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
@@ -1487,6 +1498,54 @@
 			path = src;
 			sourceTree = "<group>";
 		};
+		7A54BE9C18E42DE70008625D /* ofxProcTree */ = {
+			isa = PBXGroup;
+			children = (
+				7A54BE9D18E42DE70008625D /* .gitignore */,
+				7A54BE9E18E42DE70008625D /* README.md */,
+				7A54BE9F18E42DE70008625D /* ref */,
+				7A54BEA118E42DE70008625D /* src */,
+			);
+			name = ofxProcTree;
+			path = ../../../addons/ofxProcTree;
+			sourceTree = "<group>";
+		};
+		7A54BE9F18E42DE70008625D /* ref */ = {
+			isa = PBXGroup;
+			children = (
+				7A54BEA018E42DE70008625D /* proctree.js */,
+			);
+			path = ref;
+			sourceTree = "<group>";
+		};
+		7A54BEA118E42DE70008625D /* src */ = {
+			isa = PBXGroup;
+			children = (
+				7A54BEA218E42DE70008625D /* ofxProcTree.cpp */,
+				7A54BEA318E42DE70008625D /* ofxProcTree.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		7A54BEA618E4C3A30008625D /* ofxMeshUtils */ = {
+			isa = PBXGroup;
+			children = (
+				7A54BEA718E4C3A30008625D /* README.md */,
+				7A54BEA818E4C3A30008625D /* src */,
+			);
+			name = ofxMeshUtils;
+			path = ../../../addons/ofxMeshUtils;
+			sourceTree = "<group>";
+		};
+		7A54BEA818E4C3A30008625D /* src */ = {
+			isa = PBXGroup;
+			children = (
+				7A54BEA918E4C3A30008625D /* ofxMeshUtils.cpp */,
+				7A54BEAA18E4C3A30008625D /* ofxMeshUtils.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 		7ACEE25D18DDAC1B00AD4D9F /* ofxOlaShaderLight */ = {
 			isa = PBXGroup;
 			children = (
@@ -2206,6 +2265,8 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				7A54BEA618E4C3A30008625D /* ofxMeshUtils */,
+				7A54BE9C18E42DE70008625D /* ofxProcTree */,
 				7ACEE25D18DDAC1B00AD4D9F /* ofxOlaShaderLight */,
 				7A0C9C9018DCA40C005A65A0 /* ofxUbo */,
 				AB6B553618902BD700E70C54 /* ofxSyphon */,
@@ -2406,6 +2467,7 @@
 				7AF1C6BD1885DE7000B38D3B /* ofxBulletJoint.cpp in Sources */,
 				7AF1C6BE1885DE7000B38D3B /* ofxBulletWorldRigid.cpp in Sources */,
 				7AF1C6BF1885DE7000B38D3B /* GLDebugDrawer.cpp in Sources */,
+				7A54BEAB18E4C3A30008625D /* ofxMeshUtils.cpp in Sources */,
 				7AF1C6C01885DE7000B38D3B /* ofxBulletBaseShape.cpp in Sources */,
 				7AF1C7401885EAD500B38D3B /* GuiStyle.cpp in Sources */,
 				7AF1C6C11885DE7000B38D3B /* ofxBulletBox.cpp in Sources */,
@@ -2455,6 +2517,7 @@
 				0420B599188F8E4F0086D388 /* ofxUIDragableLabelButton.cpp in Sources */,
 				0420B5AE188F8E4F0086D388 /* ofxUIRectangle.cpp in Sources */,
 				0420B597188F8E4F0086D388 /* ofxUICircleSlider.cpp in Sources */,
+				7A54BEA518E42DE70008625D /* ofxProcTree.cpp in Sources */,
 				04A6C82F188099DE00B17C45 /* ofxOscBundle.cpp in Sources */,
 				0420B5A8188F8E4F0086D388 /* ofxUIMovingGraph.cpp in Sources */,
 				0420B5BD188F8E4F0086D388 /* ofxUIWidget.cpp in Sources */,
@@ -2524,6 +2587,7 @@
 				04A6C830188099DE00B17C45 /* ofxOscMessage.cpp in Sources */,
 				7AF1C73C1885EAD500B38D3B /* GuiLabel.cpp in Sources */,
 				0420B5A0188F8E4F0086D388 /* ofxUIImageSampler.cpp in Sources */,
+				7A54BEA418E42DE70008625D /* proctree.js in Sources */,
 				0420B5AA188F8E4F0086D388 /* ofxUIMultiImageToggle.cpp in Sources */,
 				7AF1C7441885EAD500B38D3B /* ofTextField.cpp in Sources */,
 				04A6C82C188099DE00B17C45 /* OscPrintReceivedElements.cpp in Sources */,

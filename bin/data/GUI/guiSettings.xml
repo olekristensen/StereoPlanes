@@ -1,32 +1,32 @@
 <Widget>
     <Kind>4</Kind>
     <Name>Eye seperation</Name>
-    <Value>7.000000000</Value>
+    <Value>2.924657345</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>Wall X</Name>
-    <Value>0.410959005</Value>
+    <Value>0.000000000</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>Wall Y</Name>
-    <Value>0.760273933</Value>
-</Widget>
-<Widget>
-    <Kind>4</Kind>
-    <Name>Wall Z</Name>
-    <Value>-2.227739811</Value>
-</Widget>
-<Widget>
-    <Kind>4</Kind>
-    <Name>Aspect</Name>
     <Value>1.000000000</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
+    <Name>Wall Z</Name>
+    <Value>-3.049657583</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>Aspect</Name>
+    <Value>1.013698578</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
     <Name>Speed</Name>
-    <Value>0.815068483</Value>
+    <Value>-0.575342476</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
@@ -66,5 +66,5 @@
 <Widget>
     <Kind>4</Kind>
     <Name>Z pos</Name>
-    <Value>0.089041024</Value>
+    <Value>-0.647260189</Value>
 </Widget>

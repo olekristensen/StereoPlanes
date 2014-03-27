@@ -9,7 +9,8 @@
 #pragma once
 #include "ContentScene.h"
 #include "ofMain.h"
-
+#include "ofxProcTree.h"
+/*
 class Branch : public ofCylinderPrimitive {
 
     void addBranch(int steps){
@@ -85,7 +86,7 @@ public:
     }
     
 };
-
+*/
 class Trae : public ContentScene {
     
 public:
@@ -102,6 +103,10 @@ public:
     
     bool regrow;
     bool hasRegrown;
-    vector<Branch*> trees;
+    vector<ofxProcTree::Tree*> trees;
+    
+    float drawScale = 1.0;
+    ofVec3f drawTranslation;
+    ofVec3f drawRotation;
     
 };
