@@ -107,14 +107,14 @@ void testApp::setup()
     white.specularShininess = 0.5;
 
     flyLight.setNormalisedBrightness(1.0);
-    flyLight.setAttenuation(1.0/0.3);
+    flyLight.setAttenuation(1.0/2.);
     flyLight.setTemperature(4200);
     
     moonLight.setNormalisedBrightness(0.5);
     moonLight.setAttenuation(1./10.);
     moonLight.setTemperature(10000);
     
-    int numberRandomLights = 50;
+    int numberRandomLights = 0;
     for(int i = 0; i < numberRandomLights; i++){
         ofxOlaShaderLight * l = new ofxOlaShaderLight();
         

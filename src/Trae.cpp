@@ -78,7 +78,7 @@ void Trae::makeTrees(){
         delete t;
     }
     trees.clear();
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 3; i++) {
         
         ofxProcTree::Branch::Properties * p = new ofxProcTree::Branch::Properties();
         
@@ -87,14 +87,14 @@ void Trae::makeTrees(){
         p->levels = 5;
         p->vMultiplier = 1.01;
         p->twigScale = 0;
-        p->initalBranchLength = 0.65+ofRandom(-.1,.1);
+        p->initalBranchLength = 0.65+ofRandom(-.1,.5);
         p->lengthFalloffFactor = 0.73;
         p->lengthFalloffPower = 0.76;
         p->clumpMax = 0.53;
         p->clumpMin = 0.419;
-        p->branchFactor = 3.4 + ofRandom(-1,1);
+        p->branchFactor = 3.4;// + ofRandom(-1,1);
         p->dropAmount = -0.16;
-        p->growAmount = 0.419+ofRandom(-1,1);
+        p->growAmount = 0.419;//+ofRandom(-1,1);
         p->sweepAmount = 0.01;
         p->maxRadius = 0.168 + ofRandom(-0.1,0);
         p->climbRate = 0.472;
