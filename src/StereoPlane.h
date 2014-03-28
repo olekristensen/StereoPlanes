@@ -8,7 +8,7 @@
 
 #pragma once
 #include "ofxCoolGlasses.h"
-#include "ofxGLWarper.h"
+//#include "ofxGLWarper.h"
 
 class StereoPlane {
     
@@ -64,7 +64,7 @@ public:
     ofPoint rBR;
      */
     
-    ofxGLWarper::CornerLocation activeCorner;
+    //ofxGLWarper::CornerLocation activeCorner;
     
     void setup(int w, int h, ofxXmlSettings * s) {
         

@@ -2,7 +2,6 @@
 
 #include "ofMain.h"
 #include "ofxSyphon.h"
-#include "ofxGui.h"
 #include "ofxXmlSettings.h"
 #include "ofxOscReceiver.h"
 #include "StereoPlane.h"
@@ -11,6 +10,8 @@
 #include "Trae.h"
 #include "ofxUbo.h"
 //#include "ofxOlaShaderLight.h"
+#include "ofxTimeline.h"
+#include "TrunkRings.h"
 
 class shaderLight : public ofNode {
     
@@ -78,6 +79,8 @@ public:
     Trae * trae;
     vector<ContentScene*> contentScenes;
     
+    TrunkRings * trunkRings;
+    
     // Lights
     
     /*ofxOlaShaderLight flyLight;
@@ -91,7 +94,13 @@ public:
     
     // Time
     
-    float time = 0;;
+    float time;
     float speed;
+    
+    // Timeline
+    ofxTimeline timeline;
+    void bangFired(ofxTLBangEventArgs& args);
+
+    
     
 };
