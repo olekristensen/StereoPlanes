@@ -18,7 +18,6 @@ void Trae::setup() {
     
 }
 
-
 void Trae::draw(int _surfaceId) {
     
     // A scene can draw to multiple surfaces
