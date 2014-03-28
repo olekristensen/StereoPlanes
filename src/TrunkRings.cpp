@@ -37,7 +37,9 @@ void TrunkRings::setup() {
     
     center = new Ring();
     center->setup();
-    center->make(20);
+    center->make(30);
+    //rings = center->getChildren();
+    
     
     
 }
@@ -49,62 +51,15 @@ void TrunkRings::draw(int _surfaceId) {
         
         ofPushMatrix();
         
-        //ofVec3f pos;
+        if(time<30) {
+            center->drawExpand(ofMap(time, 0, 30, 0, float(center->step)));
+        } else {
         
-       // float noiseDisplace = ofNoise(time)/20;
-        
-        /*if(time<4) {
-            // grow straight up for first 4 seconds
-            pos = ofVec3f(noiseDisplace, ofMap(time,0,4,1,0.0) - noiseDisplace,0);
-        
-        } else {*/
-        
-        
-        
-            // start
-            
-            //pos = ofVec3f(noiseDisplace + sin(time)*ringRadius->getValue(), cos(time)*ringRadius->getValue() - noiseDisplace, 0);
-            
-        
-        //}
-        
-        /*for(int i=1;i<points.size()&&i<time;i++) {
-            
-            ofLine(points[i], points[i-1]);
-            
-        }*/
-        
-        
-        //ofCircle(sin(time), sin(time), 0.2);
-        
-        //ofCircle(pos, 0.02);
-        
-        /*for(int i=0; i<rings.size(); i++){
+            center->draw(ofMap(time, 30, 120, 0, float(center->step)));
+        }
+        /*for(int i=0;i<rings.size();i++) {
             rings[i]->draw();
         }*/
-        
-        /*for (int i=1; i<TAIL_LENGTH; i++) {
-            ringHistory[i-1] = ringHistory[i];
-        }
-        ringHistory[TAIL_LENGTH-1] = pos;
-        
-        
-        ofMesh line; // declaring a new ofMesh object with which we're drawing the motion path created by summing the vertical and horizontal oscillators
-        line.setMode(OF_PRIMITIVE_LINE_STRIP);
-        for (int i=0; i<TAIL_LENGTH; i++) {
-            line.addColor(ofFloatColor(0.8f,0.8f,0.8f, 0.5f + 0.5f * i/float(TAIL_LENGTH) ));
-            line.addVertex(ringHistory[i]);
-        }*/
-        
-        //line.draw();
-        
-        //for(int i=0; i<)
-        
-        //int long millis = mainTimeline->getCurrentTimeMillis();
-        //ofCircle(xPos->getValueAtTimeInMillis(millis), yPos->getValueAtTimeInMillis(millis), 0.2);
-        
-        
-        center->draw();
         
         ofPopMatrix();
         
