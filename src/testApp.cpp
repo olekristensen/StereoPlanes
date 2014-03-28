@@ -10,12 +10,12 @@ void testApp::setup()
     
     speed = 0;
     //time = 0;
-
+    
     ofSetLogLevel(OF_LOG_VERBOSE);
     
     ofSetFrameRate(30);
     ofSetVerticalSync(true);
-//    ofSetBackgroundAuto(true);
+    //    ofSetBackgroundAuto(true);
     ofBackground(0);
     
     //leftOutputServer.setName("Left");
@@ -25,11 +25,10 @@ void testApp::setup()
     timeline.setup();
     timeline.setupFont("GUI/Arial.ttf", 7);
     timeline.setDurationInSeconds(120);
-    timeline.setName("Master");
     //timeline.setFrameRate(ofGetFrameRate());
-    //rofxTimeline::removeCocoaMenusFromGlut("Trae");
     
     timeline.setLoopType(OF_LOOP_NORMAL);
+    enabledScene = timeline.addSwitches("Enabled Scene");
     timeline.addCurves("curves", ofRange(0, 255));
     timeline.addAudioTrack("Dejlig soed laekker lyd");
 	ofAddListener(timeline.events().bangFired, this, &testApp::bangFired);
@@ -60,6 +59,9 @@ void testApp::setup()
     oscReceiver.setup(9001);
     
     camPosWall = ofVec3f(0, 0, -1);
+    
+    lights = new Lights();
+    contentScenes.push_back(lights);
     
     trae = new Trae();
     contentScenes.push_back(trae);
@@ -94,18 +96,17 @@ void testApp::setup()
     gui->addSlider("Wall X",  -2, 2, &camPosWall.x);
     gui->addSlider("Wall Y",  -1, 1, &camPosWall.y);
     gui->addSlider("Wall Z",  -4, -0.25, &camPosWall.z);
-
+    
     gui->addSlider("Aspect",  0.0, 2.0, &aspect);
     gui->addSlider("Speed", -1, 1, &speed);
-    gui->addSlider("Vertex Noise", -1, 1, &vertexNoise);
-
+    
     gui->addSlider("Dancer X",  -1, 1, &dancerPos.x);
     gui->addSlider("Dancer Y",  -1, 1, &dancerPos.y);
-
+    
     gui->addToggle("Draw Checkers", &drawChessboards);
     gui->addToggle("Draw Planes", &drawGrids);
     gui->addToggle("Draw FBOs", &drawFBOs);
-
+    
     for(int i=0; i<contentScenes.size(); i++) {
         gui->addSpacer(width, 3)->setDrawOutline(true);
         contentScenes[i]->setGui(gui, width);
@@ -117,34 +118,6 @@ void testApp::setup()
     gui->setScrollAreaToScreenHeight();
     
     gui->loadSettings("GUI/guiSettings.xml");
-    
-    // create Materials
-    white.diffuseColor = ofVec4f(0.9, 0.9, 0.9, 1.0);
-    white.specularColor = ofVec4f(0.0, 0.0, 0.0, 0.0);
-    white.specularShininess = 0.5;
-
-    flyLight.setNormalisedBrightness(1.0);
-    flyLight.setAttenuation(1.0/2.);
-    flyLight.setTemperature(4200);
-    
-    moonLight.setNormalisedBrightness(0.5);
-    moonLight.setAttenuation(1./10.);
-    moonLight.setTemperature(10000);
-    
-    int numberRandomLights = 0;
-    for(int i = 0; i < numberRandomLights; i++){
-        ofxOlaShaderLight * l = new ofxOlaShaderLight();
-        
-        l->setNormalisedBrightness(0.5);
-        l->setAttenuation(1.0/.1);
-        l->setTemperature(ofMap(i, 0, numberRandomLights, 4200, 10000));
-        //l->setupBrightnessDMXChannel(i);
-        
-        randomLights.push_back(l);
-    
-    }
-    
-
     
 }
 
@@ -160,11 +133,30 @@ void testApp::bangFired(ofxTLBangEventArgs& args){
 void testApp::update()
 {
     gui->setScrollArea(0, timeline.getHeight(), 300, ofGetHeight()-timeline.getHeight());
-
+    
+    if(timeline.isSwitchOn("Enabled Scene")){
+        string switchText = enabledScene->getActiveSwitchAtMillis(timeline.getCurrentTimeMillis())->textField.text;
+        for(int s=0; s<contentScenes.size();s++) {
+            if (contentScenes[s] != lights) {
+                if (switchText == contentScenes[s]->name) {
+                    contentScenes[s]->enabled = true;
+                } else {
+                    contentScenes[s]->enabled = false;
+                }
+            }
+        }
+    } else {
+        for(int s=0; s<contentScenes.size();s++) {
+            if (contentScenes[s] != lights) {
+                contentScenes[s]->enabled = false;
+            }
+        }
+    }
+    
     while(oscReceiver.hasWaitingMessages()){
-		// get the next message
-		ofxOscMessage m;
-		oscReceiver.getNextMessage(&m);
+        // get the next message
+        ofxOscMessage m;
+        oscReceiver.getNextMessage(&m);
         
         for(int i=0; i<contentScenes.size(); i++) {
             contentScenes[i]->parseSceneOsc(&m);
@@ -172,25 +164,25 @@ void testApp::update()
         
         //cout<<m.getAddress()<<endl;
         
-		if(m.getAddress() == "/Wall/Camera/x"){
-                camPosWall.x = m.getArgAsFloat(0);
+        if(m.getAddress() == "/Wall/Camera/x"){
+            camPosWall.x = m.getArgAsFloat(0);
             
         } else if(m.getAddress() == "/Wall/Camera/y"){
-                camPosWall.y = m.getArgAsFloat(0);
+            camPosWall.y = m.getArgAsFloat(0);
             
         } else if(m.getAddress() == "/Wall/Cameraz/x"){
-                camPosWall.z = m.getArgAsFloat(0);
+            camPosWall.z = m.getArgAsFloat(0);
             
-		} else if(m.getAddress() == "/eyeSeperation/x"){
-			eyeSeperation = m.getArgAsFloat(0);
+        } else if(m.getAddress() == "/eyeSeperation/x"){
+            eyeSeperation = m.getArgAsFloat(0);
             
-		} else if(m.getAddress() == "/Dancer/x"){
+        } else if(m.getAddress() == "/Dancer/x"){
             dancerPos.x = m.getArgAsFloat(0);
             
-		} else if(m.getAddress() == "/Dancer/y"){
+        } else if(m.getAddress() == "/Dancer/y"){
             dancerPos.y = m.getArgAsFloat(0);
             
-		} else if(m.getAddress() == "/activescene/x"){
+        } else if(m.getAddress() == "/activescene/x"){
             for(int i=0; i<contentScenes.size(); i++) {
                 contentScenes[i]->enabled = false;
             }
@@ -206,59 +198,22 @@ void testApp::update()
         planes[i]->cam.setPhysicalEyeSeparation(eyeSeperation);
         planes[i]->update();
     }
-
+    
     for(int s=0; s<contentScenes.size();s++) {
         contentScenes[s]->update();
     }
     
-    int i = 0;
-    for(vector<ofxOlaShaderLight*>::iterator it = randomLights.begin(); it != randomLights.end();++it){
-        ofxOlaShaderLight * l = *(it);
-        float thisTime = (time*0.01);
-        ofVec3f pos(
-                    .5*ofSignedNoise(thisTime,i,0),
-                    ofSignedNoise(i,thisTime,0),.5*ofSignedNoise(0,i,thisTime)
-                    );
-        l->setGlobalPosition(pos);
-        l->setNormalisedBrightness(ofNoise(thisTime+(i*1.0/510))*0.1);
-        i++;
-    }
-    ofxOlaShaderLight::update();
-    
     ofSetWindowTitle(ofToString(ofGetFrameRate()));
     
-    trae->enabled = (timeline.getCurrentTime()>100);
-    trunkRings->enabled = (timeline.getCurrentTime()<100);
-
 }
 
 
 void testApp::drawScenes(int _surfaceId) {
+    
     for(int s=0; s<contentScenes.size();s++) {
         contentScenes[s]->drawScene(_surfaceId);
-        drawFly();
     }
-}
-
-void testApp::drawFly(){
     
-    float flyTime = timeline.getCurrentTime() * 0.01;
-    
-    float zPos =ofSignedNoise(0,0,flyTime);
-    float reduction = fmaxf(0,ofMap(zPos, 1, -1, 0.0, 1));
-    reduction = pow(reduction, 3);
-                              
-    ofVec3f pos(
-                ofMap(reduction, 0,1,ofSignedNoise(flyTime), camPosWall.x),
-                ofMap(reduction, 0,1,ofSignedNoise(0,flyTime), camPosWall.y),
-                2.2*zPos
-                );
-    
-//    ofxOlaShaderLight::end();
-    ofDrawSphere(pos, 0.01);
-//    ofxOlaShaderLight::begin();
-    flyLight.setGlobalPosition(pos);
-    moonLight.setGlobalPosition(pos.y,-1,pos.x);
 }
 
 //--------------------------------------------------------------
@@ -281,33 +236,22 @@ void testApp::draw()
         planes[i]->beginLeft();
         ofClear(ofColor::black);
         glPushMatrix();
-        // update Lighting
-//        ofxOlaShaderLight::begin();
-//        lightShader.setUniform1f("vertexNoise", vertexNoise);
-//        ofxOlaShaderLight::setMaterial(white);
-
+        lights->begin();
         drawScenes(i);
-        
-//        ofxOlaShaderLight::end();
+        lights->end();
         glPopMatrix();
         planes[i]->endLeft();
         
         planes[i]->beginRight();
         ofClear(ofColor::black);
         glPushMatrix();
-        
-        // update Lighting
-//        ofxOlaShaderLight::begin();
-        //        lightShader.setUniform1f("vertexNoise", vertexNoise);
-//        ofxOlaShaderLight::setMaterial(white);
-        
+        lights->begin();
         drawScenes(i);
-        
-//        ofxOlaShaderLight::end();
+        lights->end();
         glPopMatrix();
         planes[i]->endRight();
     }
-
+    
     ofDisableDepthTest();
     
     if(drawChessboards) {
@@ -315,7 +259,7 @@ void testApp::draw()
             planes[i]->drawChessboards();
         }
     }
-
+    
     if(drawGrids) {
         for(int i=0; i<planes.size(); i++) {
             planes[i]->drawGrids();
@@ -344,7 +288,7 @@ void testApp::draw()
     ofRect(timeline.getDrawRect());
     ofSetColor(255,255);
     timeline.draw();
-
+    
     sbsOutputServer.publishFBO(&fbo);
     
 }
@@ -353,13 +297,13 @@ void testApp::draw()
 void testApp::keyPressed(int key)
 {
     
-	if (key == 'f'){
-		ofToggleFullscreen();
-	} else if (key == 'g') {
-		drawChessboards = !drawChessboards;
-	} else if (key == 'm') {
+    if (key == 'f'){
+        ofToggleFullscreen();
+    } else if (key == 'g') {
+        drawChessboards = !drawChessboards;
+    } else if (key == 'm') {
         drawFBOs = !drawFBOs;
-	} else if (key == 'w'){
+    } else if (key == 'w'){
         gui->loadSettings("GUI/wallsetting.xml");
     } else if(key == 'q'){
         gui->loadSettings("GUI/floorsetting.xml");
@@ -446,14 +390,14 @@ void testApp::guiEvent(ofxUIEventArgs &e)
 {
     
     string name = e.getName();
-	int kind = e.getKind();
-	//cout << "got event from: " << name << endl;
+    int kind = e.getKind();
+    //cout << "got event from: " << name << endl;
     
     /*if(name=="Wall cam") {
-        ofxUI2DPad *pad = (ofxUI2DPad *) e.widget;
-        camPosWall.x = pad->getScaledValue().x;
-        camPosWall.y = pad->getScaledValue().y;
-    }*/
+     ofxUI2DPad *pad = (ofxUI2DPad *) e.widget;
+     camPosWall.x = pad->getScaledValue().x;
+     camPosWall.y = pad->getScaledValue().y;
+     }*/
     
     for(int i=0; i<contentScenes.size(); i++) {
         contentScenes[i]->guiEvent(e);

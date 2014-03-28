@@ -25,8 +25,11 @@ public:
     
     float zPos;
     
-    bool regrow;
+    ofxTLSwitches * regrow;
+    ofxTLCurves * progress;
+    
     bool hasRegrown;
+    
     vector<ofxProcTree*> trees;
     
     float drawScale = 1.0;

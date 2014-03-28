@@ -14,7 +14,9 @@ void Trae::setup() {
     oscAddress = "/trae";
     zPos = 0;
     
-    makeTrees();
+    mainTimeline->addPage(name);
+    regrow = mainTimeline->addSwitches("Regrow");
+    progress = mainTimeline->addCurves("Progress");
     
 }
 
@@ -38,7 +40,7 @@ void Trae::draw(int _surfaceId) {
 */
         ofTranslate(ofPoint(0.,0,zPos));
 
-        ofRotateY(time);
+        //ofRotateY(time);
         
         ofSetColor(255,255,255);
         
@@ -63,11 +65,11 @@ void Trae::draw(int _surfaceId) {
 }
 
 void Trae::update() {
-    if (regrow & !hasRegrown) {
+    if (regrow->isOn() & !hasRegrown) {
         makeTrees();
         hasRegrown = true;
     }
-    if (!regrow){
+    if (!regrow->isOn()){
         hasRegrown = false;
     }
 }
@@ -79,7 +81,7 @@ void Trae::makeTrees(){
         delete t;
     }
     trees.clear();
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 1; i++) {
         
         ofxProcTreeBranch::Properties * p = new ofxProcTreeBranch::Properties();
         
@@ -112,7 +114,6 @@ void Trae::makeTrees(){
 
 void Trae::setGui(ofxUICanvas * gui, float width){
     ContentScene::setGui(gui, width);
-    gui->addButton("Regrow", &regrow);
     gui->addSlider("Z pos", -2, 3, &zPos);
 }
 
