@@ -2405,42 +2405,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = NO;
 				GCC_WARN_UNUSED_VALUE = NO;
 				GCC_WARN_UNUSED_VARIABLE = NO;
-				HEADER_SEARCH_PATHS = (
-					"$(OF_CORE_HEADERS)",
-					../../../addons/ofxBox2d/libs,
-					../../../addons/ofxBox2d/libs/Box2D,
-					../../../addons/ofxBox2d/libs/Box2D/Collision,
-					../../../addons/ofxBox2d/libs/Box2D/Collision/Shapes,
-					../../../addons/ofxBox2d/libs/Box2D/Common,
-					../../../addons/ofxBox2d/libs/Box2D/Dynamics,
-					../../../addons/ofxBox2d/libs/Box2D/Dynamics/Contacts,
-					../../../addons/ofxBox2d/libs/Box2D/Dynamics/Joints,
-					../../../addons/ofxBox2d/libs/triangle,
-					../../../addons/ofxBox2d/src,
-					../../../addons/ofxStereoCamera/libs,
-					../../../addons/ofxStereoCamera/src,
-					../../../addons/ofxSyphon/libs,
-					../../../addons/ofxSyphon/libs/Syphon,
-					../../../addons/ofxSyphon/libs/Syphon/lib,
-					../../../addons/ofxSyphon/libs/Syphon/lib/osx,
-					../../../addons/ofxSyphon/libs/Syphon/lib/osx/Syphon.framework,
-					../../../addons/ofxSyphon/libs/Syphon/lib/osx/Syphon.framework/Headers,
-					../../../addons/ofxSyphon/libs/Syphon/lib/osx/Syphon.framework/Resources,
-					../../../addons/ofxSyphon/libs/Syphon/lib/osx/Syphon.framework/Resources/English.lproj,
-					../../../addons/ofxSyphon/libs/Syphon/lib/osx/Syphon.framework/Versions,
-					../../../addons/ofxSyphon/libs/Syphon/lib/osx/Syphon.framework/Versions/A,
-					../../../addons/ofxSyphon/libs/Syphon/lib/osx/Syphon.framework/Versions/A/Headers,
-					../../../addons/ofxSyphon/libs/Syphon/lib/osx/Syphon.framework/Versions/A/Resources,
-					../../../addons/ofxSyphon/libs/Syphon/lib/osx/Syphon.framework/Versions/A/Resources/English.lproj,
-					../../../addons/ofxSyphon/libs/Syphon/lib/osx/Syphon.framework/Versions/Current,
-					../../../addons/ofxSyphon/libs/Syphon/lib/osx/Syphon.framework/Versions/Current/Headers,
-					../../../addons/ofxSyphon/libs/Syphon/lib/osx/Syphon.framework/Versions/Current/Resources,
-					../../../addons/ofxSyphon/libs/Syphon/lib/osx/Syphon.framework/Versions/Current/Resources/English.lproj,
-					../../../addons/ofxSyphon/libs/Syphon/src,
-					../../../addons/ofxSyphon/src,
-				);
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				OTHER_CPLUSPLUSFLAGS = "";
 				SDKROOT = macosx10.8;
 			};
 			name = Debug;
@@ -2466,42 +2431,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = NO;
 				GCC_WARN_UNUSED_VALUE = NO;
 				GCC_WARN_UNUSED_VARIABLE = NO;
-				HEADER_SEARCH_PATHS = (
-					"$(OF_CORE_HEADERS)",
-					../../../addons/ofxBox2d/libs,
-					../../../addons/ofxBox2d/libs/Box2D,
-					../../../addons/ofxBox2d/libs/Box2D/Collision,
-					../../../addons/ofxBox2d/libs/Box2D/Collision/Shapes,
-					../../../addons/ofxBox2d/libs/Box2D/Common,
-					../../../addons/ofxBox2d/libs/Box2D/Dynamics,
-					../../../addons/ofxBox2d/libs/Box2D/Dynamics/Contacts,
-					../../../addons/ofxBox2d/libs/Box2D/Dynamics/Joints,
-					../../../addons/ofxBox2d/libs/triangle,
-					../../../addons/ofxBox2d/src,
-					../../../addons/ofxStereoCamera/libs,
-					../../../addons/ofxStereoCamera/src,
-					../../../addons/ofxSyphon/libs,
-					../../../addons/ofxSyphon/libs/Syphon,
-					../../../addons/ofxSyphon/libs/Syphon/lib,
-					../../../addons/ofxSyphon/libs/Syphon/lib/osx,
-					../../../addons/ofxSyphon/libs/Syphon/lib/osx/Syphon.framework,
-					../../../addons/ofxSyphon/libs/Syphon/lib/osx/Syphon.framework/Headers,
-					../../../addons/ofxSyphon/libs/Syphon/lib/osx/Syphon.framework/Resources,
-					../../../addons/ofxSyphon/libs/Syphon/lib/osx/Syphon.framework/Resources/English.lproj,
-					../../../addons/ofxSyphon/libs/Syphon/lib/osx/Syphon.framework/Versions,
-					../../../addons/ofxSyphon/libs/Syphon/lib/osx/Syphon.framework/Versions/A,
-					../../../addons/ofxSyphon/libs/Syphon/lib/osx/Syphon.framework/Versions/A/Headers,
-					../../../addons/ofxSyphon/libs/Syphon/lib/osx/Syphon.framework/Versions/A/Resources,
-					../../../addons/ofxSyphon/libs/Syphon/lib/osx/Syphon.framework/Versions/A/Resources/English.lproj,
-					../../../addons/ofxSyphon/libs/Syphon/lib/osx/Syphon.framework/Versions/Current,
-					../../../addons/ofxSyphon/libs/Syphon/lib/osx/Syphon.framework/Versions/Current/Headers,
-					../../../addons/ofxSyphon/libs/Syphon/lib/osx/Syphon.framework/Versions/Current/Resources,
-					../../../addons/ofxSyphon/libs/Syphon/lib/osx/Syphon.framework/Versions/Current/Resources/English.lproj,
-					../../../addons/ofxSyphon/libs/Syphon/src,
-					../../../addons/ofxSyphon/src,
-				);
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				OTHER_CPLUSPLUSFLAGS = "";
 				SDKROOT = macosx10.8;
 			};
 			name = Release;
@@ -2520,22 +2450,9 @@
 				ICON_FILE = "$(ICON_FILE_PATH)$(ICON)";
 				INFOPLIST_FILE = "openFrameworks-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					/Users/johan/Development/openFrameworks/addons/ofxOlaShaderLight/libs/olad/lib/osx,
-					"/Users/johan/Development/openFrameworks/addons/ofxTimeline/libs/openal/libs/vs2010/EFX-Util_MT",
-					"/Users/johan/Development/openFrameworks/addons/ofxTimeline/libs/openal/libs/vs2010/EFX-Util_MTDLL",
-					/Users/johan/Development/openFrameworks/addons/ofxTimeline/libs/openal/libs/vs2010,
-					"/Users/johan/Development/openFrameworks/addons/ofxTimeline/libs/openal/libs/win_cb/EFX-Util_MT",
-					"/Users/johan/Development/openFrameworks/addons/ofxTimeline/libs/openal/libs/win_cb/EFX-Util_MTDLL",
-					/Users/johan/Development/openFrameworks/addons/ofxTimeline/libs/openal/libs/win_cb,
-					/Users/johan/Development/openFrameworks/addons/ofxTimeline/libs/sndfile/lib/osx,
-					/Users/olek/Development/openFrameworks/addons/ofxOlaShaderLight/libs/olad/lib/osx,
-				);
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = TraeDebug;
 				SDKROOT = macosx10.8;
-				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -2553,22 +2470,9 @@
 				ICON_FILE = "$(ICON_FILE_PATH)$(ICON)";
 				INFOPLIST_FILE = "openFrameworks-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					/Users/johan/Development/openFrameworks/addons/ofxOlaShaderLight/libs/olad/lib/osx,
-					"/Users/johan/Development/openFrameworks/addons/ofxTimeline/libs/openal/libs/vs2010/EFX-Util_MT",
-					"/Users/johan/Development/openFrameworks/addons/ofxTimeline/libs/openal/libs/vs2010/EFX-Util_MTDLL",
-					/Users/johan/Development/openFrameworks/addons/ofxTimeline/libs/openal/libs/vs2010,
-					"/Users/johan/Development/openFrameworks/addons/ofxTimeline/libs/openal/libs/win_cb/EFX-Util_MT",
-					"/Users/johan/Development/openFrameworks/addons/ofxTimeline/libs/openal/libs/win_cb/EFX-Util_MTDLL",
-					/Users/johan/Development/openFrameworks/addons/ofxTimeline/libs/openal/libs/win_cb,
-					/Users/johan/Development/openFrameworks/addons/ofxTimeline/libs/sndfile/lib/osx,
-					/Users/olek/Development/openFrameworks/addons/ofxOlaShaderLight/libs/olad/lib/osx,
-				);
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = Trae;
 				SDKROOT = macosx10.8;
-				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

@@ -24,6 +24,7 @@ void testApp::setup()
     
     timeline.setup();
     timeline.setDurationInSeconds(120);
+    timeline.setName("Master");
     //timeline.setFrameRate(ofGetFrameRate());
     //rofxTimeline::removeCocoaMenusFromGlut("Trae");
     
@@ -78,10 +79,10 @@ void testApp::setup()
     gui = new ofxUIScrollableCanvas(0, 0, width+xInit, ofGetHeight());
     
     gui->setScrollableDirections(false, true);
+    gui->setTheme(OFX_UI_THEME_DEFAULT);
     
-    gui->setFont("GUI/Arial.ttf");
+    gui->setFont("GUI/NewMedia Fett.ttf");
     gui->setWidgetFontSize(OFX_UI_FONT_SMALL);
-    gui->setColorBack(ofColor(10, 10, 10,220));
     
     gui->addLabel("trae", OFX_UI_FONT_LARGE);
     
@@ -110,7 +111,6 @@ void testApp::setup()
     gui->autoSizeToFitWidgets();
     ofAddListener(gui->newGUIEvent,this,&testApp::guiEvent);
     
-    gui->setDrawBack(false);
     gui->setScrollAreaToScreenHeight();
     
     gui->loadSettings("GUI/guiSettings.xml");
@@ -156,6 +156,8 @@ void testApp::bangFired(ofxTLBangEventArgs& args){
 //--------------------------------------------------------------
 void testApp::update()
 {
+    gui->setScrollArea(0, timeline.getHeight(), 300, ofGetHeight()-timeline.getHeight());
+
     while(oscReceiver.hasWaitingMessages()){
 		// get the next message
 		ofxOscMessage m;
@@ -332,16 +334,15 @@ void testApp::draw()
     
     if(drawFBOs) {
         ofSetColor(255,255);
-        fbo.draw(300,400,(ofGetWidth()-300),(ofGetWidth()-300)*(fbo.getHeight()*1./fbo.getWidth()));
+        float fboHeight = (ofGetWidth()-300)*(fbo.getHeight()*1./fbo.getWidth());
+        fbo.draw(300,timeline.getHeight(),(ofGetWidth()-300),fboHeight);
     }
-    
+    ofSetColor(64,255);
+    ofRect(timeline.getDrawRect());
+    ofSetColor(255,255);
     timeline.draw();
-    
-    sbsOutputServer.publishFBO(&fbo);
-//    ofTexture t = fbo.getTextureReference();
-//    sbsOutputServer.publishTexture(&t);
-    
 
+    sbsOutputServer.publishFBO(&fbo);
     
 }
 
@@ -404,7 +405,7 @@ void testApp::mouseReleased(int x, int y, int button)
 void testApp::windowResized(int w, int h)
 {
     
-    gui->setScrollAreaToScreenHeight();
+    gui->setScrollArea(0, timeline.getHeight(), 300, ofGetHeight()-timeline.getHeight());
     
 }
 
