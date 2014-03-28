@@ -37,7 +37,7 @@ void TrunkRings::setup() {
     
     center = new Ring();
     center->setup();
-    center->make(30);
+    center->make(100);
     //rings = center->getChildren();
     
     
@@ -46,6 +46,7 @@ void TrunkRings::setup() {
 
 void TrunkRings::draw(int _surfaceId) {
     
+    ofEnableSmoothing();
     // A scene can draw to multiple surfaces
     if(_surfaceId == 0) {
         
@@ -57,6 +58,8 @@ void TrunkRings::draw(int _surfaceId) {
         
             center->draw(ofMap(time, 30, 120, 0, float(center->step)));
         }
+        
+        
         /*for(int i=0;i<rings.size();i++) {
             rings[i]->draw();
         }*/
@@ -68,7 +71,8 @@ void TrunkRings::draw(int _surfaceId) {
 }
 
 void TrunkRings::update() {
-    
+    if(time > 140) {
+    }
     
 }
 

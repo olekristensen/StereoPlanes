@@ -27,7 +27,7 @@ class Ring {
 
 public:
     float radius = 0.01;
-    int   resolution = 140;
+    int   resolution = 440;
     float seed;
     int   step = 0;
     float variance = 4;
@@ -66,6 +66,9 @@ public:
             points[i] += noiseDisplace*0.15;
             
         }
+        
+        points.push_back(points[0]);
+        
 
     }
     
@@ -123,8 +126,8 @@ public:
                 ofSetLineWidth(40);
                 mesh.draw();
                 
-                //ofNoFill();
-                //ofCircle(points[left],0.01);
+                ofNoFill();
+                ofCircle(points[left],0.01);
             }
             
         }
@@ -168,7 +171,7 @@ public:
                     
                 }
                 
-                ofSetLineWidth(40);
+                
                 mesh.draw();
                 
                 //ofNoFill();
@@ -176,6 +179,10 @@ public:
             }
             
         }
+    }
+    
+    
+    void drawGrowAll(float percent) {
     }
     
     
