@@ -124,32 +124,6 @@
 		7A2C023B18E58D8C00CEBC9D /* ofxProcTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7A2C023918E58D8C00CEBC9D /* ofxProcTree.cpp */; };
 		7A2C024018E58D9D00CEBC9D /* ofxMeshUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7A2C023E18E58D9D00CEBC9D /* ofxMeshUtils.cpp */; };
 		7A2C036518E58DE000CEBC9D /* ofxOlaShaderLight.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7A2C024318E58DDF00CEBC9D /* ofxOlaShaderLight.cpp */; };
-		7A2C036618E58DE000CEBC9D /* libola.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2C02FE18E58DDF00CEBC9D /* libola.a */; };
-		7A2C036718E58DE000CEBC9D /* libolaartnet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2C030218E58DDF00CEBC9D /* libolaartnet.a */; };
-		7A2C036818E58DE000CEBC9D /* libolaartnetconf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2C030618E58DDF00CEBC9D /* libolaartnetconf.a */; };
-		7A2C036918E58DE000CEBC9D /* libolacommon.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2C030A18E58DDF00CEBC9D /* libolacommon.a */; };
-		7A2C036A18E58DE000CEBC9D /* liboladummy.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2C030E18E58DDF00CEBC9D /* liboladummy.a */; };
-		7A2C036B18E58DE000CEBC9D /* libolae131.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2C031218E58DDF00CEBC9D /* libolae131.a */; };
-		7A2C036C18E58DE000CEBC9D /* libolae131conf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2C031618E58DDF00CEBC9D /* libolae131conf.a */; };
-		7A2C036D18E58DE000CEBC9D /* libolaespnet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2C031A18E58DDF00CEBC9D /* libolaespnet.a */; };
-		7A2C036E18E58DE000CEBC9D /* libolahttp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2C031E18E58DDF00CEBC9D /* libolahttp.a */; };
-		7A2C036F18E58DE000CEBC9D /* libolakarate.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2C032218E58DDF00CEBC9D /* libolakarate.a */; };
-		7A2C037018E58DE000CEBC9D /* libolakinet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2C032618E58DDF00CEBC9D /* libolakinet.a */; };
-		7A2C037118E58DE000CEBC9D /* libolamilinst.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2C032A18E58DDF00CEBC9D /* libolamilinst.a */; };
-		7A2C037218E58DE000CEBC9D /* libolaopendmx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2C032E18E58DDF00CEBC9D /* libolaopendmx.a */; };
-		7A2C037318E58DE000CEBC9D /* libolapathport.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2C033218E58DDF00CEBC9D /* libolapathport.a */; };
-		7A2C037418E58DE000CEBC9D /* libolarenard.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2C033618E58DDF00CEBC9D /* libolarenard.a */; };
-		7A2C037518E58DE000CEBC9D /* libolasandnet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2C033A18E58DDF00CEBC9D /* libolasandnet.a */; };
-		7A2C037618E58DE000CEBC9D /* libolaserver.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2C033E18E58DDF00CEBC9D /* libolaserver.a */; };
-		7A2C037718E58DE000CEBC9D /* libolashownet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2C034218E58DDF00CEBC9D /* libolashownet.a */; };
-		7A2C037818E58DE000CEBC9D /* libolaslpclient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2C034618E58DDF00CEBC9D /* libolaslpclient.a */; };
-		7A2C037918E58DE000CEBC9D /* libolaslpcore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2C034A18E58DDF00CEBC9D /* libolaslpcore.a */; };
-		7A2C037A18E58DE000CEBC9D /* libolaslpserver.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2C034E18E58DDF00CEBC9D /* libolaslpserver.a */; };
-		7A2C037B18E58DE000CEBC9D /* libolastageprofi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2C035218E58DDF00CEBC9D /* libolastageprofi.a */; };
-		7A2C037C18E58DE000CEBC9D /* libolatrigger.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2C035618E58DDF00CEBC9D /* libolatrigger.a */; };
-		7A2C037D18E58DE000CEBC9D /* libolausbdmx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2C035A18E58DDF00CEBC9D /* libolausbdmx.a */; };
-		7A2C037E18E58DE000CEBC9D /* libolausbpro.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2C035E18E58DDF00CEBC9D /* libolausbpro.a */; };
-		7A2C037F18E58DE000CEBC9D /* libolausbproconf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A2C036218E58DDF00CEBC9D /* libolausbproconf.a */; };
 		7A6DC1C218D494540054D5B6 /* Trae.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7A6DC1C018D494540054D5B6 /* Trae.cpp */; };
 		AB6B556718902BD800E70C54 /* SyphonNameboundClient.m in Sources */ = {isa = PBXBuildFile; fileRef = AB6B555818902BD800E70C54 /* SyphonNameboundClient.m */; };
 		AB6B556818902BD800E70C54 /* ofxSyphonClient.mm in Sources */ = {isa = PBXBuildFile; fileRef = AB6B555D18902BD800E70C54 /* ofxSyphonClient.mm */; };
@@ -784,49 +758,23 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7A2C036A18E58DE000CEBC9D /* liboladummy.a in Frameworks */,
-				7A2C037F18E58DE000CEBC9D /* libolausbproconf.a in Frameworks */,
-				7A2C037118E58DE000CEBC9D /* libolamilinst.a in Frameworks */,
-				7A2C036D18E58DE000CEBC9D /* libolaespnet.a in Frameworks */,
-				7A2C037D18E58DE000CEBC9D /* libolausbdmx.a in Frameworks */,
-				7A2C037218E58DE000CEBC9D /* libolaopendmx.a in Frameworks */,
-				7A2C037318E58DE000CEBC9D /* libolapathport.a in Frameworks */,
 				E7F985F815E0DEA3003869B5 /* Accelerate.framework in Frameworks */,
-				7A2C036818E58DE000CEBC9D /* libolaartnetconf.a in Frameworks */,
-				7A2C036F18E58DE000CEBC9D /* libolakarate.a in Frameworks */,
-				7A2C037B18E58DE000CEBC9D /* libolastageprofi.a in Frameworks */,
 				E7E077E815D3B6510020DFD4 /* QTKit.framework in Frameworks */,
 				E4EB6799138ADC1D00A09F29 /* GLUT.framework in Frameworks */,
-				7A2C036C18E58DE000CEBC9D /* libolae131conf.a in Frameworks */,
 				E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */,
 				7A16707218DB422100858F2E /* Syphon.framework in Frameworks */,
-				7A2C037C18E58DE000CEBC9D /* libolatrigger.a in Frameworks */,
 				E45BE97B0E8CC7DD009D7055 /* AGL.framework in Frameworks */,
-				7A2C036B18E58DE000CEBC9D /* libolae131.a in Frameworks */,
-				7A2C036718E58DE000CEBC9D /* libolaartnet.a in Frameworks */,
 				E45BE97C0E8CC7DD009D7055 /* ApplicationServices.framework in Frameworks */,
-				7A2C037918E58DE000CEBC9D /* libolaslpcore.a in Frameworks */,
-				7A2C036E18E58DE000CEBC9D /* libolahttp.a in Frameworks */,
-				7A2C037A18E58DE000CEBC9D /* libolaslpserver.a in Frameworks */,
 				E45BE97D0E8CC7DD009D7055 /* AudioToolbox.framework in Frameworks */,
-				7A2C037418E58DE000CEBC9D /* libolarenard.a in Frameworks */,
 				E45BE97E0E8CC7DD009D7055 /* Carbon.framework in Frameworks */,
 				E45BE97F0E8CC7DD009D7055 /* CoreAudio.framework in Frameworks */,
-				7A2C037518E58DE000CEBC9D /* libolasandnet.a in Frameworks */,
 				E45BE9800E8CC7DD009D7055 /* CoreFoundation.framework in Frameworks */,
-				7A2C037818E58DE000CEBC9D /* libolaslpclient.a in Frameworks */,
 				E45BE9810E8CC7DD009D7055 /* CoreServices.framework in Frameworks */,
-				7A2C037718E58DE000CEBC9D /* libolashownet.a in Frameworks */,
-				7A2C037018E58DE000CEBC9D /* libolakinet.a in Frameworks */,
 				E45BE9830E8CC7DD009D7055 /* OpenGL.framework in Frameworks */,
 				E45BE9840E8CC7DD009D7055 /* QuickTime.framework in Frameworks */,
-				7A2C036618E58DE000CEBC9D /* libola.a in Frameworks */,
-				7A2C036918E58DE000CEBC9D /* libolacommon.a in Frameworks */,
 				E4C2424710CC5A17004149E2 /* AppKit.framework in Frameworks */,
 				E4C2424810CC5A17004149E2 /* Cocoa.framework in Frameworks */,
-				7A2C037E18E58DE000CEBC9D /* libolausbpro.a in Frameworks */,
 				E4C2424910CC5A17004149E2 /* IOKit.framework in Frameworks */,
-				7A2C037618E58DE000CEBC9D /* libolaserver.a in Frameworks */,
 				E7E077E515D3B63C0020DFD4 /* CoreVideo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
