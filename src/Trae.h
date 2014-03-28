@@ -27,7 +27,7 @@ public:
     
     bool regrow;
     bool hasRegrown;
-    vector<ofxProcTree::Tree*> trees;
+    vector<ofxProcTree*> trees;
     
     float drawScale = 1.0;
     ofVec3f drawTranslation;

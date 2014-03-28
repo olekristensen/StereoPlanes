@@ -43,14 +43,14 @@ void Trae::draw(int _surfaceId) {
         ofSetColor(255,255,255);
         
         int i = 0;
-        for (std::vector<ofxProcTree::Tree*>::iterator it = trees.begin() ; it != trees.end(); ++it) {
+        for (std::vector<ofxProcTree*>::iterator it = trees.begin() ; it != trees.end(); ++it) {
             ofPushMatrix();
             ofRotateY(360.0*i/trees.size());
             ofTranslate(0, 0, 1);
             ofRotateX(-180);
             ofTranslate(0,-1,0);
             ofScale(1./3, 1./3, 1./3);
-            ofxProcTree::Tree *t = *(it);
+            ofxProcTree *t = *(it);
             t->mesh.draw();
             ofPopMatrix();
             i++;
@@ -74,14 +74,14 @@ void Trae::update() {
 
 void Trae::makeTrees(){
     
-    for (std::vector<ofxProcTree::Tree*>::iterator it = trees.begin() ; it != trees.end(); ++it) {
-        ofxProcTree::Tree *t = *(it);
+    for (std::vector<ofxProcTree*>::iterator it = trees.begin() ; it != trees.end(); ++it) {
+        ofxProcTree *t = *(it);
         delete t;
     }
     trees.clear();
     for (int i = 0; i < 3; i++) {
         
-        ofxProcTree::Branch::Properties * p = new ofxProcTree::Branch::Properties();
+        ofxProcTreeBranch::Properties * p = new ofxProcTreeBranch::Properties();
         
         p->seed = 519+i;
         p->segments = 14+ofRandom(-3,1);
@@ -106,7 +106,7 @@ void Trae::makeTrees(){
         p->twistRate = 1.29;
         p->trunkLength = 2.2+ofRandom(-1,0);
         
-        trees.push_back(new ofxProcTree::Tree(p));
+        trees.push_back(new ofxProcTree(p));
     }
 }
 
