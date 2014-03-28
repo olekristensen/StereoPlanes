@@ -125,6 +125,7 @@
 		7A2C024018E58D9D00CEBC9D /* ofxMeshUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7A2C023E18E58D9D00CEBC9D /* ofxMeshUtils.cpp */; };
 		7A2C036518E58DE000CEBC9D /* ofxOlaShaderLight.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7A2C024318E58DDF00CEBC9D /* ofxOlaShaderLight.cpp */; };
 		7A6DC1C218D494540054D5B6 /* Trae.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7A6DC1C018D494540054D5B6 /* Trae.cpp */; };
+		7AA24FD518E5CBFA00955341 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AA24FD318E5CBE300955341 /* OpenAL.framework */; };
 		AB6B556718902BD800E70C54 /* SyphonNameboundClient.m in Sources */ = {isa = PBXBuildFile; fileRef = AB6B555818902BD800E70C54 /* SyphonNameboundClient.m */; };
 		AB6B556818902BD800E70C54 /* ofxSyphonClient.mm in Sources */ = {isa = PBXBuildFile; fileRef = AB6B555D18902BD800E70C54 /* ofxSyphonClient.mm */; };
 		AB6B556918902BD800E70C54 /* ofxSyphonServer.mm in Sources */ = {isa = PBXBuildFile; fileRef = AB6B555F18902BD800E70C54 /* ofxSyphonServer.mm */; };
@@ -717,6 +718,7 @@
 		7A2C036418E58DDF00CEBC9D /* libolausbproconf.la */ = {isa = PBXFileReference; lastKnownFileType = text; path = libolausbproconf.la; sourceTree = "<group>"; };
 		7A6DC1C018D494540054D5B6 /* Trae.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Trae.cpp; sourceTree = "<group>"; };
 		7A6DC1C118D494540054D5B6 /* Trae.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Trae.h; sourceTree = "<group>"; };
+		7AA24FD318E5CBE300955341 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
 		7AF1C3BD18859C8200B38D3B /* stereoplanes.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = stereoplanes.xml; path = bin/data/stereoplanes.xml; sourceTree = "<group>"; };
 		AB6B555718902BD800E70C54 /* SyphonNameboundClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyphonNameboundClient.h; sourceTree = "<group>"; };
 		AB6B555818902BD800E70C54 /* SyphonNameboundClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyphonNameboundClient.m; sourceTree = "<group>"; };
@@ -758,6 +760,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7AA24FD518E5CBFA00955341 /* OpenAL.framework in Frameworks */,
 				E7F985F815E0DEA3003869B5 /* Accelerate.framework in Frameworks */,
 				E7E077E815D3B6510020DFD4 /* QTKit.framework in Frameworks */,
 				E4EB6799138ADC1D00A09F29 /* GLUT.framework in Frameworks */,
@@ -2072,6 +2075,7 @@
 		BBAB23C913894ECA00AA2426 /* system frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7AA24FD318E5CBE300955341 /* OpenAL.framework */,
 				E7F985F515E0DE99003869B5 /* Accelerate.framework */,
 				E4C2424410CC5A17004149E2 /* AppKit.framework */,
 				E4C2424510CC5A17004149E2 /* Cocoa.framework */,
@@ -2406,7 +2410,7 @@
 				GCC_WARN_UNUSED_VALUE = NO;
 				GCC_WARN_UNUSED_VARIABLE = NO;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				SDKROOT = macosx10.8;
+				SDKROOT = macosx10.9;
 			};
 			name = Debug;
 		};
@@ -2432,7 +2436,7 @@
 				GCC_WARN_UNUSED_VALUE = NO;
 				GCC_WARN_UNUSED_VARIABLE = NO;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				SDKROOT = macosx10.8;
+				SDKROOT = macosx10.9;
 			};
 			name = Release;
 		};
@@ -2452,7 +2456,6 @@
 				INSTALL_PATH = "$(HOME)/Applications";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = TraeDebug;
-				SDKROOT = macosx10.8;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -2472,7 +2475,6 @@
 				INSTALL_PATH = "$(HOME)/Applications";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = Trae;
-				SDKROOT = macosx10.8;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

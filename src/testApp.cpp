@@ -30,6 +30,7 @@ void testApp::setup()
     
     timeline.setLoopType(OF_LOOP_NORMAL);
     timeline.addCurves("curves", ofRange(0, 255));
+    timeline.addAudioTrack("piklyd");
 	ofAddListener(timeline.events().bangFired, this, &testApp::bangFired);
     
     
