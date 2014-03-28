@@ -89,7 +89,15 @@ public:
     /*void drawPercentage(float percent) {
         
     }*/
-
+    
+    // Draw child n p percent complete
+    void drawStep(int n, float p) {
+        if(step == n) {
+            
+        } else if(child) {
+            child->drawStep(n, p);
+        }
+    }
     
     void draw(float steps) {
         

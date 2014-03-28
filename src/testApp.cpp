@@ -29,10 +29,10 @@ void testApp::setup()
     //rofxTimeline::removeCocoaMenusFromGlut("Trae");
     
     timeline.setLoopType(OF_LOOP_NORMAL);
-    timeline.addCurves("curves", ofRange(0, 255));
+    //timeline.addCurves("curves", ofRange(0, 255));
 	ofAddListener(timeline.events().bangFired, this, &testApp::bangFired);
     
-    
+    timeline.addAudioTrack("Lyd");
     ofFbo::Settings fboSettings;
     
     fboSettings.width = resX;
