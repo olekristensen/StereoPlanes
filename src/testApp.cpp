@@ -9,18 +9,28 @@ void testApp::setup()
     int resY = 720;
     
     speed = 0;
-    time = 0;
+    //time = 0;
 
     ofSetLogLevel(OF_LOG_VERBOSE);
     
     ofSetFrameRate(30);
-//    ofSetVerticalSync(true);
+    ofSetVerticalSync(true);
 //    ofSetBackgroundAuto(true);
     ofBackground(0);
     
     //leftOutputServer.setName("Left");
     //rightOutputServer.setName("Right");
     sbsOutputServer.setName("Side By Side");
+    
+    timeline.setup();
+    timeline.setDurationInSeconds(120);
+    //timeline.setFrameRate(ofGetFrameRate());
+    //rofxTimeline::removeCocoaMenusFromGlut("Trae");
+    
+    timeline.setLoopType(OF_LOOP_NORMAL);
+    timeline.addCurves("curves", ofRange(0, 255));
+	ofAddListener(timeline.events().bangFired, this, &testApp::bangFired);
+    
     
     ofFbo::Settings fboSettings;
     
@@ -41,8 +51,8 @@ void testApp::setup()
     wall->pos = ofVec2f(0,0);
     planes.push_back(wall);
     
-    activePlaneIndex = 0;
-    activePlane = planes[activePlaneIndex];
+    //activePlaneIndex = 0;
+    //activePlane = planes[activePlaneIndex];
     
     oscReceiver.setup(9001);
     
@@ -51,8 +61,12 @@ void testApp::setup()
     trae = new Trae();
     contentScenes.push_back(trae);
     
+    trunkRings = new TrunkRings();
+    contentScenes.push_back(trunkRings);
+    
     for(int i=0; i<contentScenes.size(); i++) {
-        contentScenes[i]->setupScene(i);
+        //contentScenes[i]->mainTimeline = &timeline;
+        contentScenes[i]->setupScene(i, &timeline);
     }
     
     // add all parameterGroups from scenes to parameters
@@ -127,6 +141,15 @@ void testApp::setup()
     
     }
     
+
+    
+}
+
+
+
+//--------------------------------------------------------------
+void testApp::bangFired(ofxTLBangEventArgs& args){
+	cout << "bang fired!" << args.flag << endl;
 }
 
 
@@ -180,7 +203,6 @@ void testApp::update()
     }
 
     for(int s=0; s<contentScenes.size();s++) {
-        contentScenes[s]->time = time;
         contentScenes[s]->update();
     }
     
@@ -199,7 +221,9 @@ void testApp::update()
     ofxOlaShaderLight::update();
     
     ofSetWindowTitle(ofToString(ofGetFrameRate()));
-    time += speed;
+    
+    trae->enabled = (timeline.getCurrentTime()>100);
+    trunkRings->enabled = (timeline.getCurrentTime()<100);
 
 }
 
@@ -216,7 +240,7 @@ void testApp::drawScenes(int _surfaceId) {
 
 void testApp::drawFly(){
     
-    float flyTime = time * 0.01;
+    float flyTime = timeline.getCurrentTimeMillis() * 0.01;
     
     float zPos =ofSignedNoise(0,0,flyTime);
     float reduction = fmaxf(0,ofMap(zPos, 1, -1, 0.0, 1));
@@ -238,6 +262,11 @@ void testApp::drawFly(){
 //--------------------------------------------------------------
 void testApp::draw()
 {
+    
+    for(int s=0; s<contentScenes.size();s++) {
+        contentScenes[s]->time = timeline.getCurrentTime();
+    }
+    
     ofSetColor(255);
     ofBackgroundGradient(ofColor::darkGrey, ofColor::gray);
     //drawScenes(0);
@@ -245,7 +274,7 @@ void testApp::draw()
     ofEnableDepthTest();
     
     // draw scenes to surfaces, they are kept in the cameras fbo
-
+    
     for(int i=0;i < planes.size(); i++) {
         planes[i]->beginLeft();
         ofClear(ofColor::black);
@@ -302,17 +331,20 @@ void testApp::draw()
         
     }fbo.end();
     
+    
+    
     if(drawFBOs) {
         ofSetColor(255,255);
-        fbo.draw(300,0,(ofGetWidth()-300),(ofGetWidth()-300)*(fbo.getHeight()*1./fbo.getWidth()));
+        fbo.draw(300,400,(ofGetWidth()-300),(ofGetWidth()-300)*(fbo.getHeight()*1./fbo.getWidth()));
     }
     
-//    ofEnableArbTex();
+    timeline.draw();
     
     sbsOutputServer.publishFBO(&fbo);
 //    ofTexture t = fbo.getTextureReference();
 //    sbsOutputServer.publishTexture(&t);
     
+
     
 }
 

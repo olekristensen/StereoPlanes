@@ -16,7 +16,7 @@ public:
         height = 2.;
         width = height *(w/h);
         
-        leftFbo.allocate(w,h, GL_RGBA);
+        leftFbo.allocate( w, h, GL_RGBA);
 		rightFbo.allocate(w, h, GL_RGBA);
         
         leftFbo.begin();

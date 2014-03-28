@@ -10,6 +10,7 @@
 #include "ofMain.h"
 #include "ofxUI.h"
 #include "ofxOsc.h"
+#include "ofxTimeline.h"
 
 class ContentScene {
     
@@ -22,7 +23,9 @@ public:
     
     bool enabled;
     float time;
-
+    
+    ofxTimeline * mainTimeline;
+    
     ContentScene() {
     }
     
@@ -45,9 +48,10 @@ public:
     
     virtual void guiEvent(ofxUIEventArgs &e) {};
     
-    void setupScene(int _index) {
+    void setupScene(int _index, ofxTimeline * _timeline = NULL) {
         index = _index;
         indexStr = "["+ ofToString(_index) + "] ";
+        mainTimeline = _timeline;
         
         setup();
     }
