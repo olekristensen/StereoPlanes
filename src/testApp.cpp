@@ -23,6 +23,7 @@ void testApp::setup()
     sbsOutputServer.setName("Side By Side");
     
     timeline.setup();
+    timeline.setupFont("GUI/Arial.ttf", 7);
     timeline.setDurationInSeconds(120);
     timeline.setName("Master");
     //timeline.setFrameRate(ofGetFrameRate());
@@ -30,7 +31,7 @@ void testApp::setup()
     
     timeline.setLoopType(OF_LOOP_NORMAL);
     timeline.addCurves("curves", ofRange(0, 255));
-    timeline.addAudioTrack("piklyd");
+    timeline.addAudioTrack("Dejlig soed laekker lyd");
 	ofAddListener(timeline.events().bangFired, this, &testApp::bangFired);
     
     
@@ -82,8 +83,9 @@ void testApp::setup()
     gui->setScrollableDirections(false, true);
     gui->setTheme(OFX_UI_THEME_DEFAULT);
     
-    gui->setFont("GUI/NewMedia Fett.ttf");
+    gui->setFont("GUI/Arial.ttf");
     gui->setWidgetFontSize(OFX_UI_FONT_SMALL);
+    gui->setFontSize(OFX_UI_FONT_SMALL, 5);
     
     gui->addLabel("trae", OFX_UI_FONT_LARGE);
     
