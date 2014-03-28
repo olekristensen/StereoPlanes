@@ -2,6 +2,8 @@
 #include <OpenGL/OpenGL.h>
 #include <ofGLUtils.h>
 
+
+
 //--------------------------------------------------------------
 void testApp::setup()
 {
@@ -10,7 +12,9 @@ void testApp::setup()
     
     speed = 0;
     //time = 0;
-
+    
+    
+    ofSetWindowTitle("Trae - openframeworks");
     ofSetLogLevel(OF_LOG_VERBOSE);
     
     ofSetFrameRate(30);
@@ -24,16 +28,31 @@ void testApp::setup()
     
     timeline.setup();
     timeline.setupFont("GUI/Arial.ttf", 7);
+    
     timeline.setDurationInSeconds(120);
     timeline.setName("Master");
     //timeline.setFrameRate(ofGetFrameRate());
     //rofxTimeline::removeCocoaMenusFromGlut("Trae");
     
     timeline.setLoopType(OF_LOOP_NORMAL);
-    timeline.addCurves("curves", ofRange(0, 255));
-    timeline.addAudioTrack("Dejlig soed laekker lyd");
+    
+    timeline.setBPM(120.f);
+    tlAudioMain = timeline.addAudioTrack("Audio", "tre-opbyg-beat.wav");
+    
+    tlAudioMain->loadSoundfile("tre-opbyg-beat.wav");
+
 	ofAddListener(timeline.events().bangFired, this, &testApp::bangFired);
     
+    timeline.addPage("Camera");
+    tlCamX = timeline.addCurves("X");
+    tlCamX->setValueRangeMin(-1);
+    tlCamX->setValueRangeMax(1);
+    tlCamY = timeline.addCurves("Y");
+    tlCamY->setValueRangeMin(-1);
+    tlCamY->setValueRangeMax(1);
+    tlCamZ = timeline.addCurves("Z");
+    tlCamZ->setValueRangeMin(-4);
+    tlCamZ->setValueRangeMax(-0.25);
     
     ofFbo::Settings fboSettings;
     
@@ -89,23 +108,29 @@ void testApp::setup()
     
     gui->addLabel("trae", OFX_UI_FONT_LARGE);
     
+    gui->addFPS();
     gui->addSlider("Eye seperation", 0, 7, &eyeSeperation);
     
-    gui->addSlider("Wall X",  -2, 2, &camPosWall.x);
+    /*gui->addSlider("Wall X",  -2, 2, &camPosWall.x);
     gui->addSlider("Wall Y",  -1, 1, &camPosWall.y);
     gui->addSlider("Wall Z",  -4, -0.25, &camPosWall.z);
-
+*/
     gui->addSlider("Aspect",  0.0, 2.0, &aspect);
-    gui->addSlider("Speed", -1, 1, &speed);
+    //gui->addSlider("Speed", -1, 1, &speed);
+    
+    gui->addSpacer(width, 3)->setDrawOutline(true);
+    
     gui->addSlider("Vertex Noise", -1, 1, &vertexNoise);
 
-    gui->addSlider("Dancer X",  -1, 1, &dancerPos.x);
-    gui->addSlider("Dancer Y",  -1, 1, &dancerPos.y);
+    //gui->addSlider("Dancer X",  -1, 1, &dancerPos.x);
+    //gui->addSlider("Dancer Y",  -1, 1, &dancerPos.y);
 
     gui->addToggle("Draw Checkers", &drawChessboards);
     gui->addToggle("Draw Planes", &drawGrids);
     gui->addToggle("Draw FBOs", &drawFBOs);
-
+    gui->addToggle("Preview SBS", &previewSideBySide);
+    
+    
     for(int i=0; i<contentScenes.size(); i++) {
         gui->addSpacer(width, 3)->setDrawOutline(true);
         contentScenes[i]->setGui(gui, width);
@@ -160,7 +185,9 @@ void testApp::bangFired(ofxTLBangEventArgs& args){
 void testApp::update()
 {
     gui->setScrollArea(0, timeline.getHeight(), 300, ofGetHeight()-timeline.getHeight());
-
+    
+    camPosWall = ofVec3f(tlCamX->getValue(),tlCamY->getValue(),tlCamZ->getValue());
+    
     while(oscReceiver.hasWaitingMessages()){
 		// get the next message
 		ofxOscMessage m;
@@ -198,6 +225,8 @@ void testApp::update()
         }
     }
     
+    
+    
     wall->cam.setPosition(camPosWall);
     
     wall->aspect = aspect;
@@ -225,7 +254,7 @@ void testApp::update()
     }
     ofxOlaShaderLight::update();
     
-    ofSetWindowTitle(ofToString(ofGetFrameRate()));
+    //ofSetWindowTitle(ofToString(ofGetFrameRate()));
     
     trae->enabled = (timeline.getCurrentTime()>100);
     trunkRings->enabled = (timeline.getCurrentTime()<100);
@@ -333,12 +362,14 @@ void testApp::draw()
         
     }fbo.end();
     
-    
-    
     if(drawFBOs) {
         ofSetColor(255,255);
         float fboHeight = (ofGetWidth()-300)*(fbo.getHeight()*1./fbo.getWidth());
-        fbo.draw(300,timeline.getHeight(),(ofGetWidth()-300),fboHeight);
+        if(previewSideBySide) {
+            fbo.draw(300,timeline.getHeight(),(ofGetWidth()-300),fboHeight);
+        } else {
+            fbo.draw(300,timeline.getHeight(),(ofGetWidth()-300)*2,fboHeight*2);
+        }
     }
     ofSetColor(64,255);
     ofRect(timeline.getDrawRect());

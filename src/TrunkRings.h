@@ -32,6 +32,8 @@ public:
     int   step = 0;
     float variance = 4;
     float scale = 60;
+    float speed = 1;
+    int long start = 0;
     
     Ring * parent = NULL;
     Ring * child = NULL;
@@ -105,11 +107,8 @@ public:
             ofMesh mesh;
             mesh.setMode(OF_PRIMITIVE_LINE_LOOP);
             for (int i=0; i<points.size(); i++) {
-            
                 mesh.addColor(ofFloatColor(0.8f,0.8f,0.8f, 0.8f));
                 mesh.addVertex(points[i]);
-                
-
             }
             ofSetLineWidth(40);
             mesh.draw();
@@ -125,13 +124,10 @@ public:
                 mesh.setMode(OF_PRIMITIVE_LINE_STRIP);
 
                 for (int i=0; i<left; i++) {
-                    
                     mesh.addColor(ofFloatColor(0.8f,0.8f,0.8f, ofMap(i, 0, left, 1.0f, 0.0f)));
                     mesh.addVertex(points[i]);
                     
                 }
-                
-                ofSetLineWidth(40);
                 mesh.draw();
                 
                 ofNoFill();
@@ -193,6 +189,38 @@ public:
     void drawGrowAll(float percent) {
     }
     
+    void drawAsMesh(float p) {
+        
+        ofMesh mesh;
+        int left = float(resolution) * p;
+        
+        mesh.setMode(OF_PRIMITIVE_LINE_STRIP);
+        for (int i=0; i<left; i++) {
+            mesh.addColor(ofFloatColor(0.8f,0.8f,0.8f, ofMap(i, 0, left, 1.0f, 0.0f)));
+            mesh.addVertex(points[i]);
+        }
+        
+        ofSetLineWidth(40);
+        mesh.draw();
+        
+        ofNoFill();
+        ofCircle(points[left],0.01);
+        
+    }
+    
+    void drawActiveRings(int long time) {
+        
+        if(time>start) {
+            drawAsMesh(1);
+        }
+        
+        if(child) {
+            child->drawActiveRings(time);
+        }
+        
+        
+    }
+    
     
 };
 
@@ -208,17 +236,16 @@ public:
     void guiEvent(ofxUIEventArgs &e);
     void receiveOsc(ofxOscMessage * m, string rest);
     
-    vector<ofVec3f> points;
+    //vector<ofVec3f> points;
     
     int seed;
     
-    //ofxEasingQuad 	easingquad;
-    ofxTLSwitches * ringSwitches;
+    ofxTLFlags * tlStartFlags;
+    ofxTLCurves * tlRadius;
+    ofxTLCurves * tlSpeed;
+    ofxTLCurves * tlNoise;
     
-    ofxTLCurves * ringRadius;
-    //ofxTLCurves * yPos;
-    
-    ofVec3f ringHistory [TAIL_LENGTH];
+    //ofVec3f ringHistory [TAIL_LENGTH];
     
     vector<Ring *> rings;
     

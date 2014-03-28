@@ -5,43 +5,13 @@
 </Widget>
 <Widget>
     <Kind>4</Kind>
-    <Name>Wall X</Name>
-    <Value>-1.191780806</Value>
-</Widget>
-<Widget>
-    <Kind>4</Kind>
-    <Name>Wall Y</Name>
-    <Value>0.760273933</Value>
-</Widget>
-<Widget>
-    <Kind>4</Kind>
-    <Name>Wall Z</Name>
-    <Value>-2.227739811</Value>
-</Widget>
-<Widget>
-    <Kind>4</Kind>
     <Name>Aspect</Name>
     <Value>1.404109597</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
-    <Name>Speed</Name>
-    <Value>0.856164336</Value>
-</Widget>
-<Widget>
-    <Kind>4</Kind>
     <Name>Vertex Noise</Name>
     <Value>0.273972631</Value>
-</Widget>
-<Widget>
-    <Kind>4</Kind>
-    <Name>Dancer X</Name>
-    <Value>-0.182186246</Value>
-</Widget>
-<Widget>
-    <Kind>4</Kind>
-    <Name>Dancer Y</Name>
-    <Value>0.376518250</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
@@ -56,6 +26,11 @@
 <Widget>
     <Kind>2</Kind>
     <Name>Draw FBOs</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>Preview SBS</Name>
     <Value>1</Value>
 </Widget>
 <Widget>

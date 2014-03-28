@@ -102,5 +102,13 @@ public:
     void bangFired(ofxTLBangEventArgs& args);
 
     
+    ofxTLCurves * tlCamX;
+    ofxTLCurves * tlCamY;
+    ofxTLCurves * tlCamZ;
+    
+    ofxTLAudioTrack * tlAudioMain;
+    
+    bool previewSideBySide = false;
+    
     
 };
