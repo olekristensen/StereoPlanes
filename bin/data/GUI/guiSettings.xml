@@ -6,7 +6,7 @@
 <Widget>
     <Kind>4</Kind>
     <Name>Wall X</Name>
-    <Value>0.410959005</Value>
+    <Value>-1.191780806</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
@@ -21,12 +21,12 @@
 <Widget>
     <Kind>4</Kind>
     <Name>Aspect</Name>
-    <Value>1.000000000</Value>
+    <Value>1.404109597</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>Speed</Name>
-    <Value>-0.767123282</Value>
+    <Value>0.856164336</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
@@ -66,7 +66,7 @@
 <Widget>
     <Kind>4</Kind>
     <Name>Z pos</Name>
-    <Value>0.089041024</Value>
+    <Value>0.534246445</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>

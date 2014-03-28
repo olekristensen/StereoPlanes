@@ -24,6 +24,8 @@ void Trae::draw(int _surfaceId) {
     if(_surfaceId == 0) {
         
         ofPushMatrix();
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_FRONT);
         
 /*      FLOOR AND AXIS
         ofPushMatrix();
@@ -55,7 +57,7 @@ void Trae::draw(int _surfaceId) {
         }
         //tree->drawSkeleton();
         ofPopMatrix();
-        
+        glDisable(GL_CULL_FACE);
     }
     
 }

@@ -230,17 +230,14 @@ void testApp::update()
 
 void testApp::drawScenes(int _surfaceId) {
     for(int s=0; s<contentScenes.size();s++) {
-        glEnable(GL_CULL_FACE);
-        glCullFace(GL_FRONT);
         contentScenes[s]->drawScene(_surfaceId);
         drawFly();
-        glDisable(GL_CULL_FACE);
     }
 }
 
 void testApp::drawFly(){
     
-    float flyTime = timeline.getCurrentTimeMillis() * 0.01;
+    float flyTime = timeline.getCurrentTime() * 0.01;
     
     float zPos =ofSignedNoise(0,0,flyTime);
     float reduction = fmaxf(0,ofMap(zPos, 1, -1, 0.0, 1));
@@ -252,9 +249,9 @@ void testApp::drawFly(){
                 2.2*zPos
                 );
     
-    ofxOlaShaderLight::end();
+//    ofxOlaShaderLight::end();
     ofDrawSphere(pos, 0.01);
-    ofxOlaShaderLight::begin();
+//    ofxOlaShaderLight::begin();
     flyLight.setGlobalPosition(pos);
     moonLight.setGlobalPosition(pos.y,-1,pos.x);
 }
@@ -280,13 +277,13 @@ void testApp::draw()
         ofClear(ofColor::black);
         glPushMatrix();
         // update Lighting
-        ofxOlaShaderLight::begin();
+//        ofxOlaShaderLight::begin();
 //        lightShader.setUniform1f("vertexNoise", vertexNoise);
-        ofxOlaShaderLight::setMaterial(white);
+//        ofxOlaShaderLight::setMaterial(white);
 
         drawScenes(i);
         
-        ofxOlaShaderLight::end();
+//        ofxOlaShaderLight::end();
         glPopMatrix();
         planes[i]->endLeft();
         
@@ -295,13 +292,13 @@ void testApp::draw()
         glPushMatrix();
         
         // update Lighting
-        ofxOlaShaderLight::begin();
+//        ofxOlaShaderLight::begin();
         //        lightShader.setUniform1f("vertexNoise", vertexNoise);
-        ofxOlaShaderLight::setMaterial(white);
+//        ofxOlaShaderLight::setMaterial(white);
         
         drawScenes(i);
         
-        ofxOlaShaderLight::end();
+//        ofxOlaShaderLight::end();
         glPopMatrix();
         planes[i]->endRight();
     }

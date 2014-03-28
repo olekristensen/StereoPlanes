@@ -9,7 +9,7 @@
 #include "ofxUI.h"
 #include "Trae.h"
 #include "ofxUbo.h"
-//#include "ofxOlaShaderLight.h"
+#include "ofxOlaShaderLight.h"
 #include "ofxTimeline.h"
 #include "TrunkRings.h"
 
@@ -83,12 +83,12 @@ public:
     
     // Lights
     
-    /*ofxOlaShaderLight flyLight;
+    ofxOlaShaderLight flyLight;
     ofxOlaShaderLight moonLight;
     
     ofxOlaShaderLight::Material white;
     
-    vector<ofxOlaShaderLight*> randomLights;*/
+    vector<ofxOlaShaderLight*> randomLights;
     
     float vertexNoise;
     

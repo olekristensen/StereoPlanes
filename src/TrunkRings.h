@@ -38,7 +38,7 @@ public:
     
     vector<ofVec3f> points;
     
-    vector<Ring *> allChildren;
+//    vector<Ring *> allChildren;
     
     void setup() {
         seed = ofRandom(0,10.0);
