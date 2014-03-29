@@ -190,8 +190,8 @@ void testApp::update()
     }
     
     wall->cam.setPosition(camPosWall);
-    
     wall->aspect = aspect;
+    lights->updateCamPos(camPosWall);
     
     for(int i=0; i<planes.size(); i++) {
         planes[i]->cam.setPhysicalEyeSeparation(eyeSeperation);

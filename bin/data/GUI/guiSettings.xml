@@ -6,12 +6,12 @@
 <Widget>
     <Kind>4</Kind>
     <Name>Wall X</Name>
-    <Value>0.479452133</Value>
+    <Value>0.356164455</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>Wall Y</Name>
-    <Value>0.664383531</Value>
+    <Value>0.691780806</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
@@ -26,7 +26,7 @@
 <Widget>
     <Kind>4</Kind>
     <Name>Speed</Name>
-    <Value>0.856164336</Value>
+    <Value>0.808219194</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
@@ -64,9 +64,9 @@
     <Value>1</Value>
 </Widget>
 <Widget>
-    <Kind>4</Kind>
-    <Name>Z pos</Name>
-    <Value>-0.989726007</Value>
+    <Kind>17</Kind>
+    <Name>Lock Camera to Track</Name>
+    <Value>1</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>

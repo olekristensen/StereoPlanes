@@ -21,6 +21,8 @@ public:
     void begin();
     void end();
     
+    void updateCamPos(ofVec3f p);
+    
     void setMaterial(ofxOlaShaderLight::Material m);
     
     void setGui(ofxUICanvas * gui, float width);
@@ -51,6 +53,8 @@ public:
     
     ofxTLColorTrack * flyLightDotColor;
     ofxTLCurves     * flyLightDotSize;
+    
+    ofVec3f camPos;
     
     //Sky
     

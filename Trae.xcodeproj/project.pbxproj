@@ -717,6 +717,7 @@
 		7A2C036218E58DDF00CEBC9D /* libolausbproconf.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libolausbproconf.a; sourceTree = "<group>"; };
 		7A2C036318E58DDF00CEBC9D /* libolausbproconf.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libolausbproconf.dylib; sourceTree = "<group>"; };
 		7A2C036418E58DDF00CEBC9D /* libolausbproconf.la */ = {isa = PBXFileReference; lastKnownFileType = text; path = libolausbproconf.la; sourceTree = "<group>"; };
+		7A4A3B3B18E724C500D0C157 /* Tree_Camera.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Tree_Camera.xml; path = bin/data/Tree_Camera.xml; sourceTree = "<group>"; };
 		7A6DC1C018D494540054D5B6 /* Trae.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Trae.cpp; sourceTree = "<group>"; };
 		7A6DC1C118D494540054D5B6 /* Trae.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Trae.h; sourceTree = "<group>"; };
 		7AA24FD318E5CBE300955341 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
@@ -2129,6 +2130,7 @@
 				7AF1C3BD18859C8200B38D3B /* stereoplanes.xml */,
 				E4B6FCAD0C3E899E008CF71C /* openFrameworks-Info.plist */,
 				E4EB6923138AFD0F00A09F29 /* Project.xcconfig */,
+				7A4A3B3B18E724C500D0C157 /* Tree_Camera.xml */,
 				7A0C9C8D18DC9975005A65A0 /* shaders */,
 				E4B69E1C0A3A1BDC003C02F2 /* src */,
 				E4EEC9E9138DF44700A80321 /* openFrameworks */,

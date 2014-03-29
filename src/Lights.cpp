@@ -26,6 +26,9 @@ void Lights::setup() {
     flyLightPosNoise = mainTimeline->addCurves("Fly Light Pos Noise", ofRange(0.0, 1.0));
     flyLightPosNoiseSpeed = mainTimeline->addCurves("Fly Light Pos Noise Speed", ofRange(-1.0, 1.0));
 
+    flyLightDotColor = mainTimeline->addColors("Fly Light Dot Color");
+    flyLightDotSize = mainTimeline->addCurves("Fly Light Dot Size", ofRange(0.0, 1.0));
+    
     skyLightColor = mainTimeline->addColors("Sky Light Color");
     skyLightAttenuation = mainTimeline->addCurves("Sky Light Attenuation", ofRange(0.001,5.0));
     
@@ -70,10 +73,15 @@ void Lights::draw(int _surfaceId) {
     if(lightWasEnabled){
         ofxOlaShaderLight::end();
     }
-    ofDrawSphere(flyLight.getGlobalPosition(), 0.01);
+    ofSetColor(flyLightDotColor->getColor());
+    ofDrawSphere(flyLight.getGlobalPosition(), flyLightDotSize->getValue());
     if(lightWasEnabled){
         ofxOlaShaderLight::begin();
     }
+}
+
+void Lights::updateCamPos(ofVec3f p){
+    camPos = p;
 }
 
 void Lights::update() {
@@ -84,19 +92,9 @@ void Lights::update() {
     float reduction = fmaxf(0,ofMap(zPos, 1, -1, 0.0, 1));
     reduction = pow(reduction, 3);
     
-    ofxUISlider * wallPosX = (ofxUISlider*) gui->getWidget("Wall X");
-    ofxUISlider * wallPosY = (ofxUISlider*) gui->getWidget("Wall Y");
-    ofxUISlider * wallPosZ = (ofxUISlider*) gui->getWidget("Wall Z");
-    
-    ofVec3f camPosWall = ofVec3f(
-                                 wallPosX->getValue(),
-                                 wallPosY->getValue(),
-                                 wallPosZ->getValue()
-                                 );
-    
     ofVec3f posNoise(
-                     ofMap(reduction, 0,1,ofSignedNoise(flyTime), camPosWall.x),
-                     ofMap(reduction, 0,1,ofSignedNoise(0,flyTime), camPosWall.y),
+                     ofMap(reduction, 0,1,ofSignedNoise(flyTime), camPos.x),
+                     ofMap(reduction, 0,1,ofSignedNoise(0,flyTime), camPos.y),
                      2.2*zPos
                      );
     

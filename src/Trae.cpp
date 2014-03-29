@@ -28,33 +28,44 @@ void Trae::setup() {
     treeMaterial.diffuseColor = ofVec4f(1.0, 1.0, 1.0, 1.0);
     treeMaterial.specularColor = ofVec4f(0.0, 0.0, 0.0, 1.0);
     treeMaterial.specularShininess = 0.5;
+    
+    cam.setTranslationKey('-');
+    cam.setScale(2,2,2);
+    cam.setPosition(0, 0, 0);
+    cam.setOrientation(ofVec3f(0,0,0));
+
+    cameraTrack = new ofxTLCameraTrack();
+    cameraTrack->setDampening(1);
+	cameraTrack->setCamera(cam);
+    cameraTrack->setXMLFileName("Tree_Camera.xml");
+	mainTimeline->addTrack("Camera", cameraTrack);
+	
+//	cameraTrack->lockCameraToTrack = true;
+
+    for(int i = 0; i < 10000; i++){
+		particles.addVertex(ofVec3f(ofRandom(-2000,2000),
+									ofRandom(-2000,2000),
+									ofRandom(-2000,2000)));
+        
+		particles.addColor(ofFloatColor(ofRandomuf()*.4));
+	}
 
 }
 
 void Trae::draw(int _surfaceId) {
-    
+    cam.enableMouseInput();
+
     // A scene can draw to multiple surfaces
     if(_surfaceId == 0) {
-        
         ofPushMatrix();
-        glEnable(GL_CULL_FACE);
-        glCullFace(GL_FRONT);
-        
-/*      FLOOR AND AXIS
-        ofPushMatrix();
-        ofRotateX(90);
-        ofTranslate(0,0,-1);
-        ofSetColor(255, 255, 127);
-        ofDrawPlane(2, 2);
-        ofDrawAxis(1);
-        ofPopMatrix();
-*/
-        ofTranslate(ofPoint(0.,0,zPos));
-
-        //ofRotateY(time);
-        
+        //glEnable(GL_CULL_FACE);
+        //glCullFace(GL_FRONT);
+    
+        ofVec3f camPos = cam.getPosition();
+        ofTranslate(cam.getPosition());
+     
         ofxOlaShaderLight::setMaterial(treeMaterial);
-        
+
         int i = 0;
         for (std::vector<ofxProcTree*>::iterator it = trees.begin() ; it != trees.end(); ++it) {
             ofPushMatrix();
@@ -62,6 +73,8 @@ void Trae::draw(int _surfaceId) {
             ofTranslate(0, 0, 1);
             ofRotateX(-180);
             ofTranslate(0,-1,0);
+            ofQuaternion rot = cam.getOrientationQuat();
+            ofRotate(rot.w(), rot.x(), rot.y(), rot.z());
             ofScale(1./3, 1./3, 1./3);
             ofxProcTree *t = *(it);
             t->mesh.draw();
@@ -69,13 +82,13 @@ void Trae::draw(int _surfaceId) {
             i++;
         }
         //tree->drawSkeleton();
-        ofPopMatrix();
-        glDisable(GL_CULL_FACE);
+        //glDisable(GL_CULL_FACE);
 
         ofxOlaShaderLight::setMaterial(groundMaterial);
-        ofDrawBox(0, 1, 0, 2, 0.001, 2);
+        //ofDrawBox(0, 1, 0, 2, 0.001, 2);
+
+        ofPopMatrix();
     }
-    
 }
 
 void Trae::update() {
@@ -100,6 +113,11 @@ void Trae::update() {
     }
     if (!regrow->isOn()){
         hasRegrown = false;
+    }
+    
+    if(addCameraKeyFrame){
+        cameraTrack->addKeyframe();
+        addCameraKeyFrame = false;
     }
 }
 
@@ -143,7 +161,8 @@ void Trae::makeTrees(){
 
 void Trae::setGui(ofxUICanvas * gui, float width){
     ContentScene::setGui(gui, width);
-    gui->addSlider("Z pos", -2, 3, &zPos);
+    gui->addLabelToggle("Lock Camera to Track",  &cameraTrack->lockCameraToTrack);
+    gui->addLabelButton("Add Camera Keyframe", &addCameraKeyFrame);
 }
 
 void Trae::receiveOsc(ofxOscMessage * m, string rest) {
@@ -154,6 +173,7 @@ void Trae::guiEvent(ofxUIEventArgs &e)
     
     string name = e.getName();
 	int kind = e.getKind();
+    
 	//cout << "got event from: " << name << endl;
     
 }
