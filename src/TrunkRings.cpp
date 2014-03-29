@@ -7,6 +7,7 @@
 //
 
 #include "TrunkRings.h"
+#include "ofxOlaShaderLight.h"
 
 void TrunkRings::setup() {
     
@@ -38,16 +39,19 @@ void TrunkRings::setup() {
     center->make(100);
     //rings = center->getChildren();
     
-    //shader.setGeometryInputType(GL_LINES);
-	//shader.setGeometryOutputType(GL_TRIANGLE_STRIP);
-	//shader.setGeometryOutputCount(4);
-	//shader.load("shaders/vert.glsl", "shaders/frag.glsl", "shaders/geom.glsl");
-	
+    shader.setGeometryInputType(GL_LINES);
+	shader.setGeometryOutputType(GL_TRIANGLE_STRIP);
+	shader.setGeometryOutputCount(4);
+	shader.load("shaders/vert.glsl", "shaders/frag.glsl", "shaders/geom.glsl");
 
     
 }
 
 void TrunkRings::draw(int _surfaceId) {
+    
+    bool wasLightEnabled = ofxOlaShaderLight::isEnabled();
+    
+    if(wasLightEnabled) ofxOlaShaderLight::end();
     
     ofEnableSmoothing();
     // A scene can draw to multiple surfaces
@@ -57,8 +61,8 @@ void TrunkRings::draw(int _surfaceId) {
         
         //shader.begin();
         
-        shader.setUniform1f("thickness", 20);
-        shader.setUniform3f("lightDir", sin(ofGetElapsedTimef()/10), cos(ofGetElapsedTimef()/10), 0);
+        //shader.setUniform1f("thickness", 20);
+        //shader.setUniform3f("lightDir", sin(ofGetElapsedTimef()/10), cos(ofGetElapsedTimef()/10), 0);
         
         ofTranslate(1, 1);
         ofRotateX(tlKnockover->getValue());
@@ -82,7 +86,7 @@ void TrunkRings::draw(int _surfaceId) {
         
         ofPopMatrix();        
     }
-    
+    if(wasLightEnabled) ofxOlaShaderLight::begin();
 }
 
 void TrunkRings::update() {

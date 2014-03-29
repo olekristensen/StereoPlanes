@@ -78,7 +78,7 @@ void Lights::draw(int _surfaceId) {
 
 void Lights::update() {
     
-    float flyTime = mainTimeline->getCurrentTime() * flyLightPosNoiseSpeed->getValue();
+    /*float flyTime = mainTimeline->getCurrentTime() * flyLightPosNoiseSpeed->getValue();
     
     float zPos =ofSignedNoise(0,0,flyTime);
     float reduction = fmaxf(0,ofMap(zPos, 1, -1, 0.0, 1));
@@ -124,7 +124,7 @@ void Lights::update() {
             break;
     }
 
-    ofxOlaShaderLight::update();
+    ofxOlaShaderLight::update();*/
 }
 
 void Lights::setGui(ofxUICanvas * gui, float width){
