@@ -29,8 +29,7 @@ void testApp::setup()
     
     timeline.setLoopType(OF_LOOP_NORMAL);
     enabledScene = timeline.addSwitches("Enabled Scene");
-    timeline.addCurves("curves", ofRange(0, 255));
-    timeline.addAudioTrack("Dejlig soed laekker lyd");
+
 	ofAddListener(timeline.events().bangFired, this, &testApp::bangFired);
     
     

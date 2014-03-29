@@ -16,6 +16,8 @@ void Lights::setup() {
     
     mainTimeline->addPage(name);
 
+    lightShading = mainTimeline->addCurves("Shading", ofRange(0,3));
+
     flyLightColor = mainTimeline->addColors("Fly Light Color");
     flyLightAttenuation = mainTimeline->addCurves("Fly Light Attenuation", ofRange(0.001,5.0));
     flyLightPosX = mainTimeline->addCurves("Fly Light Pos X", ofRange(-3.0, 3.0));
@@ -38,7 +40,7 @@ void Lights::setup() {
     skyLight.setNormalisedBrightness(1.0);
     skyLight.setAttenuation(1./10.);
     skyLight.setTemperature(10000);
-
+    
 }
 
 void Lights::begin(){
@@ -107,6 +109,21 @@ void Lights::update() {
     flyLight.setGlobalPosition(pos);
     skyLight.setGlobalPosition(0,-1,-1);
     
+    switch (int(lightShading->getValue())) {
+        case 0:
+            ofxOlaShaderLight::setShadingType(ofxOlaShaderLight::OFX_OLA_SHADER_LIGHT_FLAT);
+            break;
+        case 1:
+            ofxOlaShaderLight::setShadingType(ofxOlaShaderLight::OFX_OLA_SHADER_LIGHT_GOURAUD);
+            break;
+        case 2:
+            ofxOlaShaderLight::setShadingType(ofxOlaShaderLight::OFX_OLA_SHADER_LIGHT_PHONG);
+            break;
+        default:
+            ofxOlaShaderLight::setShadingType(ofxOlaShaderLight::OFX_OLA_SHADER_LIGHT_PHONG);
+            break;
+    }
+
     ofxOlaShaderLight::update();
 }
 

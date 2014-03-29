@@ -37,6 +37,8 @@ public:
     
     float vertexNoise;
 
+    ofxTLCurves     * lightShading;
+
     // Fly
     
     ofxTLColorTrack * flyLightColor;

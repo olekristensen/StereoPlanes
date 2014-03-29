@@ -10,6 +10,7 @@
 #include "ContentScene.h"
 #include "ofMain.h"
 #include "ofxProcTree.h"
+#include "ofxOlaShaderLight.h"
 
 class Trae : public ContentScene {
     
@@ -27,8 +28,13 @@ public:
     
     ofxTLSwitches * regrow;
     ofxTLCurves * progress;
+    ofxTLColorTrack * treeColor;
+    ofxTLColorTrack * groundColor;
     
     bool hasRegrown;
+    
+    ofxOlaShaderLight::Material treeMaterial;
+    ofxOlaShaderLight::Material groundMaterial;
     
     vector<ofxProcTree*> trees;
     
