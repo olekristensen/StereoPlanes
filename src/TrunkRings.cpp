@@ -39,9 +39,9 @@ void TrunkRings::setup() {
     center->make(100);
     //rings = center->getChildren();
     
-    shader.setGeometryInputType(GL_LINES);
-	shader.setGeometryOutputType(GL_TRIANGLE_STRIP);
-	shader.setGeometryOutputCount(4);
+    shader.setGeometryInputType(GL_POINTS);
+	shader.setGeometryOutputType(GL_LINES);
+	shader.setGeometryOutputCount(2);
 	shader.load("shaders/vert.glsl", "shaders/frag.glsl", "shaders/geom.glsl");
 
     
@@ -59,10 +59,16 @@ void TrunkRings::draw(int _surfaceId) {
         
         ofPushMatrix();
         
-        //shader.begin();
+        shader.begin();
         
-        //shader.setUniform1f("thickness", 20);
-        //shader.setUniform3f("lightDir", sin(ofGetElapsedTimef()/10), cos(ofGetElapsedTimef()/10), 0);
+        shader.setUniform1f("thickness", 50);
+        shader.setUniform3f("lightDir", sin(ofGetElapsedTimef()/10), cos(ofGetElapsedTimef()/10), 0);
+        
+        shader.setAttribute4f(shader.getAttributeLocation("color"), 1, 1, 1, 1);
+        /*GLint colAttrib = glGetAttribLocation(shaderProgram, "color");
+        glEnableVertexAttribArray(colAttrib);
+        glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE,
+                              5 * sizeof(float), (void*) (2 * sizeof(float)));*/
         
         ofTranslate(1, 1);
         ofRotateX(tlKnockover->getValue());
@@ -73,7 +79,7 @@ void TrunkRings::draw(int _surfaceId) {
         
         center->drawActiveRings(time);
         
-        //shader.end();
+        shader.end();
         //tlStartFlags->get
         
             //center->drawExpand(ofMap(time, 0, 30, 0, float(center->step)));

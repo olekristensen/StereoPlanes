@@ -9,11 +9,6 @@
     <Value>1.404109597</Value>
 </Widget>
 <Widget>
-    <Kind>4</Kind>
-    <Name>Vertex Noise</Name>
-    <Value>0.273972631</Value>
-</Widget>
-<Widget>
     <Kind>2</Kind>
     <Name>Draw Checkers</Name>
     <Value>0</Value>
@@ -39,12 +34,17 @@
     <Value>0</Value>
 </Widget>
 <Widget>
+    <Kind>2</Kind>
+    <Name>[1] Enabled</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
     <Kind>4</Kind>
     <Name>Z pos</Name>
     <Value>0.534246445</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
-    <Name>[1] Enabled</Name>
+    <Name>[2] Enabled</Name>
     <Value>1</Value>
 </Widget>

@@ -205,7 +205,7 @@ public:
         ofMesh mesh;
         int left = resolution * p;
         //cout<<p<<endl;
-        mesh.setMode(OF_PRIMITIVE_LINE_STRIP);
+        mesh.setMode(OF_PRIMITIVE_POINTS);
         for (int i=0; i<left; i++) {
             mesh.addColor(ofFloatColor(0.8f,0.8f,0.8f,1.0f));
             mesh.addVertex(points[i]);
@@ -213,6 +213,8 @@ public:
         
         mesh.draw();
         //vbo.setMesh(mesh, GL_STREAM_DRAW);
+        
+        glDrawArrays(GL_POINTS, 0, mesh.getNumVertices());
         
         //ofNoFill();
         //ofCircle(points[left],0.01);

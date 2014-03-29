@@ -1,3 +1,37 @@
+
+#version 150
+
+layout(points) in;
+layout(line_strip, max_vertices = 2) out;
+
+in vec3 vColor[]; // Output from vertex shader for each vertex
+
+out vec3 fColor; // Output to fragment shader
+
+void main() {
+    
+    fColor = vColor[0]; 
+    
+    gl_Position = gl_in[0].gl_Position + vec4(-0.1, 0.0, 0.0, 0.0);
+    EmitVertex();
+    
+    gl_Position = gl_in[0].gl_Position + vec4(0.1, 0.0, 0.0, 0.0);
+    EmitVertex();
+    
+    EndPrimitive();
+}
+
+
+
+
+
+
+
+
+
+
+
+
 /***********************************************
  Geometry shader to convert lines into triangle strips
  Memo Akten
@@ -5,16 +39,15 @@
 
 ************************************************/
 
-#version 150
+/*#version 150
 
 uniform float thickness;
 uniform vec3 lightDir;
 
 uniform mat4 modelViewProjectionMatrix;
 
-out vec4 Color;
-in vec4 vertexColor[];
-
+//in vec4 FrontColor[];
+//out vec4 color;
 
 void main() {
 	vec3 p0 = gl_in[0].gl_Position.xyz;
@@ -31,24 +64,67 @@ void main() {
 	right *= thickness;
 	
 	gl_Position = modelViewProjectionMatrix * vec4(p0 - right, 1.0);
-	Color = vertexColor[0] * colMult;
+	//color = FrontColor[0] * colMult;
 	EmitVertex();
 	
 	gl_Position = modelViewProjectionMatrix * vec4(p0 + right, 1.0);
-	Color = vertexColor[0] * colMult;
+	//color = FrontColor[0] * colMult;
 	EmitVertex();
 	
 	gl_Position = modelViewProjectionMatrix * vec4(p1 - right, 1.0);
-	Color = vertexColor[1] * colMult;
+	//color = FrontColor[1] * colMult;
 	EmitVertex();
 
 	gl_Position = modelViewProjectionMatrix * vec4(p1 + right, 1.0);
-	Color = vertexColor[1] * colMult;
+	//color = FrontColor[1] * colMult;
 	EmitVertex();
-    
-    /* todo use input color - find 150 syntax
-    gl_Position = modelViewProjectionMatrix * vec4(p1 + right, 1.0);
-	outColor = inColor * colMult;
-	EmitVertex();*/
 
+}*/
+
+/*#version 420
+
+layout(triangles) in;
+layout (triangle_strip, max_vertices=6) out;
+
+layout (std140) uniform Matrices {
+    mat4 projModelViewMatrix;
+    mat3 normalMatrix;
+};
+
+in VertexData {
+    vec2 texCoord;
+    vec3 normal;
+} VertexIn[];
+
+out VertexData {
+    vec2 texCoord;
+    vec3 normal;
+} VertexOut;
+
+void main()
+{
+    for(int i = 0; i < gl_in.length(); i++)
+    {
+        // copy attributes
+        gl_Position = projModelViewMatrix * gl_in[i].gl_Position;
+        VertexOut.normal = normalize(normalMatrix * VertexIn[i].normal);
+        VertexOut.texCoord = VertexIn[i].texCoord;
+        
+        // done with the vertex
+        EmitVertex();
+    }
+    EndPrimitive();
+    
+    for(int i = 0; i < gl_in.length(); i++)
+    {
+        // copy attributes and displace copy
+        gl_Position = projModelViewMatrix * (gl_in[i].gl_Position + vec4(20.0, 0.0, 0.0, 0.0));
+        VertexOut.normal = normalize(normalMatrix * VertexIn[i].normal);
+        VertexOut.texCoord = VertexIn[i].texCoord;
+        
+        // done with the vertex
+        EmitVertex();
+    }
+    EndPrimitive();
 }
+*/
