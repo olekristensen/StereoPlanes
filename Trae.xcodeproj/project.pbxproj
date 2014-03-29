@@ -186,6 +186,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		04094D7E18E6EBD9009836D7 /* frag.glsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = frag.glsl; sourceTree = "<group>"; };
+		04094D7F18E6EBD9009836D7 /* geom.glsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = geom.glsl; sourceTree = "<group>"; };
+		04094D8018E6EBD9009836D7 /* vert.glsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = vert.glsl; sourceTree = "<group>"; };
 		04144F2D188585D000C28505 /* StereoPlane.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StereoPlane.h; sourceTree = "<group>"; };
 		0420B330188F18470086D388 /* ContentScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContentScene.h; sourceTree = "<group>"; };
 		0420B339188F8E480086D388 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
@@ -1453,6 +1456,9 @@
 				7A0C9D0118DCA6E0005A65A0 /* phongShading.frag */,
 				7A0C9D0218DCA6E0005A65A0 /* phongShading.vert */,
 				7A0C9D0318DCA6E0005A65A0 /* lightTexture.frag */,
+				04094D7E18E6EBD9009836D7 /* frag.glsl */,
+				04094D7F18E6EBD9009836D7 /* geom.glsl */,
+				04094D8018E6EBD9009836D7 /* vert.glsl */,
 				7A0C9D0418DCA6E0005A65A0 /* lightTexture.vert */,
 			);
 			name = shaders;

@@ -20,11 +20,30 @@ void TrunkRings::setup() {
     tlSpeed = mainTimeline->addCurves("Speed");
     tlNoise = mainTimeline->addCurves("Noise");
     
+    tlKnockover = mainTimeline->addCurves("Knockover");
+    tlKnockover->setValueRangeMax(-90);
+    tlKnockover->setValueRangeMin(0);
+    
+    tlRotateZ = mainTimeline->addCurves("Rotate Z");
+    tlRotateZ->setValueRangeMax(360);
+    tlRotateZ->setValueRangeMin(0);
+    
+    tlRotateY = mainTimeline->addCurves("Rotate Y");
+    tlRotateY->setValueRangeMax(360);
+    tlRotateY->setValueRangeMin(0);
+    
     center = new Ring();
     center->flags = tlStartFlags;
     center->setup();
     center->make(100);
     //rings = center->getChildren();
+    
+    //shader.setGeometryInputType(GL_LINES);
+	//shader.setGeometryOutputType(GL_TRIANGLE_STRIP);
+	//shader.setGeometryOutputCount(4);
+	//shader.load("shaders/vert.glsl", "shaders/frag.glsl", "shaders/geom.glsl");
+	
+
     
 }
 
@@ -36,8 +55,21 @@ void TrunkRings::draw(int _surfaceId) {
         
         ofPushMatrix();
         
+        //shader.begin();
+        
+        shader.setUniform1f("thickness", 20);
+        shader.setUniform3f("lightDir", sin(ofGetElapsedTimef()/10), cos(ofGetElapsedTimef()/10), 0);
+        
+        ofTranslate(1, 1);
+        ofRotateX(tlKnockover->getValue());
+        ofTranslate(-1, -1);
+        
+        ofRotateZ(tlRotateZ->getValue());
+        ofRotateY(tlRotateY->getValue());
+        
         center->drawActiveRings(time);
         
+        //shader.end();
         //tlStartFlags->get
         
             //center->drawExpand(ofMap(time, 0, 30, 0, float(center->step)));

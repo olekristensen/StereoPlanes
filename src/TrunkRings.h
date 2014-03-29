@@ -214,8 +214,8 @@ public:
         mesh.draw();
         //vbo.setMesh(mesh, GL_STREAM_DRAW);
         
-        ofNoFill();
-        ofCircle(points[left],0.01);
+        //ofNoFill();
+        //ofCircle(points[left],0.01);
         
     }
     
@@ -268,6 +268,7 @@ public:
     void receiveOsc(ofxOscMessage * m, string rest);
     
     //vector<ofVec3f> points;
+    ofShader shader;
     
     int seed;
     
@@ -275,6 +276,10 @@ public:
     ofxTLCurves * tlRadius;
     ofxTLCurves * tlSpeed;
     ofxTLCurves * tlNoise;
+    
+    ofxTLCurves * tlKnockover;
+    ofxTLCurves * tlRotateZ;
+    ofxTLCurves * tlRotateY;
     
     //ofVec3f ringHistory [TAIL_LENGTH];
     

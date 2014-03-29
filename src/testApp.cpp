@@ -166,7 +166,6 @@ void testApp::setup()
         //l->setupBrightnessDMXChannel(i);
         
         randomLights.push_back(l);
-    
     }
     
 
@@ -177,7 +176,7 @@ void testApp::setup()
 
 //--------------------------------------------------------------
 void testApp::bangFired(ofxTLBangEventArgs& args){
-	cout << "bang fired!" << args.flag << endl;
+	//cout << "bang fired!" << args.flag << endl;
 }
 
 
