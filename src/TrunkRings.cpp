@@ -21,6 +21,7 @@ void TrunkRings::setup() {
     tlNoise = mainTimeline->addCurves("Noise");
     
     center = new Ring();
+    center->flags = tlStartFlags;
     center->setup();
     center->make(100);
     //rings = center->getChildren();
@@ -34,7 +35,6 @@ void TrunkRings::draw(int _surfaceId) {
     if(_surfaceId == 0) {
         
         ofPushMatrix();
-        
         
         center->drawActiveRings(time);
         
