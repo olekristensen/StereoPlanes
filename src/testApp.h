@@ -9,14 +9,9 @@
 #include "ofxUI.h"
 #include "Trae.h"
 #include "ofxUbo.h"
-#include "ofxOlaShaderLight.h"
 #include "ofxTimeline.h"
 #include "TrunkRings.h"
-
-class shaderLight : public ofNode {
-    
-};
-
+#include "Lights.h"
 
 class testApp : public ofBaseApp
 {
@@ -76,21 +71,10 @@ public:
     void drawScenes(int _surfaceId=0);
     
     // Scenes
-    Trae * trae;
     vector<ContentScene*> contentScenes;
-    
+    Trae * trae;
     TrunkRings * trunkRings;
-    
-    // Lights
-    
-    ofxOlaShaderLight flyLight;
-    ofxOlaShaderLight moonLight;
-    
-    ofxOlaShaderLight::Material white;
-    
-    vector<ofxOlaShaderLight*> randomLights;
-    
-    float vertexNoise;
+    Lights * lights;
     
     // Time
     
@@ -99,6 +83,7 @@ public:
     
     // Timeline
     ofxTimeline timeline;
+    ofxTLSwitches * enabledScene;
     void bangFired(ofxTLBangEventArgs& args);
 
     

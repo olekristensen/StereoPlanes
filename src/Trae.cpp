@@ -14,8 +14,21 @@ void Trae::setup() {
     oscAddress = "/trae";
     zPos = 0;
     
-    makeTrees();
-    
+    mainTimeline->addPage(name);
+    regrow = mainTimeline->addSwitches("Regrow");
+    progress = mainTimeline->addCurves("Progress");
+
+    treeColor = mainTimeline->addColors("Trees");
+    groundColor = mainTimeline->addColors("Ground");
+
+    groundMaterial.diffuseColor = ofVec4f(0.9, 0.75, 0.5, 1.0);
+    groundMaterial.specularColor = ofVec4f(0.0, 0.0, 0.0, 1.0);
+    groundMaterial.specularShininess = 0.5;
+
+    treeMaterial.diffuseColor = ofVec4f(1.0, 1.0, 1.0, 1.0);
+    treeMaterial.specularColor = ofVec4f(0.0, 0.0, 0.0, 1.0);
+    treeMaterial.specularShininess = 0.5;
+
 }
 
 void Trae::draw(int _surfaceId) {
@@ -38,9 +51,9 @@ void Trae::draw(int _surfaceId) {
 */
         ofTranslate(ofPoint(0.,0,zPos));
 
-        ofRotateY(time);
+        //ofRotateY(time);
         
-        ofSetColor(255,255,255);
+        ofxOlaShaderLight::setMaterial(treeMaterial);
         
         int i = 0;
         for (std::vector<ofxProcTree*>::iterator it = trees.begin() ; it != trees.end(); ++it) {
@@ -58,16 +71,34 @@ void Trae::draw(int _surfaceId) {
         //tree->drawSkeleton();
         ofPopMatrix();
         glDisable(GL_CULL_FACE);
+
+        ofxOlaShaderLight::setMaterial(groundMaterial);
+        ofDrawBox(0, 1, 0, 2, 0.001, 2);
     }
     
 }
 
 void Trae::update() {
-    if (regrow & !hasRegrown) {
+    
+    groundMaterial.diffuseColor = ofVec4f(
+                                          groundColor->getColor().r/255.,
+                                          groundColor->getColor().g/255.,
+                                          groundColor->getColor().b/255.,
+                                          1.0
+    );
+
+    treeMaterial.diffuseColor = ofVec4f(
+                                          treeColor->getColor().r/255.,
+                                          treeColor->getColor().g/255.,
+                                          treeColor->getColor().b/255.,
+                                          1.0
+                                          );
+    
+    if (regrow->isOn() & !hasRegrown) {
         makeTrees();
         hasRegrown = true;
     }
-    if (!regrow){
+    if (!regrow->isOn()){
         hasRegrown = false;
     }
 }
@@ -79,7 +110,7 @@ void Trae::makeTrees(){
         delete t;
     }
     trees.clear();
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 1; i++) {
         
         ofxProcTreeBranch::Properties * p = new ofxProcTreeBranch::Properties();
         
@@ -112,7 +143,6 @@ void Trae::makeTrees(){
 
 void Trae::setGui(ofxUICanvas * gui, float width){
     ContentScene::setGui(gui, width);
-    gui->addButton("Regrow", &regrow);
     gui->addSlider("Z pos", -2, 3, &zPos);
 }
 

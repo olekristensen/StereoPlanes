@@ -3,7 +3,6 @@
 #include <ofGLUtils.h>
 
 
-
 //--------------------------------------------------------------
 void testApp::setup()
 {
@@ -13,13 +12,13 @@ void testApp::setup()
     speed = 0;
     //time = 0;
     
-    
     ofSetWindowTitle("Trae - openframeworks");
+
     ofSetLogLevel(OF_LOG_VERBOSE);
     
     ofSetFrameRate(30);
     ofSetVerticalSync(true);
-//    ofSetBackgroundAuto(true);
+    //    ofSetBackgroundAuto(true);
     ofBackground(0);
     
     //leftOutputServer.setName("Left");
@@ -30,9 +29,7 @@ void testApp::setup()
     timeline.setupFont("GUI/Arial.ttf", 7);
     
     timeline.setDurationInSeconds(120);
-    timeline.setName("Master");
     //timeline.setFrameRate(ofGetFrameRate());
-    //rofxTimeline::removeCocoaMenusFromGlut("Trae");
     
     timeline.setLoopType(OF_LOOP_NORMAL);
     
@@ -40,6 +37,7 @@ void testApp::setup()
     tlAudioMain = timeline.addAudioTrack("Audio", "tre-opbyg-beat.wav");
     
     tlAudioMain->loadSoundfile("tre-opbyg-beat.wav");
+    enabledScene = timeline.addSwitches("Enabled Scene");
 
 	ofAddListener(timeline.events().bangFired, this, &testApp::bangFired);
     
@@ -80,6 +78,9 @@ void testApp::setup()
     
     camPosWall = ofVec3f(0, 0, -1);
     
+    lights = new Lights();
+    contentScenes.push_back(lights);
+    
     trae = new Trae();
     contentScenes.push_back(trae);
     
@@ -115,12 +116,13 @@ void testApp::setup()
     gui->addSlider("Wall Y",  -1, 1, &camPosWall.y);
     gui->addSlider("Wall Z",  -4, -0.25, &camPosWall.z);
 */
+    
     gui->addSlider("Aspect",  0.0, 2.0, &aspect);
     //gui->addSlider("Speed", -1, 1, &speed);
     
     gui->addSpacer(width, 3)->setDrawOutline(true);
     
-    gui->addSlider("Vertex Noise", -1, 1, &vertexNoise);
+    //gui->addSlider("Vertex Noise", -1, 1, &vertexNoise);
 
     //gui->addSlider("Dancer X",  -1, 1, &dancerPos.x);
     //gui->addSlider("Dancer Y",  -1, 1, &dancerPos.y);
@@ -129,7 +131,6 @@ void testApp::setup()
     gui->addToggle("Draw Planes", &drawGrids);
     gui->addToggle("Draw FBOs", &drawFBOs);
     gui->addToggle("Preview SBS", &previewSideBySide);
-    
     
     for(int i=0; i<contentScenes.size(); i++) {
         gui->addSpacer(width, 3)->setDrawOutline(true);
@@ -143,33 +144,8 @@ void testApp::setup()
     
     gui->loadSettings("GUI/guiSettings.xml");
     
-    // create Materials
-    white.diffuseColor = ofVec4f(0.9, 0.9, 0.9, 1.0);
-    white.specularColor = ofVec4f(0.0, 0.0, 0.0, 0.0);
-    white.specularShininess = 0.5;
-
-    flyLight.setNormalisedBrightness(1.0);
-    flyLight.setAttenuation(1.0/2.);
-    flyLight.setTemperature(4200);
-    
-    moonLight.setNormalisedBrightness(0.5);
-    moonLight.setAttenuation(1./10.);
-    moonLight.setTemperature(10000);
-    
-    int numberRandomLights = 0;
-    for(int i = 0; i < numberRandomLights; i++){
-        ofxOlaShaderLight * l = new ofxOlaShaderLight();
-        
-        l->setNormalisedBrightness(0.5);
-        l->setAttenuation(1.0/.1);
-        l->setTemperature(ofMap(i, 0, numberRandomLights, 4200, 10000));
-        //l->setupBrightnessDMXChannel(i);
-        
-        randomLights.push_back(l);
-    }
     
 
-    
 }
 
 
@@ -186,6 +162,25 @@ void testApp::update()
     gui->setScrollArea(0, timeline.getHeight(), 300, ofGetHeight()-timeline.getHeight());
     
     camPosWall = ofVec3f(tlCamX->getValue(),tlCamY->getValue(),tlCamZ->getValue());
+
+    if(timeline.isSwitchOn("Enabled Scene")){
+        string switchText = enabledScene->getActiveSwitchAtMillis(timeline.getCurrentTimeMillis())->textField.text;
+        for(int s=0; s<contentScenes.size();s++) {
+            if (contentScenes[s] != lights) {
+                if (switchText == contentScenes[s]->name) {
+                    contentScenes[s]->enabled = true;
+                } else {
+                    contentScenes[s]->enabled = false;
+                }
+            }
+        }
+    } else {
+        for(int s=0; s<contentScenes.size();s++) {
+            if (contentScenes[s] != lights) {
+                contentScenes[s]->enabled = false;
+            }
+        }
+    }
     
     while(oscReceiver.hasWaitingMessages()){
 		// get the next message
@@ -202,7 +197,7 @@ void testApp::update()
                 camPosWall.x = m.getArgAsFloat(0);
             
         } else if(m.getAddress() == "/Wall/Camera/y"){
-                camPosWall.y = m.getArgAsFloat(0);
+            camPosWall.y = m.getArgAsFloat(0);
             
         } else if(m.getAddress() == "/Wall/Cameraz/x"){
                 camPosWall.z = m.getArgAsFloat(0);
@@ -239,54 +234,18 @@ void testApp::update()
         contentScenes[s]->update();
     }
     
-    int i = 0;
-    for(vector<ofxOlaShaderLight*>::iterator it = randomLights.begin(); it != randomLights.end();++it){
-        ofxOlaShaderLight * l = *(it);
-        float thisTime = (time*0.01);
-        ofVec3f pos(
-                    .5*ofSignedNoise(thisTime,i,0),
-                    ofSignedNoise(i,thisTime,0),.5*ofSignedNoise(0,i,thisTime)
-                    );
-        l->setGlobalPosition(pos);
-        l->setNormalisedBrightness(ofNoise(thisTime+(i*1.0/510))*0.1);
-        i++;
-    }
-    ofxOlaShaderLight::update();
     
     //ofSetWindowTitle(ofToString(ofGetFrameRate()));
     
-    trae->enabled = (timeline.getCurrentTime()>100);
-    trunkRings->enabled = (timeline.getCurrentTime()<100);
-
 }
 
 
 void testApp::drawScenes(int _surfaceId) {
+    
     for(int s=0; s<contentScenes.size();s++) {
         contentScenes[s]->drawScene(_surfaceId);
-        drawFly();
     }
-}
-
-void testApp::drawFly(){
     
-    float flyTime = timeline.getCurrentTime() * 0.01;
-    
-    float zPos =ofSignedNoise(0,0,flyTime);
-    float reduction = fmaxf(0,ofMap(zPos, 1, -1, 0.0, 1));
-    reduction = pow(reduction, 3);
-                              
-    ofVec3f pos(
-                ofMap(reduction, 0,1,ofSignedNoise(flyTime), camPosWall.x),
-                ofMap(reduction, 0,1,ofSignedNoise(0,flyTime), camPosWall.y),
-                2.2*zPos
-                );
-    
-//    ofxOlaShaderLight::end();
-    ofDrawSphere(pos, 0.01);
-//    ofxOlaShaderLight::begin();
-    flyLight.setGlobalPosition(pos);
-    moonLight.setGlobalPosition(pos.y,-1,pos.x);
 }
 
 //--------------------------------------------------------------
@@ -309,29 +268,18 @@ void testApp::draw()
         planes[i]->beginLeft();
         ofClear(ofColor::black);
         glPushMatrix();
-        // update Lighting
-//        ofxOlaShaderLight::begin();
-//        lightShader.setUniform1f("vertexNoise", vertexNoise);
-//        ofxOlaShaderLight::setMaterial(white);
-
+        lights->begin();
         drawScenes(i);
-        
-//        ofxOlaShaderLight::end();
+        lights->end();
         glPopMatrix();
         planes[i]->endLeft();
         
         planes[i]->beginRight();
         ofClear(ofColor::black);
         glPushMatrix();
-        
-        // update Lighting
-//        ofxOlaShaderLight::begin();
-        //        lightShader.setUniform1f("vertexNoise", vertexNoise);
-//        ofxOlaShaderLight::setMaterial(white);
-        
+        lights->begin();
         drawScenes(i);
-        
-//        ofxOlaShaderLight::end();
+        lights->end();
         glPopMatrix();
         planes[i]->endRight();
     }
