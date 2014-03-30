@@ -29,7 +29,7 @@ void Lights::setup() {
     flyLightDotColor = mainTimeline->addColors("Fly Light Dot Color");
     flyLightDotSize = mainTimeline->addCurves("Fly Light Dot Size", ofRange(0.0, 1.0));
 
-    lightsVertexNoise = mainTimeline->addCurves("Vertex Noise", ofRange(0.001,10.0));
+    lightsVertexNoise = mainTimeline->addCurves("Vertex Noise", ofRange(0.0,1.0));
 
     skyLightColor = mainTimeline->addColors("Sky Light Color");
     skyLightAttenuation = mainTimeline->addCurves("Sky Light Attenuation", ofRange(0.001,10.0));
@@ -71,7 +71,6 @@ void Lights::setMaterial(ofxOlaShaderLight::Material m){
 void Lights::draw(int _surfaceId) {
     
     bool lightWasEnabled = ofxOlaShaderLight::isEnabled();
-
     if(lightWasEnabled){
         ofxOlaShaderLight::end();
     }
@@ -121,6 +120,16 @@ void Lights::update() {
         default:
             ofxOlaShaderLight::setShadingType(ofxOlaShaderLight::OFX_OLA_SHADER_LIGHT_PHONG);
             break;
+    }
+
+    bool lightWasEnabled = ofxOlaShaderLight::isEnabled();
+    if(!lightWasEnabled){
+        ofxOlaShaderLight::begin();
+    }
+
+    ofxOlaShaderLight::shader->setUniform1f("vertexNoise", lightsVertexNoise->getValue());
+    if(!lightWasEnabled){
+        ofxOlaShaderLight::end();
     }
 
     ofxOlaShaderLight::update();

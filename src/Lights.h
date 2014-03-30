@@ -37,8 +37,6 @@ public:
     ofxOlaShaderLight skyLight;
     ofxOlaShaderLight::Material material;
     
-    float vertexNoise;
-
     ofxTLCurves     * lightShading;
     ofxTLCurves     * lightsVertexNoise;
 
