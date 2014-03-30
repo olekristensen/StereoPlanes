@@ -24,8 +24,10 @@ void testApp::setup()
     
     timeline.setup();
     timeline.setupFont("GUI/Arial.ttf", 7);
-    timeline.setDurationInSeconds(120);
+    timeline.setDurationInSeconds(60*15);
     //timeline.setFrameRate(ofGetFrameRate());
+    
+    timeline.addAudioTrack("start opbyg", "start-opbyg-melodi.wav");
     
     timeline.setLoopType(OF_LOOP_NORMAL);
     enabledScene = timeline.addSwitches("Enabled Scene");

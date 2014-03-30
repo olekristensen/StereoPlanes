@@ -49,6 +49,8 @@ void Trae::setup() {
         
 		particles.addColor(ofFloatColor(ofRandomuf()*.4));
 	}
+    
+    makeTrees();
 
 }
 
@@ -61,6 +63,8 @@ void Trae::draw(int _surfaceId) {
         //glEnable(GL_CULL_FACE);
         //glCullFace(GL_FRONT);
     
+        // +z points forward
+        
         ofVec3f camPos = cam.getPosition();
         ofTranslate(cam.getPosition());
      
@@ -69,13 +73,18 @@ void Trae::draw(int _surfaceId) {
         int i = 0;
         for (std::vector<ofxProcTree*>::iterator it = trees.begin() ; it != trees.end(); ++it) {
             ofPushMatrix();
-            ofRotateY(360.0*i/trees.size());
             ofTranslate(0, 0, 1);
             ofRotateX(-180);
             ofTranslate(0,-1,0);
             ofQuaternion rot = cam.getOrientationQuat();
             ofRotate(rot.w(), rot.x(), rot.y(), rot.z());
-            ofScale(1./3, 1./3, 1./3);
+            if(i == 0){
+                ofScale(1./3, 1./3, 1./3);
+                ofTranslate(-2.0, 0, 0);
+            }if(i == 1){
+                //ofScale(1./3, 1./3, 1./3);
+                ofTranslate(1.75, 0, -8);
+            }
             ofxProcTree *t = *(it);
             t->mesh.draw();
             ofPopMatrix();
@@ -128,23 +137,23 @@ void Trae::makeTrees(){
         delete t;
     }
     trees.clear();
-    for (int i = 0; i < 1; i++) {
+    for (int i = 0; i < 2; i++) {
         
         ofxProcTreeBranch::Properties * p = new ofxProcTreeBranch::Properties();
         
         p->seed = 519+i;
         p->segments = 14+ofRandom(-3,1);
-        p->levels = 5;
+        p->levels = 5 +(i);
         p->vMultiplier = 1.01;
         p->twigScale = 0;
-        p->initalBranchLength = 0.65+ofRandom(-.1,.5);
+        p->initalBranchLength = 0.65+ (i/2.0);
         p->lengthFalloffFactor = 0.73;
         p->lengthFalloffPower = 0.76;
         p->clumpMax = 0.53;
         p->clumpMin = 0.419;
         p->branchFactor = 3.4;// + ofRandom(-1,1);
         p->dropAmount = -0.16;
-        p->growAmount = 0.419;//+ofRandom(-1,1);
+        p->growAmount = 0.419 + (i/4.);//+ofRandom(-1,1);
         p->sweepAmount = 0.01;
         p->maxRadius = 0.168 + ofRandom(-0.1,0);
         p->climbRate = 0.472;
@@ -153,7 +162,7 @@ void Trae::makeTrees(){
         p->taperRate = 0.835;
         p->radiusFalloffRate = 0.73;
         p->twistRate = 1.29;
-        p->trunkLength = 2.2+ofRandom(-1,0);
+        p->trunkLength = 2.2 -(i/2.);
         
         trees.push_back(new ofxProcTree(p));
     }

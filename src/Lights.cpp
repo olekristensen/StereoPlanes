@@ -19,10 +19,10 @@ void Lights::setup() {
     lightShading = mainTimeline->addCurves("Shading", ofRange(0,3));
 
     flyLightColor = mainTimeline->addColors("Fly Light Color");
-    flyLightAttenuation = mainTimeline->addCurves("Fly Light Attenuation", ofRange(0.001,5.0));
+    flyLightAttenuation = mainTimeline->addCurves("Fly Light Attenuation", ofRange(0.001,10.0));
     flyLightPosX = mainTimeline->addCurves("Fly Light Pos X", ofRange(-3.0, 3.0));
     flyLightPosY = mainTimeline->addCurves("Fly Light Pos Y", ofRange(-3.0, 3.0));
-    flyLightPosZ = mainTimeline->addCurves("Fly Light Pos Z", ofRange(-3.0, 3.0));
+    flyLightPosZ = mainTimeline->addCurves("Fly Light Pos Z", ofRange(-3.0, 9.0));
     flyLightPosNoise = mainTimeline->addCurves("Fly Light Pos Noise", ofRange(0.0, 1.0));
     flyLightPosNoiseSpeed = mainTimeline->addCurves("Fly Light Pos Noise Speed", ofRange(-1.0, 1.0));
 
@@ -30,7 +30,7 @@ void Lights::setup() {
     flyLightDotSize = mainTimeline->addCurves("Fly Light Dot Size", ofRange(0.0, 1.0));
     
     skyLightColor = mainTimeline->addColors("Sky Light Color");
-    skyLightAttenuation = mainTimeline->addCurves("Sky Light Attenuation", ofRange(0.001,5.0));
+    skyLightAttenuation = mainTimeline->addCurves("Sky Light Attenuation", ofRange(0.001,10.0));
     
     material.diffuseColor = ofVec4f(0.9, 0.9, 0.9, 1.0);
     material.specularColor = ofVec4f(0.0, 0.0, 0.0, 0.0);
