@@ -40,6 +40,7 @@ public:
     float vertexNoise;
 
     ofxTLCurves     * lightShading;
+    ofxTLCurves     * lightsVertexNoise;
 
     // Fly
     

@@ -28,7 +28,9 @@ void Lights::setup() {
 
     flyLightDotColor = mainTimeline->addColors("Fly Light Dot Color");
     flyLightDotSize = mainTimeline->addCurves("Fly Light Dot Size", ofRange(0.0, 1.0));
-    
+
+    lightsVertexNoise = mainTimeline->addCurves("Vertex Noise", ofRange(0.001,10.0));
+
     skyLightColor = mainTimeline->addColors("Sky Light Color");
     skyLightAttenuation = mainTimeline->addCurves("Sky Light Attenuation", ofRange(0.001,10.0));
     
@@ -92,10 +94,9 @@ void Lights::update() {
     float reduction = fmaxf(0,ofMap(zPos, 1, -1, 0.0, 1));
     reduction = pow(reduction, 3);
     
-    ofVec3f posNoise(
-                     ofMap(reduction, 0,1,ofSignedNoise(flyTime), camPos.x),
-                     ofMap(reduction, 0,1,ofSignedNoise(0,flyTime), camPos.y),
-                     2.2*zPos
+    ofVec3f posNoise(ofSignedNoise(flyTime),
+                     ofSignedNoise(0,flyTime),
+                     zPos
                      );
     
     ofVec3f pos = (ofVec3f(
