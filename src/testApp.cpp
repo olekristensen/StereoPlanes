@@ -2,6 +2,7 @@
 #include <OpenGL/OpenGL.h>
 #include <ofGLUtils.h>
 
+
 //--------------------------------------------------------------
 void testApp::setup()
 {
@@ -11,6 +12,8 @@ void testApp::setup()
     speed = 0;
     //time = 0;
     
+    ofSetWindowTitle("Trae - openframeworks");
+
     ofSetLogLevel(OF_LOG_VERBOSE);
     
     ofSetFrameRate(30);
@@ -30,10 +33,25 @@ void testApp::setup()
     timeline.addAudioTrack("start opbyg", "start-opbyg-melodi.wav");
     
     timeline.setLoopType(OF_LOOP_NORMAL);
+    
+    timeline.setBPM(120.f);
+    //tlAudioMain = timeline.addAudioTrack("Audio", "tre-opbyg-beat.wav");
+    
+    //tlAudioMain->loadSoundfile("tre-opbyg-beat.wav");
     enabledScene = timeline.addSwitches("Enabled Scene");
 
 	ofAddListener(timeline.events().bangFired, this, &testApp::bangFired);
     
+    timeline.addPage("Camera");
+    tlCamX = timeline.addCurves("X");
+    tlCamX->setValueRangeMin(-1);
+    tlCamX->setValueRangeMax(1);
+    tlCamY = timeline.addCurves("Y");
+    tlCamY->setValueRangeMin(-1);
+    tlCamY->setValueRangeMax(1);
+    tlCamZ = timeline.addCurves("Z");
+    tlCamZ->setValueRangeMin(-4);
+    tlCamZ->setValueRangeMax(-0.25);
     
     ofFbo::Settings fboSettings;
     
@@ -92,21 +110,28 @@ void testApp::setup()
     
     gui->addLabel("trae", OFX_UI_FONT_LARGE);
     
+    gui->addFPS();
     gui->addSlider("Eye seperation", 0, 7, &eyeSeperation);
     
-    gui->addSlider("Wall X",  -2, 2, &camPosWall.x);
+    /*gui->addSlider("Wall X",  -2, 2, &camPosWall.x);
     gui->addSlider("Wall Y",  -1, 1, &camPosWall.y);
     gui->addSlider("Wall Z",  -4, -0.25, &camPosWall.z);
+*/
     
     gui->addSlider("Aspect",  0.0, 2.0, &aspect);
-    gui->addSlider("Speed", -1, 1, &speed);
+    //gui->addSlider("Speed", -1, 1, &speed);
     
-    gui->addSlider("Dancer X",  -1, 1, &dancerPos.x);
-    gui->addSlider("Dancer Y",  -1, 1, &dancerPos.y);
+    gui->addSpacer(width, 3)->setDrawOutline(true);
     
+    //gui->addSlider("Vertex Noise", -1, 1, &vertexNoise);
+
+    //gui->addSlider("Dancer X",  -1, 1, &dancerPos.x);
+    //gui->addSlider("Dancer Y",  -1, 1, &dancerPos.y);
+
     gui->addToggle("Draw Checkers", &drawChessboards);
     gui->addToggle("Draw Planes", &drawGrids);
     gui->addToggle("Draw FBOs", &drawFBOs);
+    gui->addToggle("Preview SBS", &previewSideBySide);
     
     for(int i=0; i<contentScenes.size(); i++) {
         gui->addSpacer(width, 3)->setDrawOutline(true);
@@ -120,13 +145,15 @@ void testApp::setup()
     
     gui->loadSettings("GUI/guiSettings.xml");
     
+    
+
 }
 
 
 
 //--------------------------------------------------------------
 void testApp::bangFired(ofxTLBangEventArgs& args){
-	cout << "bang fired!" << args.flag << endl;
+	//cout << "bang fired!" << args.flag << endl;
 }
 
 
@@ -135,6 +162,8 @@ void testApp::update()
 {
     gui->setScrollArea(0, timeline.getHeight(), 300, ofGetHeight()-timeline.getHeight());
     
+    camPosWall = ofVec3f(tlCamX->getValue(),tlCamY->getValue(),tlCamZ->getValue());
+
     if(timeline.isSwitchOn("Enabled Scene")){
         string switchText = enabledScene->getActiveSwitchAtMillis(timeline.getCurrentTimeMillis())->textField.text;
         for(int s=0; s<contentScenes.size();s++) {
@@ -155,9 +184,9 @@ void testApp::update()
     }
     
     while(oscReceiver.hasWaitingMessages()){
-        // get the next message
-        ofxOscMessage m;
-        oscReceiver.getNextMessage(&m);
+		// get the next message
+		ofxOscMessage m;
+		oscReceiver.getNextMessage(&m);
         
         for(int i=0; i<contentScenes.size(); i++) {
             contentScenes[i]->parseSceneOsc(&m);
@@ -165,31 +194,33 @@ void testApp::update()
         
         //cout<<m.getAddress()<<endl;
         
-        if(m.getAddress() == "/Wall/Camera/x"){
-            camPosWall.x = m.getArgAsFloat(0);
+		if(m.getAddress() == "/Wall/Camera/x"){
+                camPosWall.x = m.getArgAsFloat(0);
             
         } else if(m.getAddress() == "/Wall/Camera/y"){
             camPosWall.y = m.getArgAsFloat(0);
             
         } else if(m.getAddress() == "/Wall/Cameraz/x"){
-            camPosWall.z = m.getArgAsFloat(0);
+                camPosWall.z = m.getArgAsFloat(0);
             
-        } else if(m.getAddress() == "/eyeSeperation/x"){
-            eyeSeperation = m.getArgAsFloat(0);
+		} else if(m.getAddress() == "/eyeSeperation/x"){
+			eyeSeperation = m.getArgAsFloat(0);
             
-        } else if(m.getAddress() == "/Dancer/x"){
+		} else if(m.getAddress() == "/Dancer/x"){
             dancerPos.x = m.getArgAsFloat(0);
             
-        } else if(m.getAddress() == "/Dancer/y"){
+		} else if(m.getAddress() == "/Dancer/y"){
             dancerPos.y = m.getArgAsFloat(0);
             
-        } else if(m.getAddress() == "/activescene/x"){
+		} else if(m.getAddress() == "/activescene/x"){
             for(int i=0; i<contentScenes.size(); i++) {
                 contentScenes[i]->enabled = false;
             }
             contentScenes[m.getArgAsInt32(0)]->enabled = true;
         }
     }
+    
+    
     
     wall->cam.setPosition(camPosWall);
     wall->aspect = aspect;
@@ -199,12 +230,13 @@ void testApp::update()
         planes[i]->cam.setPhysicalEyeSeparation(eyeSeperation);
         planes[i]->update();
     }
-    
+
     for(int s=0; s<contentScenes.size();s++) {
         contentScenes[s]->update();
     }
     
-    ofSetWindowTitle(ofToString(ofGetFrameRate()));
+    
+    //ofSetWindowTitle(ofToString(ofGetFrameRate()));
     
 }
 
@@ -252,7 +284,7 @@ void testApp::draw()
         glPopMatrix();
         planes[i]->endRight();
     }
-    
+
     ofDisableDepthTest();
     
     if(drawChessboards) {
@@ -260,7 +292,7 @@ void testApp::draw()
             planes[i]->drawChessboards();
         }
     }
-    
+
     if(drawGrids) {
         for(int i=0; i<planes.size(); i++) {
             planes[i]->drawGrids();
@@ -278,18 +310,20 @@ void testApp::draw()
         
     }fbo.end();
     
-    
-    
     if(drawFBOs) {
         ofSetColor(255,255);
         float fboHeight = (ofGetWidth()-300)*(fbo.getHeight()*1./fbo.getWidth());
-        fbo.draw(300,timeline.getHeight(),(ofGetWidth()-300),fboHeight);
+        if(previewSideBySide) {
+            fbo.draw(300,timeline.getHeight(),(ofGetWidth()-300),fboHeight);
+        } else {
+            fbo.draw(300,timeline.getHeight(),(ofGetWidth()-300)*2,fboHeight*2);
+        }
     }
     ofSetColor(64,255);
     ofRect(timeline.getDrawRect());
     ofSetColor(255,255);
     timeline.draw();
-    
+
     sbsOutputServer.publishFBO(&fbo);
     
 }
@@ -298,13 +332,13 @@ void testApp::draw()
 void testApp::keyPressed(int key)
 {
     
-    if (key == 'f'){
-        ofToggleFullscreen();
-    } else if (key == 'g') {
-        drawChessboards = !drawChessboards;
-    } else if (key == 'm') {
+	if (key == 'f'){
+		ofToggleFullscreen();
+	} else if (key == 'g') {
+		drawChessboards = !drawChessboards;
+	} else if (key == 'm') {
         drawFBOs = !drawFBOs;
-    } else if (key == 'w'){
+	} else if (key == 'w'){
         gui->loadSettings("GUI/wallsetting.xml");
     } else if(key == 'q'){
         gui->loadSettings("GUI/floorsetting.xml");
@@ -391,14 +425,14 @@ void testApp::guiEvent(ofxUIEventArgs &e)
 {
     
     string name = e.getName();
-    int kind = e.getKind();
-    //cout << "got event from: " << name << endl;
+	int kind = e.getKind();
+	//cout << "got event from: " << name << endl;
     
     /*if(name=="Wall cam") {
-     ofxUI2DPad *pad = (ofxUI2DPad *) e.widget;
-     camPosWall.x = pad->getScaledValue().x;
-     camPosWall.y = pad->getScaledValue().y;
-     }*/
+        ofxUI2DPad *pad = (ofxUI2DPad *) e.widget;
+        camPosWall.x = pad->getScaledValue().x;
+        camPosWall.y = pad->getScaledValue().y;
+    }*/
     
     for(int i=0; i<contentScenes.size(); i++) {
         contentScenes[i]->guiEvent(e);

@@ -1,0 +1,20 @@
+<keyframes>
+    <key>
+        <easefunc>0</easefunc>
+        <easetype>0</easetype>
+        <time>00:00:13:787</time>
+        <value>0.074999988</value>
+    </key>
+    <key>
+        <easefunc>6</easefunc>
+        <easetype>2</easetype>
+        <time>00:01:02:062</time>
+        <value>0.125000000</value>
+    </key>
+    <key>
+        <easefunc>0</easefunc>
+        <easetype>0</easetype>
+        <time>00:01:30:500</time>
+        <value>0.899999976</value>
+    </key>
+</keyframes>
