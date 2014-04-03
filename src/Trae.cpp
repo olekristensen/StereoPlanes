@@ -83,11 +83,11 @@ void Trae::draw(int _surfaceId) {
             ofVec4f position;
             
             if (i%2 == 0) {
-                position = ofVec4f(-0.66,1.0,-1.0, noiseFront->getValue());
+                position = ofVec4f(-0.66,1.0,-3.0, noiseFront->getValue());
             } else {
                 position = ofVec4f(0,2.5,-8.0, noiseBack->getValue());
             }
-            position += ofVec4f(ofSignedNoise(noiseTimeElapsed, i)*position.w/2.0, ofSignedNoise(0, noiseTimeElapsed, i)*position.w/2.0, ofSignedNoise(0,0, noiseTimeElapsed, i)*position.w/2.0, 0.0);
+            position += ofVec4f(ofSignedNoise(noiseTimeElapsed, i)/2.0, ofSignedNoise(0, noiseTimeElapsed, i)/2.0, ofSignedNoise(0,0, noiseTimeElapsed, i)/2.0, 0.0);
 
             noisePoints.points[i] = position;
         }

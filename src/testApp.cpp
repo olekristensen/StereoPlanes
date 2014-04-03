@@ -183,6 +183,13 @@ void testApp::update()
             }
         }
     }
+
+    for(int s=0; s<contentScenes.size();s++) {
+        if (contentScenes[s] != lights) {
+            contentScenes[s]->enabled = true;
+        }
+    }
+
     
     while(oscReceiver.hasWaitingMessages()){
 		// get the next message
