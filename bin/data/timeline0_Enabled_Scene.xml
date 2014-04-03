@@ -1,8 +1,14 @@
 <keyframes>
     <key>
         <switchName>Trae Scene</switchName>
-        <max>00:16:19:205</max>
+        <max>00:07:59:986</max>
         <time>00:00:00:000</time>
         <value>0.524999976</value>
+    </key>
+    <key>
+        <switchName>Trunk Rings</switchName>
+        <max>00:14:57:187</max>
+        <time>00:08:26:953</time>
+        <value>0.725000024</value>
     </key>
 </keyframes>
