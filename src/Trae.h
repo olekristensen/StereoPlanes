@@ -28,7 +28,9 @@ public:
     float zPos;
     
     ofxTLSwitches * regrow;
-    ofxTLCurves * progress;
+    ofxTLCurves * noiseFront;
+    ofxTLCurves * noiseBack;
+    ofxTLCurves * noiseSpeed;
     ofxTLColorTrack * treeColor;
     ofxTLColorTrack * groundColor;
     ofxTLCameraTrack* cameraTrack;
@@ -45,4 +47,6 @@ public:
     ofxOlaShaderLight::NoisePoints noisePoints;
     
     float drawScale = 1.0;
+    
+    float noiseTimeElapsed;
 };

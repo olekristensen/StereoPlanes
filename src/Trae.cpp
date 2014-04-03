@@ -14,10 +14,14 @@ void Trae::setup() {
     oscAddress = "/trae";
     zPos = 0;
     
+    noiseTimeElapsed = 0.0;
+    
     mainTimeline->addPage(name);
     regrow = mainTimeline->addSwitches("Regrow");
-    progress = mainTimeline->addCurves("Progress");
-
+    noiseFront = mainTimeline->addCurves("Noise Front", ofRange(0.0, 4.0));
+    noiseBack = mainTimeline->addCurves("Noise Back", ofRange(0.0, 4.0));
+    noiseSpeed = mainTimeline->addCurves("Noise Speed", ofRange(0.0, 0.1));
+    
     treeColor = mainTimeline->addColors("Trees");
     groundColor = mainTimeline->addColors("Ground");
 
@@ -44,8 +48,17 @@ void Trae::setup() {
     
     makeTrees();
     
-    noisePoints.numberOfPoints = 1;
-    noisePoints.points[0] = ofVec4f(0,0,0,.25);
+    noisePoints.numberOfPoints = 10;
+    noisePoints.points[0] = ofVec4f(0,0,-1,.25);
+    noisePoints.points[1] = ofVec4f(0,0,-1,.25);
+    noisePoints.points[2] = ofVec4f(0,0,-1,.25);
+    noisePoints.points[3] = ofVec4f(0,0,-1,.25);
+    noisePoints.points[4] = ofVec4f(0,0,-1,.25);
+    noisePoints.points[5] = ofVec4f(0,0,-1,.25);
+    noisePoints.points[6] = ofVec4f(0,0,-9,.25);
+    noisePoints.points[7] = ofVec4f(0,0,-9,.25);
+    noisePoints.points[8] = ofVec4f(0,0,-9,.25);
+    noisePoints.points[9] = ofVec4f(0,0,-9,.25);
 
 }
 
@@ -65,8 +78,20 @@ void Trae::draw(int _surfaceId) {
      
         ofxOlaShaderLight::setMaterial(treeMaterial);
         
-        noisePoints.points[0] = ofVec4f(0.0,1.0,(6.0*sin(ofGetElapsedTimef()*PI*0.5))-8.0,2.0*ofNoise(ofGetElapsedTimef()*3.0));
+        for (int i = 0; i < noisePoints.numberOfPoints; i++) {
+            
+            ofVec4f position;
+            
+            if (i%2 == 0) {
+                position = ofVec4f(-0.66,1.0,-1.0, noiseFront->getValue());
+            } else {
+                position = ofVec4f(0,2.5,-8.0, noiseBack->getValue());
+            }
+            position += ofVec4f(ofSignedNoise(noiseTimeElapsed, i)*position.w/2.0, ofSignedNoise(0, noiseTimeElapsed, i)*position.w/2.0, ofSignedNoise(0,0, noiseTimeElapsed, i)*position.w/2.0, 0.0);
 
+            noisePoints.points[i] = position;
+        }
+        
 /*        ofxOlaShaderLight::shader->setUniform1f("time", ofGetElapsedTimef());*/
 
         ofxOlaShaderLight::setNoisePoints(noisePoints);
@@ -129,6 +154,8 @@ void Trae::update() {
         cameraTrack->addKeyframe();
         addCameraKeyFrame = false;
     }
+    
+    noiseTimeElapsed += noiseSpeed->getValue();
 
 }
 

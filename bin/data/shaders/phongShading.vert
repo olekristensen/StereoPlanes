@@ -52,10 +52,12 @@ void main(){
         vec4 noisePoint = vertexNoise.points[i];
         vec3 noisePosition = noisePoint.xyz;
         float noisePositionSize = noisePoint.w;
-        vec4 noiseDifference = vec4(noisePosition.xyz - (modelViewMatrix*position).xyz, 0.0);
-        float noiseDistance = sqrt(dot(noiseDifference,noiseDifference));
-        float noiseAmount = 1.0-(min(noisePositionSize, noiseDistance)/noisePositionSize);
-        accumNoise+= noiseAmount;
+        if(noisePositionSize > 0.0){
+            vec4 noiseDifference = vec4(noisePosition.xyz - (modelViewMatrix*position).xyz, 0.0);
+            float noiseDistance = sqrt(dot(noiseDifference,noiseDifference));
+            float noiseAmount = 1.0-(min(noisePositionSize, noiseDistance)/noisePositionSize);
+            accumNoise+= noiseAmount;
+        }
     }
     
     vertexOffset*=(accumNoise*globalNoiseAmount);
