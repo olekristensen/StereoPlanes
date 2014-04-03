@@ -41,13 +41,6 @@ void TrunkRings::setup() {
     numRings = tlStartRing->getKeyframes().size();
     center->make(numRings);
     
-    //rings = center->getChildren();
-    
-    //shader.setGeometryInputType(GL_POINTS);
-	//shader.setGeometryOutputType(GL_TRIANGLES);
-	//shader.setGeometryOutputCount(5);
-	//shader.load("shaders/vert.glsl", "shaders/frag.glsl", "shaders/geom.glsl");
-    
     material.diffuseColor = ofVec4f(1.0,1.0,1.0,1.0);
     
 }
@@ -57,31 +50,22 @@ void TrunkRings::draw(int _surfaceId) {
     ofxOlaShaderLight::setMaterial(material);
     
     ofEnableSmoothing();
-    // A scene can draw to multiple surfaces
     if(_surfaceId == 0) {
         
         
-        ofPushMatrix();
-        ofTranslate(1, 1);
-        ofRotateX(tlKnockover->getValue());
-        ofTranslate(-1, -1);
-        
-        ofRotateZ(tlRotateZ->getValue());
-        ofRotateY(tlRotateY->getValue());
-        
-        center->drawActiveRings(time);
-        
-        ofPopMatrix();
-        
-        //tlStartFlags->get
-        
-            //center->drawExpand(ofMap(time, 0, 30, 0, float(center->step)));
-        
-            //center->draw(ofMap(time, 30, 120, 0, float(center->step)));
-        
-        /*for(int i=0;i<rings.size();i++) {
-            rings[i]->draw();
-        }*/
+        if(numRings > 1) {
+            ofPushMatrix();
+            ofTranslate(1, 1);
+            ofRotateX(tlKnockover->getValue());
+            ofTranslate(-1, -1);
+            
+            ofRotateZ(tlRotateZ->getValue());
+            ofRotateY(tlRotateY->getValue());
+            
+            center->drawActiveRings(time);
+            
+            ofPopMatrix();
+        }
         
         
     }
