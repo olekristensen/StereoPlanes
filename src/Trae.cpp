@@ -28,54 +28,76 @@ void Trae::setup() {
     treeMaterial.diffuseColor = ofVec4f(1.0, 1.0, 1.0, 1.0);
     treeMaterial.specularColor = ofVec4f(0.0, 0.0, 0.0, 1.0);
     treeMaterial.specularShininess = 0.5;
+    
+    cam.setTranslationKey('-');
+    cam.setScale(2,2,2);
+    cam.setPosition(0, 0, 0);
+    cam.setOrientation(ofVec3f(0,0,0));
+
+    cameraTrack = new ofxTLCameraTrack();
+    cameraTrack->setDampening(1);
+	cameraTrack->setCamera(cam);
+    cameraTrack->setXMLFileName("Tree_Camera.xml");
+	mainTimeline->addTrack("Camera", cameraTrack);
+	
+//	cameraTrack->lockCameraToTrack = true;
+
+    for(int i = 0; i < 10000; i++){
+		particles.addVertex(ofVec3f(ofRandom(-2000,2000),
+									ofRandom(-2000,2000),
+									ofRandom(-2000,2000)));
+        
+		particles.addColor(ofFloatColor(ofRandomuf()*.4));
+	}
+    
+    makeTrees();
 
 }
 
 void Trae::draw(int _surfaceId) {
-    
+    cam.enableMouseInput();
+
     // A scene can draw to multiple surfaces
     if(_surfaceId == 0) {
-        
         ofPushMatrix();
-        glEnable(GL_CULL_FACE);
-        glCullFace(GL_FRONT);
+        //glEnable(GL_CULL_FACE);
+        //glCullFace(GL_FRONT);
+    
+        // +z points forward
         
-/*      FLOOR AND AXIS
-        ofPushMatrix();
-        ofRotateX(90);
-        ofTranslate(0,0,-1);
-        ofSetColor(255, 255, 127);
-        ofDrawPlane(2, 2);
-        ofDrawAxis(1);
-        ofPopMatrix();
-*/
-        ofTranslate(ofPoint(0.,0,zPos));
-
-        //ofRotateY(time);
-        
+        ofVec3f camPos = cam.getPosition();
+        ofTranslate(cam.getPosition());
+     
         ofxOlaShaderLight::setMaterial(treeMaterial);
-        
+
         int i = 0;
         for (std::vector<ofxProcTree*>::iterator it = trees.begin() ; it != trees.end(); ++it) {
             ofPushMatrix();
-            ofRotateY(360.0*i/trees.size());
             ofTranslate(0, 0, 1);
             ofRotateX(-180);
             ofTranslate(0,-1,0);
-            ofScale(1./3, 1./3, 1./3);
+            ofQuaternion rot = cam.getOrientationQuat();
+            ofRotate(rot.w(), rot.x(), rot.y(), rot.z());
+            if(i == 0){
+                ofScale(1./3, 1./3, 1./3);
+                ofTranslate(-2.0, 0, 0);
+            }if(i == 1){
+                //ofScale(1./3, 1./3, 1./3);
+                ofTranslate(1.75, 0, -8);
+            }
             ofxProcTree *t = *(it);
             t->mesh.draw();
             ofPopMatrix();
             i++;
         }
         //tree->drawSkeleton();
-        ofPopMatrix();
-        glDisable(GL_CULL_FACE);
+        //glDisable(GL_CULL_FACE);
 
         ofxOlaShaderLight::setMaterial(groundMaterial);
-        ofDrawBox(0, 1, 0, 2, 0.001, 2);
+        //ofDrawBox(0, 1, 0, 2, 0.001, 2);
+
+        ofPopMatrix();
     }
-    
 }
 
 void Trae::update() {
@@ -101,6 +123,11 @@ void Trae::update() {
     if (!regrow->isOn()){
         hasRegrown = false;
     }
+    
+    if(addCameraKeyFrame){
+        cameraTrack->addKeyframe();
+        addCameraKeyFrame = false;
+    }
 }
 
 void Trae::makeTrees(){
@@ -110,23 +137,23 @@ void Trae::makeTrees(){
         delete t;
     }
     trees.clear();
-    for (int i = 0; i < 1; i++) {
+    for (int i = 0; i < 2; i++) {
         
         ofxProcTreeBranch::Properties * p = new ofxProcTreeBranch::Properties();
         
         p->seed = 519+i;
         p->segments = 14+ofRandom(-3,1);
-        p->levels = 5;
+        p->levels = 5 +(i);
         p->vMultiplier = 1.01;
         p->twigScale = 0;
-        p->initalBranchLength = 0.65+ofRandom(-.1,.5);
+        p->initalBranchLength = 0.65+ (i/2.0);
         p->lengthFalloffFactor = 0.73;
         p->lengthFalloffPower = 0.76;
         p->clumpMax = 0.53;
         p->clumpMin = 0.419;
         p->branchFactor = 3.4;// + ofRandom(-1,1);
         p->dropAmount = -0.16;
-        p->growAmount = 0.419;//+ofRandom(-1,1);
+        p->growAmount = 0.419 + (i/4.);//+ofRandom(-1,1);
         p->sweepAmount = 0.01;
         p->maxRadius = 0.168 + ofRandom(-0.1,0);
         p->climbRate = 0.472;
@@ -135,7 +162,7 @@ void Trae::makeTrees(){
         p->taperRate = 0.835;
         p->radiusFalloffRate = 0.73;
         p->twistRate = 1.29;
-        p->trunkLength = 2.2+ofRandom(-1,0);
+        p->trunkLength = 2.2 -(i/2.);
         
         trees.push_back(new ofxProcTree(p));
     }
@@ -143,7 +170,8 @@ void Trae::makeTrees(){
 
 void Trae::setGui(ofxUICanvas * gui, float width){
     ContentScene::setGui(gui, width);
-    gui->addSlider("Z pos", -2, 3, &zPos);
+    gui->addLabelToggle("Lock Camera to Track",  &cameraTrack->lockCameraToTrack);
+    gui->addLabelButton("Add Camera Keyframe", &addCameraKeyFrame);
 }
 
 void Trae::receiveOsc(ofxOscMessage * m, string rest) {
@@ -154,6 +182,7 @@ void Trae::guiEvent(ofxUIEventArgs &e)
     
     string name = e.getName();
 	int kind = e.getKind();
+    
 	//cout << "got event from: " << name << endl;
     
 }

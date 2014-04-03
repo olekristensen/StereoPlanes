@@ -19,15 +19,20 @@ void Lights::setup() {
     lightShading = mainTimeline->addCurves("Shading", ofRange(0,3));
 
     flyLightColor = mainTimeline->addColors("Fly Light Color");
-    flyLightAttenuation = mainTimeline->addCurves("Fly Light Attenuation", ofRange(0.001,5.0));
+    flyLightAttenuation = mainTimeline->addCurves("Fly Light Attenuation", ofRange(0.001,10.0));
     flyLightPosX = mainTimeline->addCurves("Fly Light Pos X", ofRange(-3.0, 3.0));
     flyLightPosY = mainTimeline->addCurves("Fly Light Pos Y", ofRange(-3.0, 3.0));
-    flyLightPosZ = mainTimeline->addCurves("Fly Light Pos Z", ofRange(-3.0, 3.0));
+    flyLightPosZ = mainTimeline->addCurves("Fly Light Pos Z", ofRange(-3.0, 9.0));
     flyLightPosNoise = mainTimeline->addCurves("Fly Light Pos Noise", ofRange(0.0, 1.0));
     flyLightPosNoiseSpeed = mainTimeline->addCurves("Fly Light Pos Noise Speed", ofRange(-1.0, 1.0));
 
+    flyLightDotColor = mainTimeline->addColors("Fly Light Dot Color");
+    flyLightDotSize = mainTimeline->addCurves("Fly Light Dot Size", ofRange(0.0, 1.0));
+
+    lightsVertexNoise = mainTimeline->addCurves("Vertex Noise", ofRange(0.0,1.0));
+
     skyLightColor = mainTimeline->addColors("Sky Light Color");
-    skyLightAttenuation = mainTimeline->addCurves("Sky Light Attenuation", ofRange(0.001,5.0));
+    skyLightAttenuation = mainTimeline->addCurves("Sky Light Attenuation", ofRange(0.001,10.0));
     
     material.diffuseColor = ofVec4f(0.9, 0.9, 0.9, 1.0);
     material.specularColor = ofVec4f(0.0, 0.0, 0.0, 0.0);
@@ -66,38 +71,31 @@ void Lights::setMaterial(ofxOlaShaderLight::Material m){
 void Lights::draw(int _surfaceId) {
     
     bool lightWasEnabled = ofxOlaShaderLight::isEnabled();
-
     if(lightWasEnabled){
         ofxOlaShaderLight::end();
     }
-    ofDrawSphere(flyLight.getGlobalPosition(), 0.01);
+    ofSetColor(flyLightDotColor->getColor());
+    ofDrawSphere(flyLight.getGlobalPosition(), flyLightDotSize->getValue());
     if(lightWasEnabled){
         ofxOlaShaderLight::begin();
     }
 }
 
+void Lights::updateCamPos(ofVec3f p){
+    camPos = p;
+}
+
 void Lights::update() {
     
-    /*float flyTime = mainTimeline->getCurrentTime() * flyLightPosNoiseSpeed->getValue();
+    float flyTime = mainTimeline->getCurrentTime() * flyLightPosNoiseSpeed->getValue();
     
     float zPos =ofSignedNoise(0,0,flyTime);
     float reduction = fmaxf(0,ofMap(zPos, 1, -1, 0.0, 1));
     reduction = pow(reduction, 3);
     
-    ofxUISlider * wallPosX = (ofxUISlider*) gui->getWidget("Wall X");
-    ofxUISlider * wallPosY = (ofxUISlider*) gui->getWidget("Wall Y");
-    ofxUISlider * wallPosZ = (ofxUISlider*) gui->getWidget("Wall Z");
-    
-    ofVec3f camPosWall = ofVec3f(
-                                 wallPosX->getValue(),
-                                 wallPosY->getValue(),
-                                 wallPosZ->getValue()
-                                 );
-    
-    ofVec3f posNoise(
-                     ofMap(reduction, 0,1,ofSignedNoise(flyTime), camPosWall.x),
-                     ofMap(reduction, 0,1,ofSignedNoise(0,flyTime), camPosWall.y),
-                     2.2*zPos
+    ofVec3f posNoise(ofSignedNoise(flyTime),
+                     ofSignedNoise(0,flyTime),
+                     zPos
                      );
     
     ofVec3f pos = (ofVec3f(
@@ -124,7 +122,17 @@ void Lights::update() {
             break;
     }
 
-    ofxOlaShaderLight::update();*/
+    bool lightWasEnabled = ofxOlaShaderLight::isEnabled();
+    if(!lightWasEnabled){
+        ofxOlaShaderLight::begin();
+    }
+
+    ofxOlaShaderLight::shader->setUniform1f("vertexNoise", lightsVertexNoise->getValue());
+    if(!lightWasEnabled){
+        ofxOlaShaderLight::end();
+    }
+
+    ofxOlaShaderLight::update();
 }
 
 void Lights::setGui(ofxUICanvas * gui, float width){

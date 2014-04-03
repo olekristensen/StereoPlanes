@@ -11,6 +11,7 @@
 #include "ofMain.h"
 #include "ofxProcTree.h"
 #include "ofxOlaShaderLight.h"
+#include "ofxTLCameraTrack.h"
 
 class Trae : public ContentScene {
     
@@ -30,15 +31,17 @@ public:
     ofxTLCurves * progress;
     ofxTLColorTrack * treeColor;
     ofxTLColorTrack * groundColor;
+    ofxTLCameraTrack* cameraTrack;
+	ofEasyCam cam;
     
+    bool addCameraKeyFrame;
     bool hasRegrown;
     
     ofxOlaShaderLight::Material treeMaterial;
     ofxOlaShaderLight::Material groundMaterial;
     
     vector<ofxProcTree*> trees;
-    
+    ofVboMesh particles;
+
     float drawScale = 1.0;
-    ofVec3f drawTranslation;
-    ofVec3f drawRotation;
 };

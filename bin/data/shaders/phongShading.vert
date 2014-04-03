@@ -28,12 +28,11 @@ void main(){
     // this is a dirty hack!!
     vertexNormal = vec3(modelViewMatrix * vec4(normal,0.0));
     vertexNormalFlat = vec3(modelViewMatrix * vec4(normal,0.0));
-    vec3 vertexOffset;
-    vertexOffset.x =rand(position.yz)*2;
-    vertexOffset.y =rand(position.xz);
-    vertexOffset.z =rand(position.xy)*2;
+    vec3 vertexOffset = vec3(1.0,1.0,1.0);
+    vertexOffset.x -= rand(position.yz)*2.0;
+    vertexOffset.y -= rand(position.xz)*2.0;
+    vertexOffset.z -= rand(position.xy)*2.0;
     vertexOffset*=vertexNoise;
-    vertexOffset*=position.z;
     cameraSpacePosition = (modelViewMatrix * position).xyz;
     cameraSpacePosition += vertexOffset;
     cameraSpacePositionFlat = (modelViewMatrix * position).xyz;

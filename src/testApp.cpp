@@ -27,16 +27,17 @@ void testApp::setup()
     
     timeline.setup();
     timeline.setupFont("GUI/Arial.ttf", 7);
-    
-    timeline.setDurationInSeconds(120);
+    timeline.setDurationInSeconds(60*15);
     //timeline.setFrameRate(ofGetFrameRate());
+    
+    timeline.addAudioTrack("start opbyg", "start-opbyg-melodi.wav");
     
     timeline.setLoopType(OF_LOOP_NORMAL);
     
     timeline.setBPM(120.f);
-    tlAudioMain = timeline.addAudioTrack("Audio", "tre-opbyg-beat.wav");
+    //tlAudioMain = timeline.addAudioTrack("Audio", "tre-opbyg-beat.wav");
     
-    tlAudioMain->loadSoundfile("tre-opbyg-beat.wav");
+    //tlAudioMain->loadSoundfile("tre-opbyg-beat.wav");
     enabledScene = timeline.addSwitches("Enabled Scene");
 
 	ofAddListener(timeline.events().bangFired, this, &testApp::bangFired);
@@ -222,8 +223,8 @@ void testApp::update()
     
     
     wall->cam.setPosition(camPosWall);
-    
     wall->aspect = aspect;
+    lights->updateCamPos(camPosWall);
     
     for(int i=0; i<planes.size(); i++) {
         planes[i]->cam.setPhysicalEyeSeparation(eyeSeperation);

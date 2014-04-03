@@ -6,7 +6,7 @@
 <Widget>
     <Kind>4</Kind>
     <Name>Aspect</Name>
-    <Value>0.568493128</Value>
+    <Value>1.404109597</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
@@ -26,25 +26,25 @@
 <Widget>
     <Kind>2</Kind>
     <Name>Preview SBS</Name>
-    <Value>1</Value>
+    <Value>0</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
     <Name>[0] Enabled</Name>
-    <Value>0</Value>
+    <Value>1</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
     <Name>[1] Enabled</Name>
-    <Value>0</Value>
+    <Value>1</Value>
 </Widget>
 <Widget>
-    <Kind>4</Kind>
-    <Name>Z pos</Name>
-    <Value>0.534246445</Value>
+    <Kind>17</Kind>
+    <Name>Lock Camera to Track</Name>
+    <Value>1</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
     <Name>[2] Enabled</Name>
-    <Value>1</Value>
+    <Value>0</Value>
 </Widget>
