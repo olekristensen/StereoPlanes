@@ -55,9 +55,9 @@ void TrunkRings::draw(int _surfaceId) {
         
         if(numRings > 1) {
             ofPushMatrix();
-            ofTranslate(1, 1);
+            //ofTranslate(1, 1);
             ofRotateX(tlKnockover->getValue());
-            ofTranslate(-1, -1);
+            //ofTranslate(-1, -1);
             
             ofRotateZ(tlRotateZ->getValue());
             ofRotateY(tlRotateY->getValue());
