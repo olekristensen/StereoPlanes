@@ -30,14 +30,15 @@ void testApp::setup()
     timeline.setDurationInSeconds(60*15);
     //timeline.setFrameRate(ofGetFrameRate());
     
-    timeline.addAudioTrack("start opbyg", "start-opbyg-melodi.wav");
+    tlAudioMain = timeline.addAudioTrack("start opbyg");
+    
+    tlAudioMain->loadSoundfile("membrane-barkpop.wav");
     
     timeline.setLoopType(OF_LOOP_NORMAL);
     
     timeline.setBPM(120.f);
     //tlAudioMain = timeline.addAudioTrack("Audio", "tre-opbyg-beat.wav");
     
-    //tlAudioMain->loadSoundfile("tre-opbyg-beat.wav");
     enabledScene = timeline.addSwitches("Enabled Scene");
 
 	ofAddListener(timeline.events().bangFired, this, &testApp::bangFired);

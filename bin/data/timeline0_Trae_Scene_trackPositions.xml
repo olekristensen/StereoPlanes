@@ -2,31 +2,31 @@
     <element name="Camera">
         <x>0.000000000</x>
         <y>326.000000000</y>
-        <width>1280.000000000</width>
+        <width>1440.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Ground">
         <x>0.000000000</x>
         <y>262.000000000</y>
-        <width>1280.000000000</width>
+        <width>1440.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Progress">
         <x>0.000000000</x>
         <y>134.000000000</y>
-        <width>1280.000000000</width>
+        <width>1440.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Regrow">
         <x>0.000000000</x>
         <y>70.000000000</y>
-        <width>1280.000000000</width>
+        <width>1440.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Trees">
         <x>0.000000000</x>
         <y>198.000000000</y>
-        <width>1280.000000000</width>
+        <width>1440.000000000</width>
         <height>40.000000000</height>
     </element>
 </positions>

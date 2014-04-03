@@ -18,9 +18,22 @@ void TrunkRings::setup() {
     
     tlStartRing = mainTimeline->addCurves("Start");
     
-    tlRadius = mainTimeline->addCurves("Radius");
-    tlSpeed = mainTimeline->addCurves("Speed");
-    tlNoise = mainTimeline->addCurves("Noise");
+    //tlRadius = mainTimeline->addCurves("Radius");
+    
+    
+    tlY = mainTimeline->addCurves("Y");
+    tlY->setValueRangeMax(-1);
+    tlY->setValueRangeMin(1);
+    
+    tlZ = mainTimeline->addCurves("Z");
+    tlZ->setValueRangeMax(-1);
+    tlZ->setValueRangeMin(1);
+    
+    tlX = mainTimeline->addCurves("X");
+    tlX->setValueRangeMax(-1);
+    tlX->setValueRangeMin(1);
+    
+    //tlNoise = mainTimeline->addCurves("Noise");
     
     tlKnockover = mainTimeline->addCurves("Knockover");
     tlKnockover->setValueRangeMax(-90);
@@ -52,13 +65,12 @@ void TrunkRings::draw(int _surfaceId) {
     ofEnableSmoothing();
     if(_surfaceId == 0) {
         
-        
         if(numRings > 1) {
             ofPushMatrix();
-            //ofTranslate(1, 1);
-            ofRotateX(tlKnockover->getValue());
-            //ofTranslate(-1, -1);
             
+            ofTranslate(tlX->getValue(), tlY->getValue(), tlZ->getValue());
+            
+            ofRotateX(tlKnockover->getValue());
             ofRotateZ(tlRotateZ->getValue());
             ofRotateY(tlRotateY->getValue());
             
@@ -66,10 +78,7 @@ void TrunkRings::draw(int _surfaceId) {
             
             ofPopMatrix();
         }
-        
-        
     }
-
 }
 
 void TrunkRings::update() {

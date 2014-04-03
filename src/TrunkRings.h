@@ -31,7 +31,7 @@ class Ring {
 public:
     
     float radius = 0.01;
-    int   resolution = 400;
+    int   resolution = 160;//400;
     float seed;
     int   step = -1; // first one is just the controller we dont draw it
     float variance = 4;
@@ -42,6 +42,10 @@ public:
     
     float growDuration = 5; // How many seconds to draw one ring
     float start = 2;
+    
+    bool meshReady = false;
+    
+    ofMesh mesh;
     
     Ring * parent = NULL;
     Ring * child = NULL;
@@ -109,30 +113,30 @@ public:
         
     }*/
     
-    // Draw child n p percent complete
-    void drawStep(int n, float p) {
-        if(step == n) {
-            
-        } else if(child) {
-            child->drawStep(n, p);
-        }
-    }
-    
     void updateMesh(float p) {
+        
         p = ofClamp(p, 0, 1);
+        float left = float(resolution) * p;
+        if(p<1) { meshReady = false; }
         
-        ofMesh mesh;
-        
-        float left = resolution * p;
-        
-        if(left>0) {
-        //cout<<p<<endl;
+        if(left>0 || !meshReady) {
+        mesh.clear();
         mesh.setMode(OF_PRIMITIVE_TRIANGLE_STRIP);
-        for (int i=1; i<floor(left); i++) {
+            
+        for (int i=1; i<ceil(left); i++) {
             
             //find this point and the next point
             ofVec3f thisPoint = points[i-1];
             ofVec3f nextPoint = points[i];
+            
+            float pOfLast = left - float(i+1);
+            if(pOfLast < 1) {
+                // We are drawinf the last one
+                // Lets lerp to the next point
+                
+                nextPoint.interpolate(thisPoint, pOfLast);
+                
+            }
             
             //get the direction from one to the next.
             ofVec3f direction = (nextPoint - thisPoint);
@@ -161,23 +165,23 @@ public:
             ofVec3f rightPoint = thisPoint+toTheRight*thickness;
             
             //add these points to the triangle strip
+  
             mesh.addColor(ofFloatColor(0.8f,0.8f,0.8f,1.0f));
             mesh.addVertex(ofVec3f(leftPoint.x, leftPoint.y, leftPoint.z));
             mesh.addNormal(ofVec3f(normalRight));
             mesh.addColor(ofFloatColor(0.8f,0.8f,0.8f,1.0f));
             mesh.addVertex(ofVec3f(rightPoint.x, rightPoint.y, rightPoint.z));
             mesh.addNormal(ofVec3f(normalRight));
-            
-            if(i - left < 1) {
-                //ofDrawSphere(points[left+1], 0.01);
-            }
-            
+
+            // TODO animate last link in - interpolate to next point
         }
-        //mesh.draw();
-            //vbo.setMesh(mesh, GL_STREAM_DRAW);
-            mesh.draw();
+        
+        meshReady = (p==1);
+
+        //vbo.setMesh(mesh, GL_STREAM_DRAW);
+        mesh.draw();
             
-/* draw normals
+            /* draw normals
             ofxOlaShaderLight::end();
             
             vector<ofVec3f> n = mesh.getNormals();
@@ -194,13 +198,11 @@ public:
                     ofLine(.98*v[i].x+n[i].x*normalLength*.2,.98*v[i].y+n[i].y*normalLength*.2,.98*v[i].z+n[i].z*normalLength*.2,
                            v[i].x+n[i].x*normalLength*.2,v[i].y+n[i].y*normalLength*.2,v[i].z+n[i].z*normalLength*.2);
                 }
-
         
             ofxOlaShaderLight::begin();
             
  */
         //
-            
         //ofNoFill();
         //ofCircle(points[left],0.01);
         }
@@ -227,17 +229,13 @@ public:
                 float elapsed = (seconds-start);
                 float p = elapsed/growDuration;
                 updateMesh(p);
-            
                 //drawVbo();
-        }
-        
+            }
         }
             
         if(child) {
             child->drawActiveRings(seconds);
         }
-        
-        
         
     }
     
@@ -268,7 +266,9 @@ public:
     
     ofxTLCurves * tlStartRing;
     ofxTLCurves * tlRadius;
-    ofxTLCurves * tlSpeed;
+    ofxTLCurves * tlX;
+    ofxTLCurves * tlY;
+    ofxTLCurves * tlZ;
     ofxTLCurves * tlNoise;
     
     ofxTLCurves * tlKnockover;
