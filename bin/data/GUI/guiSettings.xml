@@ -36,7 +36,7 @@
 <Widget>
     <Kind>2</Kind>
     <Name>[1] Enabled</Name>
-    <Value>1</Value>
+    <Value>0</Value>
 </Widget>
 <Widget>
     <Kind>17</Kind>
@@ -46,5 +46,5 @@
 <Widget>
     <Kind>2</Kind>
     <Name>[2] Enabled</Name>
-    <Value>0</Value>
+    <Value>1</Value>
 </Widget>

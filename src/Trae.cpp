@@ -41,16 +41,11 @@ void Trae::setup() {
 	mainTimeline->addTrack("Camera", cameraTrack);
 	
 //	cameraTrack->lockCameraToTrack = true;
-
-    for(int i = 0; i < 10000; i++){
-		particles.addVertex(ofVec3f(ofRandom(-2000,2000),
-									ofRandom(-2000,2000),
-									ofRandom(-2000,2000)));
-        
-		particles.addColor(ofFloatColor(ofRandomuf()*.4));
-	}
     
     makeTrees();
+    
+    noisePoints.numberOfPoints = 1;
+    noisePoints.points[0] = ofVec4f(0,0,0,.25);
 
 }
 
@@ -69,6 +64,11 @@ void Trae::draw(int _surfaceId) {
         ofTranslate(cam.getPosition());
      
         ofxOlaShaderLight::setMaterial(treeMaterial);
+        
+        noisePoints.points[0] = ofVec4f(0.0,1.0,4.0*ofSignedNoise(ofGetElapsedTimef()*0.1),2.0);
+        noisePoints.time = ofGetElapsedTimef();
+
+        ofxOlaShaderLight::setNoisePoints(noisePoints);
 
         int i = 0;
         for (std::vector<ofxProcTree*>::iterator it = trees.begin() ; it != trees.end(); ++it) {
@@ -128,6 +128,7 @@ void Trae::update() {
         cameraTrack->addKeyframe();
         addCameraKeyFrame = false;
     }
+
 }
 
 void Trae::makeTrees(){

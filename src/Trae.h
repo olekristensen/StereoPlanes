@@ -41,7 +41,8 @@ public:
     ofxOlaShaderLight::Material groundMaterial;
     
     vector<ofxProcTree*> trees;
-    ofVboMesh particles;
-
+    
+    ofxOlaShaderLight::NoisePoints noisePoints;
+    
     float drawScale = 1.0;
 };
