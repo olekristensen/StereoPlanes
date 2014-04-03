@@ -210,7 +210,8 @@ public:
     void drawVbo() {
         /*vbo.bind();
         glDrawArrays(GL_TRIANGLE_STRIP, 0, vbo.getNumVertices());
-        vbo.unbind();*/
+        vbo.unbind();
+         */
     }
     
     void drawActiveRings(float seconds) {
