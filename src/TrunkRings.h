@@ -175,11 +175,11 @@ public:
 
             // TODO animate last link in - interpolate to next point
         }
-        
         meshReady = (p==1);
-
+        
         //vbo.setMesh(mesh, GL_STREAM_DRAW);
         mesh.draw();
+        //mesh.drawWireframe();
             
             /* draw normals
             ofxOlaShaderLight::end();
@@ -282,6 +282,9 @@ public:
     Ring * center;
     
     int numRings = 0;
+    
+    ofShader fxaa;
+
     
     
 };

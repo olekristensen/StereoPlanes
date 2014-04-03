@@ -19,8 +19,8 @@
     </element>
     <element name="Enabled Scene">
         <x>0.000000000</x>
-        <y>256.000000000</y>
-        <width>1440.000000000</width>
+        <y>238.000000000</y>
+        <width>1280.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="curves">
@@ -31,8 +31,8 @@
     </element>
     <element name="start opbyg">
         <x>0.000000000</x>
-        <y>70.000000000</y>
-        <width>1440.000000000</width>
+        <y>52.000000000</y>
+        <width>1280.000000000</width>
         <height>162.000000000</height>
     </element>
 </positions>
