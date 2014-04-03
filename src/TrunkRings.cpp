@@ -16,8 +16,9 @@ void TrunkRings::setup() {
     
     mainTimeline->addPage(name);
     
+    tlStartRing = mainTimeline->addCurves("Start");
+    
     tlRadius = mainTimeline->addCurves("Radius");
-    tlStartFlags = mainTimeline->addFlags("Start");
     tlSpeed = mainTimeline->addCurves("Speed");
     tlNoise = mainTimeline->addCurves("Noise");
     
@@ -34,9 +35,12 @@ void TrunkRings::setup() {
     tlRotateY->setValueRangeMin(0);
     
     center = new Ring();
-    center->flags = tlStartFlags;
+    center->p_tlStart = tlStartRing;
     center->setup();
-    center->make(100);
+    
+    numRings = tlStartRing->getKeyframes().size();
+    center->make(numRings);
+    
     //rings = center->getChildren();
     
     //shader.setGeometryInputType(GL_POINTS);
@@ -65,7 +69,6 @@ void TrunkRings::draw(int _surfaceId) {
         ofRotateZ(tlRotateZ->getValue());
         ofRotateY(tlRotateY->getValue());
         
-        
         center->drawActiveRings(time);
         
         ofPopMatrix();
@@ -86,7 +89,16 @@ void TrunkRings::draw(int _surfaceId) {
 }
 
 void TrunkRings::update() {
-
+    
+    if(numRings != tlStartRing->getKeyframes().size()) {
+        numRings =  tlStartRing->getKeyframes().size();
+        
+        /*center = new Ring();
+        center->p_tlStart = tlStartRing;
+        center->setup();*/
+        
+        center->make(numRings);
+    }
     
 }
 

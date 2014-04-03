@@ -29,12 +29,11 @@ class Ring {
     }
 
 public:
-    ofxTLFlags * flags;
     
     float radius = 0.01;
     int   resolution = 440;
     float seed;
-    int   step = 0;
+    int   step = -1; // first one is just the controller we dont draw it
     float variance = 4;
     float scale = 60;
     float startangle;
@@ -49,7 +48,8 @@ public:
     
     vector<ofVec3f> points;
     ofVbo vbo;
-    ofxTLFlag * flag;
+
+    ofxTLCurves * p_tlStart;
     
 //    vector<Ring *> allChildren;
     
@@ -60,14 +60,17 @@ public:
     
     void setup(Ring * _parent) {
         parent = _parent;
-        
         startangle = ofRandom(0, TWO_PI);
         
         if(parent){
-            flags = parent->flags;
+            
+            step = parent->step + 1;
+            p_tlStart = parent->p_tlStart;
             seed = parent->seed;
-            radius = parent->radius += ofRandom(0.01, 0.06);
-            start = ofRandom(parent->start-1,parent->start+3);
+            radius = parent->radius + ofRandom(0.01, 0.06);
+            //start = ofRandom(parent->start-1,parent->start+3);
+            
+            //growDuration = p_tlStart->getKeyframes()[step]->value;
             growDuration = ofRandom(10,20);
             
             radiusVariance = radius - parent->radius;
@@ -89,17 +92,13 @@ public:
         points.push_back(points[0]);
         points.push_back(points[1]);
         
-        
     }
     
     void make(int steps){
         if(steps > 1){
             delete(child);
-            step = steps;
-            
             addRing();
             child->make(steps-1);
-            
         }
         
         //allChildren = getChildren();
@@ -117,93 +116,6 @@ public:
         } else if(child) {
             child->drawStep(n, p);
         }
-    }
-    
-    void draw(float steps) {
-        
-        if(steps > 1){
-            ofMesh mesh;
-            mesh.setMode(OF_PRIMITIVE_LINE_LOOP);
-            for (int i=0; i<points.size(); i++) {
-                mesh.addColor(ofFloatColor(0.8f,0.8f,0.8f, 0.8f));
-                mesh.addVertex(points[i]);
-            }
-            ofSetLineWidth(40);
-            mesh.draw();
-        
-            if(child) {
-                child->draw(steps-1);
-            }
-            
-        } else {
-            if(steps>0) {
-                ofMesh mesh;
-                int left = float(resolution) * float(steps);
-                mesh.setMode(OF_PRIMITIVE_LINE_STRIP);
-
-                for (int i=0; i<left; i++) {
-                    mesh.addColor(ofFloatColor(0.8f,0.8f,0.8f, ofMap(i, 0, left, 1.0f, 0.0f)));
-                    mesh.addVertex(points[i]);
-                    
-                }
-                mesh.draw();
-                
-                ofNoFill();
-                ofCircle(points[left],0.01);
-            }
-            
-        }
-    }
-    
-    void drawExpand(float steps) {
-        
-        if(steps > 1){
-            ofMesh mesh;
-            mesh.setMode(OF_PRIMITIVE_LINE_LOOP);
-            for (int i=0; i<points.size(); i++) {
-                
-                mesh.addColor(ofFloatColor(0.8f,0.8f,0.8f, 1.0f));
-                mesh.addVertex(points[i]);
-                
-            }
-            ofSetLineWidth(40);
-            mesh.draw();
-            
-            if(child) {
-                child->drawExpand(steps-1);
-            }
-            
-        } else {
-            if(steps>0) {
-                ofMesh mesh;
-                float left = float(resolution) * float(steps);
-                
-                float percent = left/resolution*1.0;
-                //cout<<percent<<endl;
-                mesh.setMode(OF_PRIMITIVE_LINE_STRIP);
-                
-                for (int i=0; i<points.size(); i++) {
-                    
-                    mesh.addColor(ofFloatColor(0.8f,0.8f,0.8f, ofMap(percent, 1, 0, 1.0f, 0.0f)));
-                    if(parent) {
-                        mesh.addVertex(points[i].interpolated(parent->points[i], 1-percent));
-                    } else {
-                        mesh.addVertex(points[i].interpolated(ofVec3f(0,0,0), 1-percent));
-                    }
-                    
-                }
-                
-                mesh.draw();
-                
-                //ofNoFill();
-                ofCircle(points[left],0.01);
-            }
-            
-        }
-    }
-    
-    
-    void drawGrowAll(float percent) {
     }
     
     void drawAsMesh(float p) {
@@ -240,7 +152,7 @@ public:
             //use the map function to determine the distance.
             //the longer the distance, the narrower the line.
             //this makes it look a bit like brush strokes
-            float thickness = ofMap(ofSignedNoise(points[i].x,points[i].y,points[i].z), 0, 1, 0.01, 0.02);
+            float thickness = ofMap(ofSignedNoise(points[i].x,points[i].y,points[i].z), 0, 1, 0.01, 0.011);
             
             //calculate the points to the left and to the right
             //by extending the current point in the direction of left/right by the length
@@ -258,10 +170,6 @@ public:
 
             
         }
-        
-            //mesh.drawWireframe();
-        //mesh.draw();
-        
         mesh.draw();
             
 /* draw normals
@@ -300,32 +208,24 @@ public:
     void drawActiveRings(float seconds) {
         
         
-        //cout<<seconds;
+        if(step != -1) {
+        start = p_tlStart->getKeyframes()[step]->time / 1000;
+        growDuration = ofMap(p_tlStart->getKeyframes()[step]->value,
+                             0,1,1,600);
+                             
         
         if(seconds > start) {
-            
-            //cout<<"  draw";
-            
-            float elapsed = (seconds-start);
-            float p = elapsed/growDuration;
-            //cout<<"  elapsed:  " <<elapsed;
-            //cout<<"  p:  " <<p;
-            
-            //if(p<1) {
+                float elapsed = (seconds-start);
+                float p = elapsed/growDuration;
                 drawAsMesh(p);
-            //} else {
-                
-            //}
-            
-            //vbo.draw(OF_PRIMITIVE_LINE_STRIP, 0, vbo.getNumVertices());
-            
         }
         
-        //cout<<endl;
-        
+        }
+            
         if(child) {
             child->drawActiveRings(seconds);
         }
+        
         
         
     }
@@ -354,6 +254,8 @@ public:
     int seed;
     
     ofxTLFlags * tlStartFlags;
+    
+    ofxTLCurves * tlStartRing;
     ofxTLCurves * tlRadius;
     ofxTLCurves * tlSpeed;
     ofxTLCurves * tlNoise;
@@ -367,6 +269,8 @@ public:
     vector<Ring *> rings;
     
     Ring * center;
+    
+    int numRings = 0;
     
     
 };
