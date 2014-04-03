@@ -31,7 +31,7 @@ class Ring {
 public:
     
     float radius = 0.01;
-    int   resolution = 440;
+    int   resolution = 400;
     float seed;
     int   step = -1; // first one is just the controller we dont draw it
     float variance = 4;
@@ -118,17 +118,18 @@ public:
         }
     }
     
-    void drawAsMesh(float p) {
+    void updateMesh(float p) {
         p = ofClamp(p, 0, 1);
         
         ofMesh mesh;
-        int left = resolution * p;
+        
+        float left = resolution * p;
         
         if(left>0) {
         //cout<<p<<endl;
         mesh.setMode(OF_PRIMITIVE_TRIANGLE_STRIP);
-        for (int i=1; i<left; i++) {
-
+        for (int i=1; i<floor(left); i++) {
+            
             //find this point and the next point
             ofVec3f thisPoint = points[i-1];
             ofVec3f nextPoint = points[i];
@@ -152,7 +153,7 @@ public:
             //use the map function to determine the distance.
             //the longer the distance, the narrower the line.
             //this makes it look a bit like brush strokes
-            float thickness = ofMap(ofSignedNoise(points[i].x,points[i].y,points[i].z), 0, 1, 0.01, 0.011);
+            float thickness = ofMap(ofSignedNoise(points[i].x,points[i].y,points[i].z), 0, 1, 0.005, 0.01);
             
             //calculate the points to the left and to the right
             //by extending the current point in the direction of left/right by the length
@@ -167,10 +168,14 @@ public:
             mesh.addVertex(ofVec3f(rightPoint.x, rightPoint.y, rightPoint.z));
             mesh.addNormal(ofVec3f(normalRight));
             
-
+            if(i - left < 1) {
+                //ofDrawSphere(points[left+1], 0.01);
+            }
             
         }
-        mesh.draw();
+        //mesh.draw();
+            //vbo.setMesh(mesh, GL_STREAM_DRAW);
+            mesh.draw();
             
 /* draw normals
             ofxOlaShaderLight::end();
@@ -194,15 +199,18 @@ public:
             ofxOlaShaderLight::begin();
             
  */
-        /*vbo.setMesh(mesh, GL_STREAM_DRAW);
-        vbo.bind();
-        glDrawArrays(GL_TRIANGLE_STRIP, 0, mesh.getNumVertices());
-        vbo.unbind();
-        */
+        //
+            
         //ofNoFill();
         //ofCircle(points[left],0.01);
         }
         
+    }
+    
+    void drawVbo() {
+        /*vbo.bind();
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, vbo.getNumVertices());
+        vbo.unbind();*/
     }
     
     void drawActiveRings(float seconds) {
@@ -211,13 +219,15 @@ public:
         if(step != -1) {
         start = p_tlStart->getKeyframes()[step]->time / 1000;
         growDuration = ofMap(p_tlStart->getKeyframes()[step]->value,
-                             0,1,1,600);
+                             0,1,1,120);
                              
         
         if(seconds > start) {
                 float elapsed = (seconds-start);
                 float p = elapsed/growDuration;
-                drawAsMesh(p);
+                updateMesh(p);
+            
+                //drawVbo();
         }
         
         }
