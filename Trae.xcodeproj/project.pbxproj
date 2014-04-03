@@ -733,6 +733,7 @@
 		7AA24FD318E5CBE300955341 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
 		7AA24FD718E5DF9900955341 /* Lights.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Lights.cpp; sourceTree = "<group>"; };
 		7AA24FD818E5DF9900955341 /* Lights.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Lights.h; sourceTree = "<group>"; };
+		7ACBD3B318ED736000CAAF66 /* defines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = defines.h; sourceTree = "<group>"; };
 		7AF1C3BD18859C8200B38D3B /* stereoplanes.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = stereoplanes.xml; path = bin/data/stereoplanes.xml; sourceTree = "<group>"; };
 		AB6B555718902BD800E70C54 /* SyphonNameboundClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyphonNameboundClient.h; sourceTree = "<group>"; };
 		AB6B555818902BD800E70C54 /* SyphonNameboundClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyphonNameboundClient.m; sourceTree = "<group>"; };
@@ -2190,6 +2191,7 @@
 				046CF16F18E47AC60086B057 /* TrunkRings.h */,
 				7AA24FD718E5DF9900955341 /* Lights.cpp */,
 				7AA24FD818E5DF9900955341 /* Lights.h */,
+				7ACBD3B318ED736000CAAF66 /* defines.h */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;

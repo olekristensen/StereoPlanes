@@ -46,11 +46,14 @@ void Lights::setup() {
     skyLight.setAttenuation(1./10.);
     skyLight.setTemperature(10000);
     
+    noisePoints.numberOfPoints = 0;
+    
 }
 
 void Lights::begin(){
     ofxOlaShaderLight::begin();
     ofxOlaShaderLight::setMaterial(material);
+    ofxOlaShaderLight::setNoisePoints(noisePoints);
     
     flyLight.setDiffuseColor(flyLightColor->getColor());
     flyLight.setAttenuation(1./flyLightAttenuation->getValue());
@@ -66,6 +69,10 @@ void Lights::end(){
 
 void Lights::setMaterial(ofxOlaShaderLight::Material m){
     material = m;
+}
+
+void Lights::setNoisePoints(ofxOlaShaderLight::NoisePoints n){
+    noisePoints = n;
 }
 
 void Lights::draw(int _surfaceId) {

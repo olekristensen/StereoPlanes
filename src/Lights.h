@@ -24,7 +24,8 @@ public:
     void updateCamPos(ofVec3f p);
     
     void setMaterial(ofxOlaShaderLight::Material m);
-    
+    void setNoisePoints(ofxOlaShaderLight::NoisePoints n);
+
     void setGui(ofxUICanvas * gui, float width);
     void guiEvent(ofxUIEventArgs &e);
     void receiveOsc(ofxOscMessage * m, string rest);
@@ -36,6 +37,8 @@ public:
     ofxOlaShaderLight flyLight;
     ofxOlaShaderLight skyLight;
     ofxOlaShaderLight::Material material;
+
+    ofxOlaShaderLight::NoisePoints noisePoints;
     
     ofxTLCurves     * lightShading;
     ofxTLCurves     * lightsVertexNoise;
