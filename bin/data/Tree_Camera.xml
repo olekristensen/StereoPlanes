@@ -22,7 +22,7 @@
         <ow>0.000000000</ow>
         <easein>0</easein>
         <easeout>1</easeout>
-        <time>00:06:43:757</time>
+        <time>00:06:40:873</time>
         <value>0.049000014</value>
     </key>
     <key>
@@ -35,7 +35,7 @@
         <ow>-75.000000000</ow>
         <easein>0</easein>
         <easeout>1</easeout>
-        <time>00:07:15:547</time>
+        <time>00:07:23:153</time>
         <value>0.002000000</value>
     </key>
     <key>
@@ -48,7 +48,59 @@
         <ow>-90.000000000</ow>
         <easein>1</easein>
         <easeout>0</easeout>
-        <time>00:07:20:173</time>
+        <time>00:07:56:577</time>
         <value>0.576999664</value>
+    </key>
+    <key>
+        <px>0.000000000</px>
+        <py>0.000000000</py>
+        <pz>-1.000000000</pz>
+        <ox>0.000000000</ox>
+        <oy>1.000000000</oy>
+        <oz>0.000000000</oz>
+        <ow>-90.000000000</ow>
+        <easein>0</easein>
+        <easeout>1</easeout>
+        <time>00:09:08:201</time>
+        <value>0.026999976</value>
+    </key>
+    <key>
+        <px>0.000000000</px>
+        <py>2.000000000</py>
+        <pz>-1.000000000</pz>
+        <ox>0.000000000</ox>
+        <oy>1.000000000</oy>
+        <oz>0.000000000</oz>
+        <ow>-90.000000000</ow>
+        <easein>0</easein>
+        <easeout>0</easeout>
+        <time>00:09:32:400</time>
+        <value>0.074999988</value>
+    </key>
+    <key>
+        <px>0.000000000</px>
+        <py>2.000000000</py>
+        <pz>-1.000000000</pz>
+        <ox>0.000000000</ox>
+        <oy>1.000000000</oy>
+        <oz>0.000000000</oz>
+        <ow>-90.000000000</ow>
+        <easein>0</easein>
+        <easeout>0</easeout>
+        <time>00:11:37:600</time>
+        <value>0.024999976</value>
+    </key>
+    <key>
+        <px>0.000000000</px>
+        <py>0.000000000</py>
+        <pz>-1.000000000</pz>
+        <ox>0.000000000</ox>
+        <oy>1.000000000</oy>
+        <oz>0.000000000</oz>
+        <ow>-90.000000000</ow>
+        <easein>0</easein>
+        <easeout>0</easeout>
+        <time>00:12:42:390</time>
+        <value>0.000000000</value>
     </key>
 </keyframes>
