@@ -16,7 +16,8 @@ uniform NoisePoints
 {
     int numberOfPoints;
     float globalScale;
-	vec4 points [100];
+    float time;
+    vec4 points [100];
 } vertexNoise;
 
 
@@ -34,22 +35,23 @@ void main(){
     // this is a dirty hack!!
     vertexNormal = vec3(modelViewMatrix * vec4(normal,0.0));
     vertexNormalFlat = vec3(modelViewMatrix * vec4(normal,0.0));
-    vec3 vertexOffset = vec3(1.0,1.0,1.0);
-    vertexOffset.x -= rand(position.yz)*1.0;
-    vertexOffset.y -= rand(position.xz)*1.0;
-    vertexOffset.z -= rand(position.xy)*1.0;
+    vec3 vertexOffset;
+    vertexOffset.x = noise1(vec3(position.xy,vertexNoise.time));
+    vertexOffset.y = noise1(vec3(position.zy,vertexNoise.time));
+    vertexOffset.z = noise1(vec3(position.zx,vertexNoise.time));
     
     float accumNoise = 0.0;
     for (int i = 0; i < vertexNoise.numberOfPoints; i++) {
         vec4 noisePoint = vertexNoise.points[i];
-        vec3 noiseDifference = position.xyz - noisePoint.xyz;
+        vec3 noisePosition = noisePoint.xyz;
+        float noisePositionSize = noisePoint.w;
+        vec4 noiseDifference = vec4(noisePosition - (modelViewMatrix*position).xyz, 0.0);
         float noiseDistance = sqrt(dot(noiseDifference,noiseDifference));
-        float noiseScale = noisePoint.w;
-        float noiseAmount = min(noiseScale-noiseDistance, 0.0);
+        float noiseAmount = 1.0-(min(noisePositionSize, noiseDistance)/noisePositionSize);
         accumNoise+= noiseAmount;
     }
     
-    vertexOffset*=vertexNoise.globalScale*accumNoise;
+    vertexOffset*=accumNoise;
     cameraSpacePosition = (modelViewMatrix * position).xyz;
     cameraSpacePosition += vertexOffset;
     cameraSpacePositionFlat = (modelViewMatrix * position).xyz;

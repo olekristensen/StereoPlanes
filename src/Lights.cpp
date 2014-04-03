@@ -53,6 +53,7 @@ void Lights::setup() {
 void Lights::begin(){
     ofxOlaShaderLight::begin();
     ofxOlaShaderLight::setMaterial(material);
+    noisePoints.globalScale = lightsVertexNoise->getValue();
     ofxOlaShaderLight::setNoisePoints(noisePoints);
     
     flyLight.setDiffuseColor(flyLightColor->getColor());
