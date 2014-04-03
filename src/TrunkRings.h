@@ -234,6 +234,8 @@ public:
             //find both directions to the left and to the right
             ofVec3f toTheLeft = unitDirection.getRotated(-90, ofVec3f(0,0,1));
             ofVec3f toTheRight = unitDirection.getRotated(90, ofVec3f(0,0,1));
+            ofVec3f normalRight = toTheRight.getRotated(-90, unitDirection);
+            ofVec3f normalLeft = toTheLeft.getRotated(-90, unitDirection);
             
             //use the map function to determine the distance.
             //the longer the distance, the narrower the line.
@@ -248,8 +250,10 @@ public:
             //add these points to the triangle strip
             mesh.addColor(ofFloatColor(0.8f,0.8f,0.8f,1.0f));
             mesh.addVertex(ofVec3f(leftPoint.x, leftPoint.y, leftPoint.z));
+            mesh.addNormal(ofVec3f(normalRight));
             mesh.addColor(ofFloatColor(0.8f,0.8f,0.8f,1.0f));
             mesh.addVertex(ofVec3f(rightPoint.x, rightPoint.y, rightPoint.z));
+            mesh.addNormal(ofVec3f(normalRight));
             
 
             
@@ -257,10 +261,31 @@ public:
         
             //mesh.drawWireframe();
         //mesh.draw();
-        ofxMeshUtils::calcNormals(mesh);
         
         mesh.draw();
             
+/* draw normals
+            ofxOlaShaderLight::end();
+            
+            vector<ofVec3f> n = mesh.getNormals();
+            vector<ofVec3f> v = mesh.getVertices();
+            float normalLength = .1;
+            
+                ofSetColor(255,255,255,127);
+                for(unsigned int i=0; i < n.size() ;i++){
+                    ofLine(v[i].x,v[i].y,v[i].z,
+                           v[i].x+n[i].x*normalLength,v[i].y+n[i].y*normalLength,v[i].z+n[i].z*normalLength);
+                    
+                    ofLine(.98*v[i].x,.98*v[i].y,.98*v[i].z,
+                           .98*v[i].x+n[i].x*normalLength*.2,.98*v[i].y+n[i].y*normalLength*.2,.98*v[i].z+n[i].z*normalLength*.2);
+                    ofLine(.98*v[i].x+n[i].x*normalLength*.2,.98*v[i].y+n[i].y*normalLength*.2,.98*v[i].z+n[i].z*normalLength*.2,
+                           v[i].x+n[i].x*normalLength*.2,v[i].y+n[i].y*normalLength*.2,v[i].z+n[i].z*normalLength*.2);
+                }
+
+        
+            ofxOlaShaderLight::begin();
+            
+ */
         /*vbo.setMesh(mesh, GL_STREAM_DRAW);
         vbo.bind();
         glDrawArrays(GL_TRIANGLE_STRIP, 0, mesh.getNumVertices());

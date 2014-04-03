@@ -44,16 +44,11 @@ void TrunkRings::setup() {
 	//shader.setGeometryOutputCount(5);
 	//shader.load("shaders/vert.glsl", "shaders/frag.glsl", "shaders/geom.glsl");
     
-    material.diffuseColor = ofVec4f(255,255,255,255);
-
+    material.diffuseColor = ofVec4f(1.0,1.0,1.0,1.0);
     
 }
 
 void TrunkRings::draw(int _surfaceId) {
-    
-    bool wasLightEnabled = ofxOlaShaderLight::isEnabled();
-    
-    if(wasLightEnabled) ofxOlaShaderLight::end();
     
     ofxOlaShaderLight::setMaterial(material);
     
@@ -72,6 +67,7 @@ void TrunkRings::draw(int _surfaceId) {
         
         
         center->drawActiveRings(time);
+        
         ofPopMatrix();
         
         //tlStartFlags->get
@@ -86,7 +82,7 @@ void TrunkRings::draw(int _surfaceId) {
         
         
     }
-    if(wasLightEnabled) ofxOlaShaderLight::begin();
+
 }
 
 void TrunkRings::update() {
