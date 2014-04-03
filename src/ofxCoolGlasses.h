@@ -28,10 +28,10 @@ public:
         rightFbo.end();
         
         left.setScale(1, 1, 1);
-        left.setNearClip(0.1);
+        left.setNearClip(0.01);
         
         right.setScale(1, 1, 1);
-        right.setNearClip(0.1);
+        right.setNearClip(0.01);
 	}
     
     

@@ -1,16 +1,18 @@
 #version 150
 
-in vec3 pos;
+in vec4 position;
 in vec3 color;
 
-out vec3 vColor; // Output to geometry (or fragment) shader
+//out vec3 vColor; // Output to geometry (or fragment) shader
+
+uniform mat4 modelViewProjectionMatrix;
+uniform mat4 modelViewMatrix;
 
 void main() {
-    gl_Position = vec4(pos, 1.0);
-    vColor = color;
+    //gl_Position = vec4(pos, 1.0);
+    gl_Position = position * modelViewMatrix;
+    //vColor = color;
 }
-
-
 
 /*#version 150
 uniform mat4 viewMatrix, projMatrix;

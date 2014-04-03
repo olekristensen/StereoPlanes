@@ -9,6 +9,8 @@
 #pragma once
 #include "ofMain.h"
 #include "ContentScene.h"
+#include "ofxMeshUtils.h"
+#include "ofxOlaShaderLight.h"
 
 #define WAVEFORM_HISTORY 800
 #define TAIL_LENGTH 4000
@@ -17,6 +19,7 @@
 // Draw modes: Expand and Line grow
 // Periodic small and large distance between lines
 // Have all rings keep growing 
+
 
 class Ring {
     
@@ -35,6 +38,8 @@ public:
     float variance = 4;
     float scale = 60;
     float startangle;
+    
+    float radiusVariance = 0.005;
     
     float growDuration = 5; // How many seconds to draw one ring
     float start = 2;
@@ -64,9 +69,11 @@ public:
             radius = parent->radius += ofRandom(0.01, 0.06);
             start = ofRandom(parent->start-1,parent->start+3);
             growDuration = ofRandom(10,20);
+            
+            radiusVariance = radius - parent->radius;
         }
         
-        for(int i=0; i<resolution-1; i++) {
+        for(int i=0; i<resolution-2; i++) { // add two extra points to draw all the way around
             float nangle = ofMap(i,0,resolution,0,TWO_PI) + startangle;
             ofVec3f pos = ofVec3f(sin(nangle)*radius, cos(nangle)*radius, 0);
             points.push_back(pos);
@@ -74,12 +81,13 @@ public:
         
         for(int i=0; i<points.size(); i++) {
             float nangle = ofMap(i,0,points.size(),0,TWO_PI);
-            float noiseDisplace = ofNoise(points[i].x+seed, points[i].y+seed, points[i].z+seed);
+            float noiseDisplace = ofNoise(points[i].x+seed, points[i].y+seed, /*points[i].z+seed*/0);
 
             points[i] += noiseDisplace*0.25;
         }
         
         points.push_back(points[0]);
+        points.push_back(points[1]);
         
         
     }
@@ -185,11 +193,10 @@ public:
                     
                 }
                 
-                
                 mesh.draw();
                 
                 //ofNoFill();
-                //ofCircle(points[left],0.01);
+                ofCircle(points[left],0.01);
             }
             
         }
@@ -204,20 +211,64 @@ public:
         
         ofMesh mesh;
         int left = resolution * p;
+        
+        if(left>0) {
         //cout<<p<<endl;
-        mesh.setMode(OF_PRIMITIVE_POINTS);
-        for (int i=0; i<left; i++) {
+        mesh.setMode(OF_PRIMITIVE_TRIANGLE_STRIP);
+        for (int i=1; i<left; i++) {
+
+            //find this point and the next point
+            ofVec3f thisPoint = points[i-1];
+            ofVec3f nextPoint = points[i];
+            
+            //get the direction from one to the next.
+            ofVec3f direction = (nextPoint - thisPoint);
+            
+            //get the distance from one point to the next
+            float distance = direction.length();
+            
+            //get the normalized direction. normalized vectors always have a length of one
+            //and are really useful for representing directions as opposed to something with length
+            ofVec3f unitDirection = direction.normalized();
+            
+            //find both directions to the left and to the right
+            ofVec3f toTheLeft = unitDirection.getRotated(-90, ofVec3f(0,0,1));
+            ofVec3f toTheRight = unitDirection.getRotated(90, ofVec3f(0,0,1));
+            
+            //use the map function to determine the distance.
+            //the longer the distance, the narrower the line.
+            //this makes it look a bit like brush strokes
+            float thickness = ofMap(ofSignedNoise(points[i].x,points[i].y,points[i].z), 0, 1, 0.01, 0.02);
+            
+            //calculate the points to the left and to the right
+            //by extending the current point in the direction of left/right by the length
+            ofVec3f leftPoint = thisPoint+toTheLeft*thickness;
+            ofVec3f rightPoint = thisPoint+toTheRight*thickness;
+            
+            //add these points to the triangle strip
             mesh.addColor(ofFloatColor(0.8f,0.8f,0.8f,1.0f));
-            mesh.addVertex(points[i]);
+            mesh.addVertex(ofVec3f(leftPoint.x, leftPoint.y, leftPoint.z));
+            mesh.addColor(ofFloatColor(0.8f,0.8f,0.8f,1.0f));
+            mesh.addVertex(ofVec3f(rightPoint.x, rightPoint.y, rightPoint.z));
+            
+
+            
         }
         
+            //mesh.drawWireframe();
+        //mesh.draw();
+        ofxMeshUtils::calcNormals(mesh);
+        
         mesh.draw();
-        //vbo.setMesh(mesh, GL_STREAM_DRAW);
-        
-        glDrawArrays(GL_POINTS, 0, mesh.getNumVertices());
-        
+            
+        /*vbo.setMesh(mesh, GL_STREAM_DRAW);
+        vbo.bind();
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, mesh.getNumVertices());
+        vbo.unbind();
+        */
         //ofNoFill();
         //ofCircle(points[left],0.01);
+        }
         
     }
     
@@ -261,6 +312,9 @@ public:
 class TrunkRings : public ContentScene {
     
 public:
+    
+    ofxOlaShaderLight::Material material;
+    
     void draw(int _surfaceId);
     void update();
     void setup();
