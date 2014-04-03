@@ -65,8 +65,9 @@ void Trae::draw(int _surfaceId) {
      
         ofxOlaShaderLight::setMaterial(treeMaterial);
         
-        noisePoints.points[0] = ofVec4f(0.0,1.0,4.0*ofSignedNoise(ofGetElapsedTimef()*0.1),2.0);
-        noisePoints.time = ofGetElapsedTimef();
+        noisePoints.points[0] = ofVec4f(0.0,1.0,(6.0*sin(ofGetElapsedTimef()*PI*0.5))-8.0,2.0*ofNoise(ofGetElapsedTimef()*3.0));
+
+/*        ofxOlaShaderLight::shader->setUniform1f("time", ofGetElapsedTimef());*/
 
         ofxOlaShaderLight::setNoisePoints(noisePoints);
 
@@ -83,7 +84,7 @@ void Trae::draw(int _surfaceId) {
                 ofTranslate(-2.0, 0, 0);
             }if(i == 1){
                 //ofScale(1./3, 1./3, 1./3);
-                ofTranslate(1.75, 0, -8);
+                ofTranslate(1.75, 0, -8.0);
             }
             ofxProcTree *t = *(it);
             t->mesh.draw();
