@@ -8,19 +8,6 @@
         <oz>0.000000000</oz>
         <ow>0.000000000</ow>
         <easein>0</easein>
-        <easeout>0</easeout>
-        <time>00:05:06:534</time>
-        <value>0.000000000</value>
-    </key>
-    <key>
-        <px>0.000000000</px>
-        <py>0.000000000</py>
-        <pz>-1.000000000</pz>
-        <ox>0.000000000</ox>
-        <oy>0.000000000</oy>
-        <oz>0.000000000</oz>
-        <ow>0.000000000</ow>
-        <easein>0</easein>
         <easeout>1</easeout>
         <time>00:06:40:873</time>
         <value>0.049000014</value>

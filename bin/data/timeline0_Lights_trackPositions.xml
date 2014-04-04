@@ -3,7 +3,7 @@
         <x>0.000000000</x>
         <y>138.000000000</y>
         <width>1280.000000000</width>
-        <height>16.000000000</height>
+        <height>67.000000000</height>
     </element>
     <element name="Fly Light Color">
         <x>0.000000000</x>
@@ -13,43 +13,43 @@
     </element>
     <element name="Fly Light Dot Color">
         <x>0.000000000</x>
-        <y>408.000000000</y>
+        <y>459.000000000</y>
         <width>1280.000000000</width>
         <height>18.000000000</height>
     </element>
     <element name="Fly Light Dot Size">
         <x>0.000000000</x>
-        <y>450.000000000</y>
+        <y>501.000000000</y>
         <width>1280.000000000</width>
         <height>26.000000000</height>
     </element>
     <element name="Fly Light Pos Noise">
         <x>0.000000000</x>
-        <y>322.000000000</y>
+        <y>373.000000000</y>
         <width>1280.000000000</width>
         <height>17.000000000</height>
     </element>
     <element name="Fly Light Pos Noise Speed">
         <x>0.000000000</x>
-        <y>363.000000000</y>
+        <y>414.000000000</y>
         <width>1280.000000000</width>
         <height>21.000000000</height>
     </element>
     <element name="Fly Light Pos X">
         <x>0.000000000</x>
-        <y>178.000000000</y>
+        <y>229.000000000</y>
         <width>1280.000000000</width>
         <height>23.000000000</height>
     </element>
     <element name="Fly Light Pos Y">
         <x>0.000000000</x>
-        <y>225.000000000</y>
+        <y>276.000000000</y>
         <width>1280.000000000</width>
         <height>27.000000000</height>
     </element>
     <element name="Fly Light Pos Z">
         <x>0.000000000</x>
-        <y>276.000000000</y>
+        <y>327.000000000</y>
         <width>1280.000000000</width>
         <height>22.000000000</height>
     </element>
@@ -61,7 +61,7 @@
     </element>
     <element name="Sky Light Attenuation">
         <x>0.000000000</x>
-        <y>677.000000000</y>
+        <y>728.000000000</y>
         <width>1280.000000000</width>
         <height>20.000000000</height>
     </element>
@@ -73,13 +73,13 @@
     </element>
     <element name="Sky Light Color">
         <x>0.000000000</x>
-        <y>632.000000000</y>
+        <y>683.000000000</y>
         <width>1280.000000000</width>
         <height>21.000000000</height>
     </element>
     <element name="Vertex Noise">
         <x>0.000000000</x>
-        <y>500.000000000</y>
+        <y>551.000000000</y>
         <width>1280.000000000</width>
         <height>108.000000000</height>
     </element>

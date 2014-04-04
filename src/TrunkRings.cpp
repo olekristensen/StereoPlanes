@@ -26,8 +26,8 @@ void TrunkRings::setup() {
     tlY->setValueRangeMin(1);
     
     tlZ = mainTimeline->addCurves("Z");
-    tlZ->setValueRangeMax(-1);
-    tlZ->setValueRangeMin(1);
+    tlZ->setValueRangeMax(-2);
+    tlZ->setValueRangeMin(2);
     
     tlX = mainTimeline->addCurves("X");
     tlX->setValueRangeMax(-1);
@@ -36,7 +36,7 @@ void TrunkRings::setup() {
     //tlNoise = mainTimeline->addCurves("Noise");
     
     tlKnockover = mainTimeline->addCurves("Knockover");
-    tlKnockover->setValueRangeMax(-90);
+    tlKnockover->setValueRangeMax(-360);
     tlKnockover->setValueRangeMin(0);
     
     tlRotateZ = mainTimeline->addCurves("Rotate Z");

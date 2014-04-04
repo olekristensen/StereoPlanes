@@ -24,33 +24,33 @@
         <value>0.476190448</value>
     </key>
     <key>
-        <sampleX>0.255027443</sampleX>
-        <sampleY>0.359999985</sampleY>
-        <time>00:09:59:542</time>
-        <value>0.428571403</value>
-    </key>
-    <key>
-        <sampleX>0.500000000</sampleX>
-        <sampleY>0.500000000</sampleY>
-        <time>00:10:01:863</time>
-        <value>0.666666627</value>
-    </key>
-    <key>
-        <sampleX>0.260017931</sampleX>
-        <sampleY>0.234999970</sampleY>
-        <time>00:10:10:807</time>
-        <value>0.895882726</value>
-    </key>
-    <key>
         <sampleX>0.235018432</sampleX>
         <sampleY>0.419999927</sampleY>
         <time>00:11:28:915</time>
         <value>0.574253619</value>
     </key>
     <key>
-        <sampleX>0.000000000</sampleX>
-        <sampleY>0.419999927</sampleY>
-        <time>00:13:16:643</time>
-        <value>0.571428537</value>
+        <sampleX>0.255027443</sampleX>
+        <sampleY>0.359999985</sampleY>
+        <time>00:12:53:913</time>
+        <value>0.380952358</value>
+    </key>
+    <key>
+        <sampleX>0.500000000</sampleX>
+        <sampleY>0.500000000</sampleY>
+        <time>00:12:56:234</time>
+        <value>0.619047642</value>
+    </key>
+    <key>
+        <sampleX>0.260017931</sampleX>
+        <sampleY>0.234999970</sampleY>
+        <time>00:13:05:178</time>
+        <value>0.848263681</value>
+    </key>
+    <key>
+        <sampleX>0.500000000</sampleX>
+        <sampleY>0.500000000</sampleY>
+        <time>00:13:16:658</time>
+        <value>0.904761910</value>
     </key>
 </keyframes>
