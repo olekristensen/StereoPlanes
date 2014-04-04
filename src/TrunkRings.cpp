@@ -27,7 +27,7 @@ void TrunkRings::setup() {
     
     tlZ = mainTimeline->addCurves("Z");
     tlZ->setValueRangeMax(-2);
-    tlZ->setValueRangeMin(2);
+    tlZ->setValueRangeMin(9);
     
     tlX = mainTimeline->addCurves("X");
     tlX->setValueRangeMax(-1);
