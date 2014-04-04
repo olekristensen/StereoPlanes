@@ -56,6 +56,7 @@ void TrunkRings::setup() {
     
     material.diffuseColor = ofVec4f(1.0,1.0,1.0,1.0);
     
+    
 }
 
 void TrunkRings::draw(int _surfaceId) {
@@ -68,6 +69,14 @@ void TrunkRings::draw(int _surfaceId) {
         if(numRings > 1) {
             ofPushMatrix();
             
+            //fxaa.setUniformTexture("bgl_RenderedTexture", fbo.getTextureReference(0), 0);
+            //fxaa.setUniform1f("bgl_RenderedTextureWidth", fbo.getWidth());
+            //fxaa.setUniform1f("bgl_RenderedTextureHeight", fbo.getHeight());
+            
+            //glEnable(GL_POLYGON_SMOOTH);
+            //glEnable(GL_LINE_SMOOTH);
+            //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+            //glColor3f(1,1,1);
             ofTranslate(tlX->getValue(), tlY->getValue(), tlZ->getValue());
             
             ofRotateX(tlKnockover->getValue());
@@ -75,6 +84,9 @@ void TrunkRings::draw(int _surfaceId) {
             ofRotateY(tlRotateY->getValue());
             
             center->drawActiveRings(time);
+            
+            glDisable(GL_POLYGON_SMOOTH);
+            
             
             ofPopMatrix();
         }
