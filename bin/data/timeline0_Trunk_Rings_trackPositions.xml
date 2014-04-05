@@ -1,7 +1,7 @@
 <positions>
     <element name="Knockover">
         <x>0.000000000</x>
-        <y>358.000000000</y>
+        <y>286.000000000</y>
         <width>1280.000000000</width>
         <height>40.000000000</height>
     </element>
@@ -25,13 +25,13 @@
     </element>
     <element name="Rotate Y">
         <x>0.000000000</x>
-        <y>486.000000000</y>
+        <y>414.000000000</y>
         <width>1280.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Rotate Z">
         <x>0.000000000</x>
-        <y>422.000000000</y>
+        <y>350.000000000</y>
         <width>1280.000000000</width>
         <height>40.000000000</height>
     </element>
@@ -45,7 +45,7 @@
         <x>0.000000000</x>
         <y>70.000000000</y>
         <width>1280.000000000</width>
-        <height>72.000000000</height>
+        <height>0.000000000</height>
     </element>
     <element name="X Position">
         <x>0.000000000</x>
@@ -55,7 +55,7 @@
     </element>
     <element name="X_0">
         <x>0.000000000</x>
-        <y>294.000000000</y>
+        <y>222.000000000</y>
         <width>1280.000000000</width>
         <height>40.000000000</height>
     </element>
@@ -67,13 +67,13 @@
     </element>
     <element name="Y_0">
         <x>0.000000000</x>
-        <y>166.000000000</y>
+        <y>94.000000000</y>
         <width>1280.000000000</width>
         <height>40.000000000</height>
     </element>
     <element name="Z_0">
         <x>0.000000000</x>
-        <y>230.000000000</y>
+        <y>158.000000000</y>
         <width>1280.000000000</width>
         <height>40.000000000</height>
     </element>

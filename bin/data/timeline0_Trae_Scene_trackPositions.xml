@@ -1,33 +1,33 @@
 <positions>
     <element name="Camera">
         <x>0.000000000</x>
-        <y>525.000000000</y>
+        <y>326.000000000</y>
         <width>1280.000000000</width>
-        <height>40.000000000</height>
+        <height>13.000000000</height>
     </element>
     <element name="Ground">
         <x>0.000000000</x>
-        <y>461.000000000</y>
+        <y>286.000000000</y>
         <width>1280.000000000</width>
-        <height>40.000000000</height>
+        <height>16.000000000</height>
     </element>
     <element name="Noise Back">
         <x>0.000000000</x>
-        <y>269.000000000</y>
+        <y>161.000000000</y>
         <width>1280.000000000</width>
-        <height>40.000000000</height>
+        <height>17.000000000</height>
     </element>
     <element name="Noise Front">
         <x>0.000000000</x>
-        <y>134.000000000</y>
+        <y>115.000000000</y>
         <width>1280.000000000</width>
-        <height>111.000000000</height>
+        <height>22.000000000</height>
     </element>
     <element name="Noise Speed">
         <x>0.000000000</x>
-        <y>333.000000000</y>
+        <y>202.000000000</y>
         <width>1280.000000000</width>
-        <height>40.000000000</height>
+        <height>17.000000000</height>
     </element>
     <element name="Progress">
         <x>0.000000000</x>
@@ -39,12 +39,12 @@
         <x>0.000000000</x>
         <y>70.000000000</y>
         <width>1280.000000000</width>
-        <height>40.000000000</height>
+        <height>21.000000000</height>
     </element>
     <element name="Trees">
         <x>0.000000000</x>
-        <y>397.000000000</y>
+        <y>243.000000000</y>
         <width>1280.000000000</width>
-        <height>40.000000000</height>
+        <height>19.000000000</height>
     </element>
 </positions>
