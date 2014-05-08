@@ -38,8 +38,6 @@ void testApp::setup()
     
     timeline.setBPM(120.f);
     //tlAudioMain = timeline.addAudioTrack("Audio", "tre-opbyg-beat.wav");
-    
-    enabledScene = timeline.addSwitches("Enabled Scene");
 
 	ofAddListener(timeline.events().bangFired, this, &testApp::bangFired);
     
@@ -86,9 +84,9 @@ void testApp::setup()
     trae = new Trae();
     contentScenes.push_back(trae);
     
-    trunkRings = new TrunkRings();
+/*    trunkRings = new TrunkRings();
     contentScenes.push_back(trunkRings);
-    
+  */  
     for(int i=0; i<contentScenes.size(); i++) {
         //contentScenes[i]->mainTimeline = &timeline;
         contentScenes[i]->setupScene(i, &timeline);
@@ -166,29 +164,10 @@ void testApp::update()
     
     camPosWall = ofVec3f(tlCamX->getValue(),tlCamY->getValue(),tlCamZ->getValue());
 
-    if(timeline.isSwitchOn("Enabled Scene")){
-        string switchText = enabledScene->getActiveSwitchAtMillis(timeline.getCurrentTimeMillis())->textField.text;
-        for(int s=0; s<contentScenes.size();s++) {
-            if (contentScenes[s] != lights) {
-                if (switchText == contentScenes[s]->name) {
-                    contentScenes[s]->enabled = true;
-                } else {
-                    contentScenes[s]->enabled = false;
-                }
-            }
-        }
-    } else {
-        for(int s=0; s<contentScenes.size();s++) {
-            if (contentScenes[s] != lights) {
-                contentScenes[s]->enabled = false;
-            }
-        }
-    }
-
+    // override enabled scenes
+    
     for(int s=0; s<contentScenes.size();s++) {
-        if (contentScenes[s] != lights) {
             contentScenes[s]->enabled = true;
-        }
     }
 
     
@@ -220,13 +199,8 @@ void testApp::update()
             
 		} else if(m.getAddress() == "/Dancer/y"){
             dancerPos.y = m.getArgAsFloat(0);
-            
-		} else if(m.getAddress() == "/activescene/x"){
-            for(int i=0; i<contentScenes.size(); i++) {
-                contentScenes[i]->enabled = false;
-            }
-            contentScenes[m.getArgAsInt32(0)]->enabled = true;
         }
+        
     }
     
     

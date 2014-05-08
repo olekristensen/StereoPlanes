@@ -3,18 +3,18 @@
         <x>0.000000000</x>
         <y>70.000000000</y>
         <width>1280.000000000</width>
-        <height>138.000000000</height>
+        <height>54.000000000</height>
     </element>
     <element name="Y">
         <x>0.000000000</x>
-        <y>232.000000000</y>
+        <y>148.000000000</y>
         <width>1280.000000000</width>
-        <height>117.000000000</height>
+        <height>49.000000000</height>
     </element>
     <element name="Z">
         <x>0.000000000</x>
-        <y>373.000000000</y>
+        <y>221.000000000</y>
         <width>1280.000000000</width>
-        <height>189.000000000</height>
+        <height>74.000000000</height>
     </element>
 </positions>

@@ -104,9 +104,9 @@ void Trae::draw(int _surfaceId) {
             ofTranslate(0,-1,0);
             ofQuaternion rot = cam.getOrientationQuat();
             ofRotate(rot.w(), rot.x(), rot.y(), rot.z());
-            if(i == 0){
+            if(i != 1){
                 ofScale(1./3, 1./3, 1./3);
-                ofTranslate(-2.0, 0, 0);
+                ofTranslate(-2.0, 0, (i*-1.0));
             }if(i == 1){
                 //ofScale(1./3, 1./3, 1./3);
                 ofTranslate(1.75, 0, -8.0);
@@ -166,13 +166,13 @@ void Trae::makeTrees(){
         delete t;
     }
     trees.clear();
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < 6; i++) {
         
         ofxProcTreeBranch::Properties * p = new ofxProcTreeBranch::Properties();
         
         p->seed = 519+i;
         p->segments = 14+ofRandom(-3,1);
-        p->levels = 5 +(i);
+        p->levels = 5 +(i%3);
         p->vMultiplier = 1.01;
         p->twigScale = 0;
         p->initalBranchLength = 0.65+ (i/2.0);

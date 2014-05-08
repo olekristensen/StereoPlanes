@@ -43,8 +43,3 @@
     <Name>Lock Camera to Track</Name>
     <Value>1</Value>
 </Widget>
-<Widget>
-    <Kind>2</Kind>
-    <Name>[2] Enabled</Name>
-    <Value>1</Value>
-</Widget>
