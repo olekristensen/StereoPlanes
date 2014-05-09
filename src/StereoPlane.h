@@ -165,7 +165,7 @@ public:
         
         ofPushMatrix();
         
-        ofSetColor(255,0,0);
+        ofSetColor(0,0,0,127);
         ofEllipse(0, 0, 1, 1);
         ofDrawAxis(1);
         ofPopMatrix();

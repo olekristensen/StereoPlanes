@@ -83,6 +83,7 @@ void Lights::draw(int _surfaceId) {
         ofxOlaShaderLight::end();
     }
     ofSetColor(flyLightDotColor->getColor());
+    ofSetSphereResolution(4);
     ofDrawSphere(flyLight.getGlobalPosition(), flyLightDotSize->getValue());
     if(lightWasEnabled){
         ofxOlaShaderLight::begin();
