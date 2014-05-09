@@ -73,7 +73,6 @@ public:
     // Scenes
     vector<ContentScene*> contentScenes;
     Trae * trae;
-    TrunkRings * trunkRings;
     Lights * lights;
     
     // Time

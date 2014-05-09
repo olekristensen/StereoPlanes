@@ -85,10 +85,7 @@ void testApp::setup()
     
     trae = new Trae();
     contentScenes.push_back(trae);
-    
-    trunkRings = new TrunkRings();
-    contentScenes.push_back(trunkRings);
-    
+        
     for(int i=0; i<contentScenes.size(); i++) {
         //contentScenes[i]->mainTimeline = &timeline;
         contentScenes[i]->setupScene(i, &timeline);
@@ -146,9 +143,6 @@ void testApp::setup()
     
     gui->loadSettings("GUI/guiSettings.xml");
     
-    
-    
-
 }
 
 

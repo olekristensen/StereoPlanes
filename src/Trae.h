@@ -13,6 +13,13 @@
 #include "ofxOlaShaderLight.h"
 #include "ofxTLCameraTrack.h"
 
+class TreeNode : public ofNode {
+public:
+    float size = 1.0;
+    ofxOlaShaderLight::Material material;
+    ofxProcTreeBranch::Properties properties;;
+};
+
 class Trae : public ContentScene {
     
 public:
@@ -43,6 +50,8 @@ public:
     ofxOlaShaderLight::Material groundMaterial;
     
     vector<ofxProcTree*> trees;
+    
+    vector<TreeNode*> treeNodes;
     
     ofxOlaShaderLight::NoisePoints noisePoints;
     

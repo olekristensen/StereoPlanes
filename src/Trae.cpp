@@ -7,6 +7,8 @@
 //
 
 #include "Trae.h"
+#include "testApp.h"
+#include <dispatch/dispatch.h>
 
 void Trae::setup() {
     
@@ -59,7 +61,7 @@ void Trae::setup() {
     noisePoints.points[7] = ofVec4f(0,0,-9,.25);
     noisePoints.points[8] = ofVec4f(0,0,-9,.25);
     noisePoints.points[9] = ofVec4f(0,0,-9,.25);
-
+    
 }
 
 void Trae::draw(int _surfaceId) {
@@ -75,8 +77,6 @@ void Trae::draw(int _surfaceId) {
         
         ofVec3f camPos = cam.getPosition();
         ofTranslate(cam.getPosition());
-     
-        ofxOlaShaderLight::setMaterial(treeMaterial);
         
         for (int i = 0; i < noisePoints.numberOfPoints; i++) {
             
@@ -98,21 +98,18 @@ void Trae::draw(int _surfaceId) {
 
         int i = 0;
         for (std::vector<ofxProcTree*>::iterator it = trees.begin() ; it != trees.end(); ++it) {
+            ofxOlaShaderLight::setMaterial(treeNodes[i]->material);
             ofPushMatrix();
             ofTranslate(0, 0, 1);
             ofRotateX(-180);
             ofTranslate(0,-1,0);
             ofQuaternion rot = cam.getOrientationQuat();
             ofRotate(rot.w(), rot.x(), rot.y(), rot.z());
-            if(i == 0){
-                ofScale(1./3, 1./3, 1./3);
-                ofTranslate(-2.0, 0, 0);
-            }if(i == 1){
-                //ofScale(1./3, 1./3, 1./3);
-                ofTranslate(1.75, 0, -8.0);
-            }
+            treeNodes[i]->transformGL();
             ofxProcTree *t = *(it);
             t->mesh.draw();
+            ofDrawAxis(1.0);
+            ofPopMatrix();
             ofPopMatrix();
             i++;
         }
@@ -161,40 +158,113 @@ void Trae::update() {
 
 void Trae::makeTrees(){
     
+    int numberTrees = 40;
+    
     for (std::vector<ofxProcTree*>::iterator it = trees.begin() ; it != trees.end(); ++it) {
         ofxProcTree *t = *(it);
         delete t;
     }
+
     trees.clear();
-    for (int i = 0; i < 2; i++) {
-        
-        ofxProcTreeBranch::Properties * p = new ofxProcTreeBranch::Properties();
-        
-        p->seed = 519+i;
-        p->segments = 14+ofRandom(-3,1);
-        p->levels = 5 +(i);
-        p->vMultiplier = 1.01;
-        p->twigScale = 0;
-        p->initalBranchLength = 0.65+ (i/2.0);
-        p->lengthFalloffFactor = 0.73;
-        p->lengthFalloffPower = 0.76;
-        p->clumpMax = 0.53;
-        p->clumpMin = 0.419;
-        p->branchFactor = 3.4;// + ofRandom(-1,1);
-        p->dropAmount = -0.16;
-        p->growAmount = 0.419 + (i/4.);//+ofRandom(-1,1);
-        p->sweepAmount = 0.01;
-        p->maxRadius = 0.168 + ofRandom(-0.1,0);
-        p->climbRate = 0.472;
-        p->trunkKink = 0.06;
-        p->treeSteps = 5;
-        p->taperRate = 0.835;
-        p->radiusFalloffRate = 0.73;
-        p->twistRate = 1.29;
-        p->trunkLength = 2.2 -(i/2.);
-        
-        trees.push_back(new ofxProcTree(p));
+
+    for (std::vector<TreeNode*>::iterator it = treeNodes.begin() ; it != treeNodes.end(); ++it) {
+        TreeNode *t = *(it);
+        delete t;
     }
+    
+    treeNodes.clear();
+    
+    for (int i = 0; i < numberTrees; i++) {
+        TreeNode* treeNode = new TreeNode();
+        
+        ofVec3f pos;
+        
+        pos.y = 0.0;
+        pos.z = ofRandom(-8.0,0.0);
+        pos.x = ofRandom(-1.0,1.0);
+        pos.x *= fabs(pos.z-1.0);
+        
+        treeNode->material.diffuseColor = ofVec4f(1.0, 1.0, 1.0, 1.0);
+        treeNode->material.specularShininess = 0.5;
+        treeNode->setScale(1.0);
+        treeNode->size = powf(ofMap(pos.z, 0.0, -8.0, 0.5, 1.0),1.1);
+        treeNode->setGlobalPosition(pos.x, pos.y, pos.z);
+
+        // pre overrides
+
+        if(i==0){
+            // left black
+            treeNode->setGlobalPosition(-(16.0/9.0)/((testApp*)ofGetAppPtr())->aspect*.8, 0.0, 1.45);
+            treeNode->size = 0.9;
+            treeNode->material.diffuseColor = ofVec4f(0.0, 0.0, 0.0, 1.0);
+            treeNode->material.specularColor = ofVec4f(0.0, 0.0, 0.0, 1.0);
+        }
+        if(i==1){
+            // right black
+            treeNode->setGlobalPosition((16.0/9.0)/((testApp*)ofGetAppPtr())->aspect*.8, 0.0, 1.45);
+            treeNode->size = 0.8;
+            treeNode->material.diffuseColor = ofVec4f(0.0, 0.0, 0.0, 1.0);
+            treeNode->material.specularColor = ofVec4f(0.0, 0.0, 0.0, 1.0);
+        }
+        if(i==2){
+            // frontmost
+            treeNode->setGlobalPosition((16.0/9.0)/((testApp*)ofGetAppPtr())->aspect*.4, 0.0, 0.5);
+            treeNode->size = 0.2;
+        }
+        
+        float sizeFactor = treeNode->size;
+        
+        treeNode->properties.seed = random();
+        treeNode->properties.segments = 6; // radial resolution of branches
+        treeNode->properties.levels = round(ofMap(sizeFactor, 0.0, 1.0, 2,7)); // branching level depth
+        treeNode->properties.vMultiplier = 1.01; // texture v multiplier
+        treeNode->properties.twigScale = 0;
+        treeNode->properties.initalBranchLength = ofMap(sizeFactor, 0.0, 1.0, 0.03,0.61);
+        treeNode->properties.lengthFalloffFactor = ofMap(sizeFactor, 0.0, 1.0, 0.9, 0.85);
+        treeNode->properties.lengthFalloffPower = ofMap(sizeFactor, 0.0, 1.0, 0.8, 0.94);
+        treeNode->properties.clumpMax = 0.423;
+        treeNode->properties.clumpMin = 0.125;
+        treeNode->properties.branchFactor = 2.0; // Symmetry
+        treeNode->properties.dropAmount = ofMap(sizeFactor, 0.0, 1.0, -0.01,-0.14);
+        treeNode->properties.growAmount = ofMap(sizeFactor, 0.0, 1.0, 0.8, 1.0);
+        treeNode->properties.sweepAmount = ofRandom(-0.001,0.001);
+        treeNode->properties.maxRadius = ofMap(sizeFactor, 0, 1, 0.0075,0.168);
+        treeNode->properties.trunkLength = ofMap(sizeFactor, 0, 1, 0.15,1.15);
+        treeNode->properties.climbRate = ofMap(sizeFactor, 0,1, 0.1, 0.508);
+        treeNode->properties.trunkKink = ofMap(sizeFactor, 0,1, 0.01, 0.093);
+        treeNode->properties.treeSteps = ofMap(sizeFactor, 0, 1, 2, 6); // trunk forks
+        treeNode->properties.taperRate = ofMap(sizeFactor, 0, 1, 0.9,0.929);
+        treeNode->properties.radiusFalloffRate = 0.71;
+        treeNode->properties.twistRate = ofMap(sizeFactor, 0, 1, 1.0,ofRandom(10));
+        
+        // post overrides
+        if(i==0){
+            // left black
+            treeNode->properties.initalBranchLength *= 0.75;
+            treeNode->properties.levels = 2;
+            treeNode->properties.dropAmount = 0.2;
+
+        }
+        if(i==1){
+            // right black
+            treeNode->properties.initalBranchLength *= 0.75;
+            treeNode->properties.levels = 2;
+            treeNode->properties.dropAmount = 0.2;
+        }
+        
+        treeNodes.push_back(treeNode);
+        trees.push_back(NULL);
+        
+    }
+    
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
+    
+    dispatch_apply(numberTrees, queue, ^(size_t i) {
+
+        ofxProcTreeBranch::Properties * p = &(treeNodes[i]->properties);
+        
+        trees[i] = new ofxProcTree(p);
+    });
 }
 
 void Trae::setGui(ofxUICanvas * gui, float width){
