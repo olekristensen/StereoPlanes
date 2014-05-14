@@ -14,7 +14,7 @@ void testApp::setup()
     
     ofSetWindowTitle("Trae - openframeworks");
 
-    ofSetLogLevel(OF_LOG_VERBOSE);
+    //ofSetLogLevel(OF_LOG_VERBOSE);
     
     ofSetFrameRate(30);
     ofSetVerticalSync(true);
@@ -300,7 +300,13 @@ void testApp::draw()
     ofRect(timeline.getDrawRect());
     ofSetColor(255,255);
     timeline.draw();
-
+    kinectTracker->depthImage.draw(ofGetWidth()-320, 0, 320, 240);
+    kinectTracker->thresholded.draw(ofGetWidth()-320, 240, 320, 240);
+    ofPushMatrix();
+    ofTranslate(ofGetWidth()-320, 0);
+    ofScale(0.5, 0.5);
+    kinectTracker->contourFinder.draw();
+    ofPopMatrix();
     sbsOutputServer.publishFBO(&fbo);
     
 }

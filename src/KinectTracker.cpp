@@ -23,7 +23,7 @@ void KinectTracker::setup(){
     tlKinectRotY = mainTimeline->addCurves("Kinect Rot Y", ofRange(-180, 180));
     tlKinectRotZ = mainTimeline->addCurves("Kinect Rot Z", ofRange(-180, 180));
     
-    tlKinectScale = mainTimeline->addCurves("Kinect Scale", ofRange(0, 0.5));
+    tlKinectScale = mainTimeline->addCurves("Kinect Scale", ofRange(0, 0.05));
     
 	// enable depth->video image calibration
 	kinect.setRegistration(false);
@@ -53,16 +53,14 @@ void KinectTracker::update(){
         depthImage.setImageType(OF_IMAGE_COLOR);
         depthImage.update();
         updatePointCloud();
-        /*
         ofxCv::blur(depthImage, 2);
         depthImage.update();
         thresholded.update();
         background.setLearningTime(900);
         background.setThresholdValue(50);
         background.update(depthImage, thresholded);
-        if(getb("rememberBackground")){
+        if(ofGetElapsedTimef() < 5.0){
             background.reset();
-            setb("rememberBackground", false);
         }
         thresholded.update();
         contourFinder.findContours(thresholded);
@@ -74,7 +72,7 @@ void KinectTracker::update(){
             cv::Rect boundingRect = contourFinder.getBoundingRect(i);
             vector <cv::Point> contour = contourFinder.getContour(i);
             
-            kincetClosestPoint = ofVec3f(0,-1000,0);
+            kincetClosestPoint = ofVec3f(0,1000,0);
         
             bool foundPoint = false;
             
@@ -85,7 +83,7 @@ void KinectTracker::update(){
                         v.rotate(kinectRotation.x, kinectRotation.y, kinectRotation.z);
                         v *= ofVec3f(kinectScale, kinectScale, kinectScale);
                         v += kinectOrigin;
-                        if(v.y > kincetClosestPoint.y) {
+                        if(v.y < kincetClosestPoint.y) {
                             kincetClosestPoint = v;
                             foundPoint = true;
                         }
@@ -93,7 +91,7 @@ void KinectTracker::update(){
                 }
             }
             if(foundPoint){
-                
+                /*
                 float closestLightDistance = 10000;
                 userLight* closestLight = NULL;
                 
@@ -125,12 +123,13 @@ void KinectTracker::update(){
                         }
                     }
                 }
+                 */
             }
-        }*/
+        }
     }
     
-    //cropBox.set(getf("boxWidth"), getf("boxHeight"), getf("boxDepth"));
-    //cropBox.setPosition(getf("boxPosX"), getf("boxPosY"), getf("boxPosZ"));
+    cropBox.set(3.0,2.0,2.0);
+    cropBox.setPosition(0,0,1.05);
 
 }
 
@@ -143,18 +142,22 @@ void KinectTracker::draw(int _surfaceId){
     ofxOlaShaderLight::end();
 	kinectMesh.drawVertices();
     ofSetColor(ofxCv::cyanPrint);
+    cropBox.drawWireframe();
     ofSetColor(ofColor::white);
 	ofPopMatrix();
-    
-        ofPushMatrix();
-        ofTranslate(kinectOrigin);
-        ofRotateX(kinectRotation.x);
-        ofRotateY(kinectRotation.y);
-        ofRotateZ(kinectRotation.z);
-        ofScale(kinectScale, kinectScale, kinectScale);
-        ofDrawAxis(10);
-        ofDrawSphere(10);
-        ofPopMatrix();
+    ofPushMatrix();
+    ofTranslate(kinectOrigin);
+    ofRotateX(kinectRotation.x);
+    ofRotateY(kinectRotation.y);
+    ofRotateZ(kinectRotation.z);
+    ofScale(kinectScale, kinectScale, kinectScale);
+    ofDrawAxis(10);
+    ofDrawSphere(10);
+    ofPopMatrix();
+    ofPushMatrix();
+    ofTranslate(kincetClosestPoint);
+    ofDrawSphere(0.2);
+    ofPopMatrix();
     if(lightsWereEnabled) ofxOlaShaderLight::begin();
     ofEnableDepthTest();
     
@@ -166,7 +169,7 @@ void KinectTracker::updatePointCloud() {
     
 	int step = 2;
     
-    bool maskBox = false;
+    bool maskBox = true;
     
     bool kinectLighting = true;
     kincetClosestPoint = ofVec3f(0,0,10000);
@@ -178,7 +181,7 @@ void KinectTracker::updatePointCloud() {
     kincetClosestPoint *= ofVec3f(kinectScale,kinectScale, kinectScale);
     kincetClosestPoint += kinectOrigin;
     
-    ofColor outsideColor = ofColor::beige;
+    ofColor outsideColor = ofColor::blueSteel;
     outsideColor.a = 20;
     ofColor insideColor = ofColor::white;
     insideColor.a = 127;
