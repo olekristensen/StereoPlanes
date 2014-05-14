@@ -39,8 +39,6 @@ void testApp::setup()
     timeline.setBPM(120.f);
     //tlAudioMain = timeline.addAudioTrack("Audio", "tre-opbyg-beat.wav");
     
-    enabledScene = timeline.addSwitches("Enabled Scene");
-
 	ofAddListener(timeline.events().bangFired, this, &testApp::bangFired);
     
     timeline.addPage("Camera");
@@ -85,10 +83,14 @@ void testApp::setup()
     
     trae = new Trae();
     contentScenes.push_back(trae);
-        
+
+    kinectTracker = new KinectTracker();
+    contentScenes.push_back(kinectTracker);
+
     for(int i=0; i<contentScenes.size(); i++) {
         //contentScenes[i]->mainTimeline = &timeline;
         contentScenes[i]->setupScene(i, &timeline);
+        contentScenes[i]->enabled = true;
     }
     
     // add all parameterGroups from scenes to parameters
@@ -160,32 +162,6 @@ void testApp::update()
     
     camPosWall = ofVec3f(tlCamX->getValue(),tlCamY->getValue(),tlCamZ->getValue());
 
-    if(timeline.isSwitchOn("Enabled Scene")){
-        string switchText = enabledScene->getActiveSwitchAtMillis(timeline.getCurrentTimeMillis())->textField.text;
-        for(int s=0; s<contentScenes.size();s++) {
-            if (contentScenes[s] != lights) {
-                if (switchText == contentScenes[s]->name) {
-                    contentScenes[s]->enabled = true;
-                } else {
-                    contentScenes[s]->enabled = false;
-                }
-            }
-        }
-    } else {
-        for(int s=0; s<contentScenes.size();s++) {
-            if (contentScenes[s] != lights) {
-                contentScenes[s]->enabled = false;
-            }
-        }
-    }
-
-    for(int s=0; s<contentScenes.size();s++) {
-        if (contentScenes[s] != lights) {
-            contentScenes[s]->enabled = true;
-        }
-    }
-
-    
     while(oscReceiver.hasWaitingMessages()){
 		// get the next message
 		ofxOscMessage m;
@@ -222,8 +198,6 @@ void testApp::update()
             contentScenes[m.getArgAsInt32(0)]->enabled = true;
         }
     }
-    
-    
     
     wall->cam.setPosition(camPosWall);
     wall->aspect = aspect;

@@ -98,7 +98,6 @@ void Trae::draw(int _surfaceId) {
 
         int i = 0;
         for (std::vector<ofxProcTree*>::iterator it = trees.begin() ; it != trees.end(); ++it) {
-            ofxOlaShaderLight::setMaterial(treeNodes[i]->material);
             ofPushMatrix();
             ofTranslate(0, 0, 1);
             ofRotateX(-180);
@@ -107,8 +106,10 @@ void Trae::draw(int _surfaceId) {
             ofRotate(rot.w(), rot.x(), rot.y(), rot.z());
             treeNodes[i]->transformGL();
             ofxProcTree *t = *(it);
+            ofxOlaShaderLight::setMaterial(treeNodes[i]->material);
             t->mesh.draw();
-            ofDrawAxis(1.0);
+            //ofxOlaShaderLight::setMaterial(treeMaterial);
+            //t->drawFoilage();
             ofPopMatrix();
             ofPopMatrix();
             i++;
@@ -187,7 +188,7 @@ void Trae::makeTrees(){
         treeNode->material.diffuseColor = ofVec4f(1.0, 1.0, 1.0, 1.0);
         treeNode->material.specularShininess = 0.5;
         treeNode->setScale(1.0);
-        treeNode->size = powf(ofMap(pos.z, 0.0, -8.0, 0.5, 1.0),1.1);
+        treeNode->size = powf(ofMap(pos.z, 0.0, -8.0, 0.5, 1.0),1.1) * ofRandom(1.0);
         treeNode->setGlobalPosition(pos.x, pos.y, pos.z);
 
         // pre overrides

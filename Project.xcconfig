@@ -30,11 +30,13 @@ OF_OPENCV_LIBS = "$(OF_PATH)/addons/ofxOpenCv/libs/opencv/lib/osx/opencv.a"
 //LIB_BULLET_ALL_RELEASE = $(LIB_BULLET_COLLISION_RELEASE) $(LIB_BULLET_DYNAMICS_RELEASE) $(LIB_BULLET_MATH_RELEASE) $(LIB_BULLET_MINI_CL_RELEASE) $(LIB_BULLET_SOFT_BODY_RELEASE)
 
 LIB_SNDFILE = "$(OF_PATH)/addons/ofxTimeline/libs/sndfile/lib/osx/libsndfile.a"
+HEADER_USB = "$(OF_PATH)/addons/ofxKinect/libs/libusb-1.0/include/"
+LIB_USB = "$(OF_PATH)/addons/ofxKinect/libs/libusb-1.0/lib/osx/usb-1.0.a"
 
-OTHER_LDFLAGS = $(OF_CORE_LIBS) $(OF_OPENCV_LIBS) $(LIB_VORONI) $(LIB_SNDFILE) "-L/usr/local/lib/" //$(LIB_BULLET_ALL_RELEASE)
+OTHER_LDFLAGS = $(OF_CORE_LIBS) $(OF_OPENCV_LIBS) $(LIB_VORONI) $(LIB_USB) $(LIB_SNDFILE) "-L/usr/local/lib/" //$(LIB_BULLET_ALL_RELEASE)
 
-HEADER_SEARCH_PATHS = $(OF_CORE_HEADERS)
-USER_HEADER_SEARCH_PATHS = $(OF_OPENCV_HEADERS) "src" //$(HEADER_BULLET)
+HEADER_SEARCH_PATHS = $(OF_CORE_HEADERS) "../../../addons/ofxOpenCv/libs/opencv/include/" "../../../addons/ofxCv/libs/ofxCv/include/" $(HEADER_USB)
+USER_HEADER_SEARCH_PATHS = $(OF_OPENCV_HEADERS) "src" $(HEADER_USB) //$(HEADER_BULLET)
 
 FRAMEWORK_SEARCH_PATHS = $(FRAMEWORK_SYPHON)
 

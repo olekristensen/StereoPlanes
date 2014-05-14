@@ -1,12 +1,12 @@
 <Widget>
     <Kind>4</Kind>
     <Name>Eye seperation</Name>
-    <Value>0.000000000</Value>
+    <Value>6.496575356</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>Aspect</Name>
-    <Value>0.993150711</Value>
+    <Value>1.321917772</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
@@ -16,7 +16,7 @@
 <Widget>
     <Kind>2</Kind>
     <Name>Draw Planes</Name>
-    <Value>0</Value>
+    <Value>1</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>
@@ -41,5 +41,10 @@
 <Widget>
     <Kind>17</Kind>
     <Name>Lock Camera to Track</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>[2] Enabled</Name>
     <Value>1</Value>
 </Widget>

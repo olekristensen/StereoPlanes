@@ -8,6 +8,7 @@
 #include "ContentScene.h"
 #include "ofxUI.h"
 #include "Trae.h"
+#include "KinectTracker.h"
 #include "ofxUbo.h"
 #include "ofxTimeline.h"
 #include "TrunkRings.h"
@@ -74,6 +75,7 @@ public:
     vector<ContentScene*> contentScenes;
     Trae * trae;
     Lights * lights;
+    KinectTracker * kinectTracker;
     
     // Time
     
