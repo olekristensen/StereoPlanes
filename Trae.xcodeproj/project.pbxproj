@@ -152,6 +152,7 @@
 		7A696204192252EF00CA7F77 /* Utilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7A6961A0192252EE00CA7F77 /* Utilities.cpp */; };
 		7A696205192252EF00CA7F77 /* Wrappers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7A6961A1192252EE00CA7F77 /* Wrappers.cpp */; };
 		7A6DC1C218D494540054D5B6 /* Trae.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7A6DC1C018D494540054D5B6 /* Trae.cpp */; };
+		7A7E75A81923DE5E009C916C /* userLight.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7A7E75A61923DE5E009C916C /* userLight.cpp */; };
 		7AA24FD518E5CBFA00955341 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AA24FD318E5CBE300955341 /* OpenAL.framework */; };
 		7AA24FD918E5DF9900955341 /* Lights.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7AA24FD718E5DF9900955341 /* Lights.cpp */; };
 		AB6B556718902BD800E70C54 /* SyphonNameboundClient.m in Sources */ = {isa = PBXBuildFile; fileRef = AB6B555818902BD800E70C54 /* SyphonNameboundClient.m */; };
@@ -826,6 +827,8 @@
 		7A6961A7192252EF00CA7F77 /* update-projects.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = "update-projects.py"; sourceTree = "<group>"; };
 		7A6DC1C018D494540054D5B6 /* Trae.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Trae.cpp; sourceTree = "<group>"; };
 		7A6DC1C118D494540054D5B6 /* Trae.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Trae.h; sourceTree = "<group>"; };
+		7A7E75A61923DE5E009C916C /* userLight.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = userLight.cpp; sourceTree = "<group>"; };
+		7A7E75A71923DE5E009C916C /* userLight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = userLight.h; sourceTree = "<group>"; };
 		7AA24FD318E5CBE300955341 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
 		7AA24FD718E5DF9900955341 /* Lights.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Lights.cpp; sourceTree = "<group>"; };
 		7AA24FD818E5DF9900955341 /* Lights.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Lights.h; sourceTree = "<group>"; };
@@ -2564,6 +2567,8 @@
 			isa = PBXGroup;
 			children = (
 				E4B69E1F0A3A1BDC003C02F2 /* testApp.h */,
+				7A7E75A61923DE5E009C916C /* userLight.cpp */,
+				7A7E75A71923DE5E009C916C /* userLight.h */,
 				E4B69E1E0A3A1BDC003C02F2 /* testApp.cpp */,
 				0420B330188F18470086D388 /* ContentScene.h */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
@@ -2828,6 +2833,7 @@
 				7A695F09192252C100CA7F77 /* usb_libusb10.c in Sources */,
 				7A695F07192252C100CA7F77 /* registration.c in Sources */,
 				7A6961FE192252EF00CA7F77 /* Distance.cpp in Sources */,
+				7A7E75A81923DE5E009C916C /* userLight.cpp in Sources */,
 				7A695F0F192252C100CA7F77 /* ofxKinectExtras.cpp in Sources */,
 				044E863918E45E18002214A2 /* ofxTLAudioTrack.cpp in Sources */,
 				7A2C024018E58D9D00CEBC9D /* ofxMeshUtils.cpp in Sources */,

@@ -15,6 +15,8 @@ void KinectTracker::setup(){
     
     mainTimeline->addPage(name);
     
+    setBackground = true;
+    
     tlKinectX = mainTimeline->addCurves("Kinect X", ofRange(-10, 10));
     tlKinectY = mainTimeline->addCurves("Kinect Y", ofRange(-10, 10));
     tlKinectZ = mainTimeline->addCurves("Kinect Z", ofRange(-10, 10));
@@ -24,6 +26,14 @@ void KinectTracker::setup(){
     tlKinectRotZ = mainTimeline->addCurves("Kinect Rot Z", ofRange(-180, 180));
     
     tlKinectScale = mainTimeline->addCurves("Kinect Scale", ofRange(0, 0.05));
+    
+    tlOpenCVLearningTime = mainTimeline->addCurves("OpenCV LearningTime", ofRange(0,6000));
+    tlOpenCVThreshold = mainTimeline->addCurves("OpenCV Threshold", ofRange(0,255));
+    tlOpenCVBlur = mainTimeline->addCurves("OpenCV Blur", ofRange(0,30));
+    
+    tlBlobThreshold= mainTimeline->addCurves("Blob Threshold", ofRange(50,255));
+    tlBlobMinSize= mainTimeline->addCurves("Blob Minimum Radius", ofRange(10,300));
+    tlBlobMaxSize= mainTimeline->addCurves("Blob Maximum Radius", ofRange(10,300));
     
 	// enable depth->video image calibration
 	kinect.setRegistration(false);
@@ -43,6 +53,19 @@ void KinectTracker::setup(){
 		ofLogNotice() << "zero plane dist: "        << kinect.getZeroPlaneDistance()        << "mm";
 	}
     
+    globalLigtsDeadFactor = 1.0;
+    allLightsDead = true;
+
+    int numLights = 3;
+    for(int i =0;i < numLights; i++){
+        userLight l;
+        ofFloatColor c;
+        c.setHsb(i*1./numLights,1., 1., 1.);
+        l.setup();
+        l.setColor(c);
+        lights.push_back(l);
+    }
+
 }
 
 void KinectTracker::update(){
@@ -53,16 +76,21 @@ void KinectTracker::update(){
         depthImage.setImageType(OF_IMAGE_COLOR);
         depthImage.update();
         updatePointCloud();
-        ofxCv::blur(depthImage, 2);
+        ofxCv::blur(depthImage, tlOpenCVBlur->getValue());
         depthImage.update();
         thresholded.update();
-        background.setLearningTime(900);
-        background.setThresholdValue(50);
+        background.setLearningTime(tlOpenCVLearningTime->getValue());
+        background.setThresholdValue(tlOpenCVThreshold->getValue());
         background.update(depthImage, thresholded);
-        if(ofGetElapsedTimef() < 5.0){
+        if(setBackground){
             background.reset();
+            setBackground = false;
         }
         thresholded.update();
+        contourFinder.setThreshold(tlBlobThreshold->getValue());
+        contourFinder.setMinAreaRadius(tlBlobMinSize->getValue());
+        contourFinder.setMaxAreaRadius(tlBlobMaxSize->getValue());
+
         contourFinder.findContours(thresholded);
         int n = contourFinder.size();
         
@@ -91,7 +119,7 @@ void KinectTracker::update(){
                 }
             }
             if(foundPoint){
-                /*
+                
                 float closestLightDistance = 10000;
                 userLight* closestLight = NULL;
                 
@@ -123,10 +151,41 @@ void KinectTracker::update(){
                         }
                     }
                 }
-                 */
             }
         }
     }
+    
+    float lightRandomSpeed = 0.25;
+    
+    float i = 0;
+    float lightColorOffset = 0.12;
+    float lightBrightness = 1.0;
+    
+    allLightsDead = true;
+    for(std::vector<userLight>::iterator l = lights.begin() ; l != lights.end(); ++l){
+        if(!l->dead) allLightsDead = false;
+    }
+    for(std::vector<userLight>::iterator l = lights.begin() ; l != lights.end(); ++l){
+        i+= 1./lights.size();
+/*        if(getb("randomLighting")) {
+            l->setPosition(cropBox.getPosition().x + (ofSignedNoise(ofGetElapsedTimef()*lightRandomSpeed, i, i)*cropBox.getWidth()/2),
+                           cropBox.getPosition().y + (ofSignedNoise(i, ofGetElapsedTimef()*lightRandomSpeed, i)*cropBox.getHeight()/2),
+                           cropBox.getPosition().z + (ofSignedNoise(i, i, ofGetElapsedTimef()*lightRandomSpeed)*cropBox.getDepth()/2));
+        }
+*/
+        ofFloatColor c;
+        c.setHsb(fmodf((i+lightColorOffset), 1.),1., lightBrightness, 1.);
+        l->setColor(c);
+        l->update();
+    }
+    if(allLightsDead){
+        globalLigtsDeadFactor = (globalLigtsDeadFactor * .99) + (1.*.01);
+    } else {
+        globalLigtsDeadFactor = (globalLigtsDeadFactor * .99) + (0.*.01);
+    }
+    
+    //cout << globalLigtsDeadFactor << endl;
+    
     
     cropBox.set(3.0,2.0,2.0);
     cropBox.setPosition(0,0,1.05);
@@ -156,7 +215,7 @@ void KinectTracker::draw(int _surfaceId){
     ofPopMatrix();
     ofPushMatrix();
     ofTranslate(kincetClosestPoint);
-    ofDrawSphere(0.2);
+    ofDrawSphere(0.05);
     ofPopMatrix();
     if(lightsWereEnabled) ofxOlaShaderLight::begin();
     ofEnableDepthTest();
@@ -171,7 +230,7 @@ void KinectTracker::updatePointCloud() {
     
     bool maskBox = true;
     
-    bool kinectLighting = true;
+    bool kinectLighting = false;
     kincetClosestPoint = ofVec3f(0,0,10000);
     kinectOrigin = ofVec3f(tlKinectX->getValue(), tlKinectY->getValue(), tlKinectZ->getValue());
     kinectRotation = ofVec3f(tlKinectRotX->getValue(), tlKinectRotY->getValue(), tlKinectRotZ->getValue());
@@ -252,6 +311,7 @@ void KinectTracker::updatePointCloud() {
 
 void KinectTracker::setGui(ofxUICanvas * gui, float width){
     ContentScene::setGui(gui, width);
+    gui->addLabelButton("Background", &setBackground);
 }
 
 void KinectTracker::receiveOsc(ofxOscMessage * m, string rest) {

@@ -13,6 +13,7 @@
 #include "ofxOlaShaderLight.h"
 #include "ofxKinect.h"
 #include "ofxCv.h"
+#include "userLight.h"
 
 class KinectTracker : public ContentScene {
     
@@ -37,6 +38,14 @@ public:
     ofxTLCurves * tlKinectRotX;
     ofxTLCurves * tlKinectRotY;
     ofxTLCurves * tlKinectRotZ;
+
+    ofxTLCurves * tlOpenCVLearningTime;
+    ofxTLCurves * tlOpenCVThreshold;
+    ofxTLCurves * tlOpenCVBlur;
+    
+    ofxTLCurves * tlBlobThreshold;
+    ofxTLCurves * tlBlobMinSize;
+    ofxTLCurves * tlBlobMaxSize;
     
     ofxKinect kinect;
     
@@ -54,6 +63,8 @@ public:
     ofVec3f kinectRotation;
     float kinectScale;
     
+    bool setBackground;
+    
     // open cv
     
 	ofxCv::RunningBackground background;
@@ -63,6 +74,14 @@ public:
     // cropping
     
     ofBoxPrimitive cropBox;
+    
+    // lights
+    
+    vector<userLight> lights;
+    
+    bool allLightsDead;
+    float globalLigtsDeadFactor;
+
     
 };
 
