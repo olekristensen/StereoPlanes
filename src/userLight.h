@@ -16,6 +16,8 @@
 class userLight : public ofxOlaShaderLight {
 public:
     
+    userLight();
+    
     void setup();
     
     void setPosition(float px, float py, float pz);
@@ -23,6 +25,8 @@ public:
     void update();
     
     void setColor(const ofFloatColor &c);
+    
+    void customDraw();
     
     float lastTimeMoved;
     float birthTime;

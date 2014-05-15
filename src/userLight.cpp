@@ -12,7 +12,12 @@
 using namespace ofxCv;
 using namespace cv;
 
+userLight::userLight(){
+    ofxOlaShaderLight::ofxOlaShaderLight();
+}
+
 void userLight::setup(){
+
     ofxOlaShaderLight::setup();
     
 	KF.init(6, 3, 0);
@@ -60,11 +65,11 @@ void userLight::setPosition(float px, float py, float pz){
 }
 
 void userLight::setColor(const ofFloatColor &c){
-    ofxOlaShaderLight::setDiffuseColor(c*255.0);
-    ofxOlaShaderLight::setAttenuation(1./8.);
+    ofxOlaShaderLight::setDiffuseColor(ofColor(c.r*255.0,c.g*255.0,c.b*255.0,255.0));
+    ofxOlaShaderLight::setAttenuation(1./.5);
 
     color = c;
-    // cout << getLightID() << ": set color" << endl;
+    //cout << getLightID() << ": set color" << endl;
 }
 
 void userLight::update(){
@@ -103,12 +108,12 @@ void userLight::update(){
         fadeFactor = fmax(fadeFactor, 0.);
         
         ofBoxPrimitive cropBox = theApp->kinectTracker->cropBox;
-        float lightRandomSpeed = 0.5;
+        float lightRandomSpeed = 0.1;
         int id = getLightID();
         
         ofVec3f homePos(cropBox.getPosition().x + (ofSignedNoise(ofGetElapsedTimef()*lightRandomSpeed, id, id)*cropBox.getWidth()/1.5),
-                       cropBox.getPosition().y + (cropBox.getHeight()/3.),
-                       cropBox.getPosition().z + (theApp->kinectTracker->globalLigtsDeadFactor*ofSignedNoise(id, id, ofGetElapsedTimef()*lightRandomSpeed)*cropBox.getDepth()/2.) + ((1.-theApp->kinectTracker->globalLigtsDeadFactor)*cropBox.getDepth()));
+                       cropBox.getPosition().y + (cropBox.getHeight()*-1.5),
+                       (cropBox.getPosition().z + 6) + (theApp->kinectTracker->globalLigtsDeadFactor*ofSignedNoise(id, id, ofGetElapsedTimef()*lightRandomSpeed)*cropBox.getDepth()) + ((1.-theApp->kinectTracker->globalLigtsDeadFactor)*cropBox.getDepth()));
         homePos.x*=theApp->kinectTracker->globalLigtsDeadFactor;
         if (fadeFactor <= 0) {
             dead = true;
@@ -125,9 +130,14 @@ void userLight::update(){
             fadeFactor = fminf(1., fadeFactor);
         }
     }
-    float brightness = (fadeFactor*color.getBrightness()) + ((1.-fadeFactor)*globalFadeUpFactor*color.getBrightness());
+    float brightness = 1;//(fadeFactor*color.getBrightness()) + ((1.-fadeFactor)*globalFadeUpFactor*color.getBrightness());
     c.setBrightness(brightness);
     float saturation = (fadeFactor*color.getSaturation()*0.25) + (0.75*color.getSaturation());
     c.setSaturation(saturation);
     ofxOlaShaderLight::setDiffuseColor(c);
+}
+
+void userLight::customDraw() {
+    ofDrawSphere( 0, 0, 0, 0.05);
+    ofDrawAxis(0.1);
 }

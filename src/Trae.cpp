@@ -19,7 +19,6 @@ void Trae::setup() {
     noiseTimeElapsed = 0.0;
     
     mainTimeline->addPage(name);
-    regrow = mainTimeline->addSwitches("Regrow");
     noiseFront = mainTimeline->addCurves("Noise Front", ofRange(0.0, 4.0));
     noiseBack = mainTimeline->addCurves("Noise Back", ofRange(0.0, 4.0));
     noiseSpeed = mainTimeline->addCurves("Noise Speed", ofRange(0.0, 0.1));
@@ -140,12 +139,9 @@ void Trae::update() {
                                           1.0
                                           );
     
-    if (regrow->isOn() & !hasRegrown) {
+    if (regrow) {
         makeTrees();
-        hasRegrown = true;
-    }
-    if (!regrow->isOn()){
-        hasRegrown = false;
+        regrow = false;
     }
     
     if(addCameraKeyFrame){
@@ -195,14 +191,14 @@ void Trae::makeTrees(){
 
         if(i==0){
             // left black
-            treeNode->setGlobalPosition(-(16.0/9.0)/((testApp*)ofGetAppPtr())->aspect*.8, 0.0, 1.45);
+            treeNode->setGlobalPosition(-(16.0/9.0)/((testApp*)ofGetAppPtr())->aspect*.85, 0.0, 1.45);
             treeNode->size = 0.9;
             treeNode->material.diffuseColor = ofVec4f(0.0, 0.0, 0.0, 1.0);
             treeNode->material.specularColor = ofVec4f(0.0, 0.0, 0.0, 1.0);
         }
         if(i==1){
             // right black
-            treeNode->setGlobalPosition((16.0/9.0)/((testApp*)ofGetAppPtr())->aspect*.8, 0.0, 1.45);
+            treeNode->setGlobalPosition((16.0/9.0)/((testApp*)ofGetAppPtr())->aspect*.85, 0.0, 1.45);
             treeNode->size = 0.8;
             treeNode->material.diffuseColor = ofVec4f(0.0, 0.0, 0.0, 1.0);
             treeNode->material.specularColor = ofVec4f(0.0, 0.0, 0.0, 1.0);
@@ -272,6 +268,7 @@ void Trae::setGui(ofxUICanvas * gui, float width){
     ContentScene::setGui(gui, width);
     gui->addLabelToggle("Lock Camera to Track",  &cameraTrack->lockCameraToTrack);
     gui->addLabelButton("Add Camera Keyframe", &addCameraKeyFrame);
+    gui->addLabelButton("Regrow", &regrow);
 }
 
 void Trae::receiveOsc(ofxOscMessage * m, string rest) {

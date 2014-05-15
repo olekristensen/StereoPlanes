@@ -34,7 +34,6 @@ public:
     
     float zPos;
     
-    ofxTLSwitches * regrow;
     ofxTLCurves * noiseFront;
     ofxTLCurves * noiseBack;
     ofxTLCurves * noiseSpeed;
@@ -44,7 +43,7 @@ public:
 	ofEasyCam cam;
     
     bool addCameraKeyFrame;
-    bool hasRegrown;
+    bool regrow;
     
     ofxOlaShaderLight::Material treeMaterial;
     ofxOlaShaderLight::Material groundMaterial;

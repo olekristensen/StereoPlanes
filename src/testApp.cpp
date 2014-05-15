@@ -211,7 +211,38 @@ void testApp::update()
     for(int s=0; s<contentScenes.size();s++) {
         contentScenes[s]->update();
     }
+    int t = 0;
+    int nUsers = kinectTracker->users.size();
+
+    for (std::vector<TreeNode*>::iterator it = trae->treeNodes.begin() ; it != trae->treeNodes.end(); ++it) {
+        
+        TreeNode * tNode = (*it);
+        
+        ofVec3f treeVec(tNode->getGlobalPosition());
+        
+        ofQuaternion rot = trae->cam.getOrientationQuat();
+        treeVec.rotate(rot.w(), ofVec3f(rot.x(), rot.y(), rot.z()));
+        treeVec.y -= 1.0;
+        treeVec = treeVec.rotated(-180, 0, 0);
+        treeVec.z += 1.0;
+        treeVec += trae->cam.getPosition();
+        
+        int u = 0;
+        for (std::vector<KinectUser*>::iterator iu = kinectTracker->users.begin() ; iu != kinectTracker->users.end(); ++iu) {
+            KinectUser *kUser = (*iu);
+
+            float distance = kUser->filteredPos.distance(treeVec);
+            cout << distance << "\t";
+            
+            float alpha = 1.0 - ofClamp(distance, 0.0, 1.0);
+            
+            tNode->material.diffuseColor.w = alpha;
+            u++;
+        }
+        t++;
+    }
     
+    cout << endl;
     
     //ofSetWindowTitle(ofToString(ofGetFrameRate()));
     
@@ -223,6 +254,26 @@ void testApp::drawScenes(int _surfaceId) {
     for(int s=0; s<contentScenes.size();s++) {
         contentScenes[s]->drawScene(_surfaceId);
     }
+    
+/*    ofSetColor(255);
+
+    for (std::vector<TreeNode*>::iterator it = trae->treeNodes.begin() ; it != trae->treeNodes.end(); ++it) {
+        
+        TreeNode * tNode = (*it);
+        
+        ofVec3f treeVec(tNode->getGlobalPosition());
+        
+        ofQuaternion rot = trae->cam.getOrientationQuat();
+        treeVec.rotate(rot.w(), ofVec3f(rot.x(), rot.y(), rot.z()));
+        treeVec.y -= 1.0;
+        treeVec = treeVec.rotated(-180, 0, 0);
+        treeVec.z += 1.0;
+        treeVec += trae->cam.getPosition();
+
+        ofDrawSphere(treeVec, 0.5);
+        
+    }
+*/
     
 }
 
@@ -306,6 +357,75 @@ void testApp::draw()
     ofTranslate(ofGetWidth()-320, 0);
     ofScale(0.5, 0.5);
     kinectTracker->contourFinder.draw();
+    ofPushStyle();
+    ofSetLineWidth(1.0);
+    ofNoFill();
+    int n = kinectTracker->contourFinder.size();
+    for(int i = 0; i < n; i++) {
+        // smallest rectangle that fits the contour
+        ofSetColor(ofxCv::cyanPrint);
+        ofPolyline minAreRect = ofxCv::toOf(kinectTracker->contourFinder.getMinAreaRect(i));
+        minAreRect.draw();
+        
+        // ellipse that best fits the contour
+        ofSetColor(ofxCv::magentaPrint);
+        cv::RotatedRect ellipse = kinectTracker->contourFinder.getFitEllipse(i);
+        ofPushMatrix();
+        ofVec2f ellipseCenter = ofxCv::toOf(ellipse.center);
+        ofVec2f ellipseSize = ofxCv::toOf(ellipse.size);
+        ofTranslate(ellipseCenter.x, ellipseCenter.y);
+        ofRotate(ellipse.angle);
+        ofEllipse(0, 0, ellipseSize.x, ellipseSize.y);
+        ofPopMatrix();
+        
+        // minimum area circle that encloses the contour
+        ofSetColor(ofxCv::cyanPrint);
+        float circleRadius;
+        ofVec2f circleCenter = ofxCv::toOf(kinectTracker->contourFinder.getMinEnclosingCircle(i, circleRadius));
+        ofCircle(circleCenter, circleRadius);
+        
+        // convex hull of the contour
+        ofSetColor(ofxCv::yellowPrint);
+        ofPolyline convexHull = ofxCv::toOf(kinectTracker->contourFinder.getConvexHull(i));
+        convexHull.draw();
+        
+        // defects of the convex hull
+        vector<cv::Vec4i> defects = kinectTracker->contourFinder.getConvexityDefects(i);
+        for(int j = 0; j < defects.size(); j++) {
+            ofLine(defects[j][0], defects[j][1], defects[j][2], defects[j][3]);
+        }
+        
+        // some different styles of contour centers
+        ofVec2f centroid = ofxCv::toOf(kinectTracker->contourFinder.getCentroid(i));
+        ofVec2f average = ofxCv::toOf(kinectTracker->contourFinder.getAverage(i));
+        ofVec2f center = ofxCv::toOf(kinectTracker->contourFinder.getCenter(i));
+        ofSetColor(ofxCv::cyanPrint);
+        ofCircle(centroid, 1);
+        ofSetColor(ofxCv::magentaPrint);
+        ofCircle(average, 1);
+        ofSetColor(ofxCv::yellowPrint);
+        ofCircle(center, 1);
+        
+        // you can also get the area and perimeter using ofPolyline:
+        // ofPolyline::getArea() and ofPolyline::getPerimeter()
+        double area = kinectTracker->contourFinder.getContourArea(i);
+        double length = kinectTracker->contourFinder.getArcLength(i);
+        
+        // balance is useful for detecting when a shape has an "arm" sticking out
+        // if balance.length() is small, the shape is more symmetric: like I, O, X...
+        // if balance.length() is large, the shape is less symmetric: like L, P, F...
+        ofVec2f balance = ofxCv::toOf(kinectTracker->contourFinder.getBalance(i));
+        ofPushMatrix();
+        ofTranslate(centroid.x, centroid.y);
+        ofScale(5, 5);
+        ofLine(0, 0, balance.x, balance.y);
+        ofPopMatrix();
+        ofSetColor(ofColor::gray);
+        ofDrawBitmapString(ofToString(kinectTracker->contourFinder.getLabel(i)), center);
+        
+        
+    }
+    ofPopStyle();
     ofPopMatrix();
     sbsOutputServer.publishFBO(&fbo);
     
