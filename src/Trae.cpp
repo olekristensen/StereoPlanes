@@ -177,14 +177,14 @@ void Trae::makeTrees(){
         ofVec3f pos;
         
         pos.y = 0.0;
-        pos.z = ofRandom(-8.0,0.0);
+        pos.z = ofRandom(-5.0,1.0);
         pos.x = ofRandom(-1.0,1.0);
         pos.x *= fabs(pos.z-1.0);
         
         treeNode->material.diffuseColor = ofVec4f(1.0, 1.0, 1.0, 1.0);
         treeNode->material.specularShininess = 0.5;
         treeNode->setScale(1.0);
-        treeNode->size = powf(ofMap(pos.z, 0.0, -8.0, 0.5, 1.0),1.1) * ofRandom(1.0);
+        treeNode->size = powf(ofMap(pos.z, 0.0, -8.0, 0.45, 1.0),.95) * ofRandom(1.0);
         treeNode->setGlobalPosition(pos.x, pos.y, pos.z);
 
         // pre overrides
